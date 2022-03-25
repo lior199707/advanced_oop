@@ -1,4 +1,4 @@
-package food;
+package main.java.com.food;
 
 public interface IEdible {
     /**
