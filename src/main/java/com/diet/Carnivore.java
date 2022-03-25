@@ -1,7 +1,8 @@
-package diet;
+package main.java.com.diet;
 
-import food.IEdible;
-import animals.Animal;
+import main.java.com.animals.Animal;
+import main.java.com.food.EFoodType;
+import main.java.com.food.IEdible;
 
 /**
  * Meat eating animals.
@@ -9,17 +10,14 @@ import animals.Animal;
 public class Carnivore implements IDiet {
     @Override
     public double eat(Animal animal, IEdible food) {
-        // increases animal weight by 10%
         if (canEat(food.getFoodtype())) {
-            double newWeight = (animal.getWeight() * 0.1) + animal.getWeight();
-            animal.setWeight(newWeight);
+            return (animal.getWeight() * 0.1);
         }
-        return animal.getWeight();
+        return 0;
     }
 
     @Override
     public boolean canEat(EFoodType food) {
-        // can eat MEAT
         return food == EFoodType.MEAT;
     }
 }
