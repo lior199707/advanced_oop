@@ -25,6 +25,7 @@ replay_pid*
 
 # intelliJ idea
 .idea
+*.iml
 
 # macOS generated file
 .DS_Store
