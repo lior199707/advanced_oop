@@ -1,11 +1,11 @@
-package food;
+package main.java.com.food;
 
 /**
  * MEAT - all animals excluding lions.
  * NOTFOOD - lions.
  * VEGETABLE - all plants.
  */
-enum EFoodType {
+public enum EFoodType {
     MEAT,
     NOTFOOD,
     VEGETABLE
