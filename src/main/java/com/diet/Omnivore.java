@@ -10,7 +10,7 @@ import com.food.EFoodType;
 public class Omnivore implements IDiet {
     @Override
     public double eat(Animal animal, IEdible food) {
-        if (canEat(food.getFoodtype())) {
+        if (canEat(food.getFoodtype()) && !(animal.equals(food))) {
             if (food.getFoodtype() == EFoodType.MEAT) {
                 Carnivore carnivore = new Carnivore();
                 return carnivore.eat(animal, food);
