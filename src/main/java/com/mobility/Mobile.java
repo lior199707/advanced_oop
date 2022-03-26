@@ -53,8 +53,8 @@ public abstract class Mobile implements Ilocatable {
      *
      */
     public double move(Point nextLocation) {
-        double distance = calcDistance(nextLocation);
         if (setLocation(nextLocation)) {
+            double distance = calcDistance(nextLocation);
             addTotalDistance(distance);
             return distance;
         }
@@ -79,10 +79,9 @@ public abstract class Mobile implements Ilocatable {
      */
     @Override
     public boolean setLocation(Point point) {
-        boolean isSuccess = false;
-        if (Point.checkBoundaries(point)) {
+        boolean isSuccess = Point.checkBoundaries(point);
+        if (isSuccess) {
             this.location = new Point(point);
-            isSuccess = true;
         }
         return isSuccess;
     }
