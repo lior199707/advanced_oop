@@ -1,8 +1,8 @@
 import com.animals.*;
+import com.mobility.Point;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AnimalTesting {
     private final Animal raf = new Turtle("Rafael");
@@ -36,5 +36,11 @@ public class AnimalTesting {
         assertFalse(dumbo.eat(dumbo));
         assertFalse(mel.eat(mel));
         assertFalse(yogi.eat(yogi));
+    }
+
+    @Test void moveAnimal() {
+        assertEquals(10, leo.move(new Point(30,0)));
+        assertEquals(407.17949999999996, leo.getWeight());
+        assertEquals(50, raf.move(new Point(30,0)));
     }
 }
