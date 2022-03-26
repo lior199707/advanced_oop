@@ -33,12 +33,11 @@ public class Lion extends AnimalRoar {
 
     @Override
     public boolean eat(IEdible food) {
-        boolean isSuccess = false;
-        if (super.eat(food)) {
+        boolean isSuccess = super.eat(food);
+        if (isSuccess){
             Random random = new Random();
             if (random.nextInt(2) == 0) {
                 this.scarCount++;
-                isSuccess = true;
             }
         }
         MessageUtility.logBooleanFunction(getName(), "eat", food, isSuccess);
