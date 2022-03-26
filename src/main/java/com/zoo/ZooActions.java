@@ -2,6 +2,7 @@ package com.zoo;
 
 import com.animals.*;
 import com.food.IEdible;
+import com.mobility.Point;
 
 public class ZooActions
 {
@@ -27,8 +28,15 @@ public class ZooActions
         return creature.eat(food);
     }
 
+    public static boolean move(Object animal, Point point){
+        Animal creature = findAnimalInstance(animal);
+        double distanceTraveled = creature.move(point);
+        return distanceTraveled != 0;
+    }
+
 
     public static void main(String[] args) {
+
 
         
     }
