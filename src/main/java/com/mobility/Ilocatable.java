@@ -1,4 +1,4 @@
-package mobility;
+package com.mobility;
 
 /**
  * Ilocatable interface describes the functionality of a location.

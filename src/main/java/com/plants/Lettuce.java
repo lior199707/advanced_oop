@@ -1,6 +1,6 @@
-package plants;
+package com.plants;
 
-import utilities.MessageUtility;
+import com.utilities.MessageUtility;
 
 /**
  * @author baroh

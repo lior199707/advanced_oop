@@ -1,18 +1,29 @@
+package com.diet;
+
+import com.animals.Animal;
+import com.food.IEdible;
+import com.food.EFoodType;
+
 /**
  * All-type eating animals.
  */
 public class Omnivore implements IDiet {
     @Override
     public double eat(Animal animal, IEdible food) {
-        // eatting meat type increase animal weight by 10%
-        // eatting veggies increase animal weight by 7%
-
+        if (canEat(food.getFoodtype()) && !(animal.equals(food))) {
+            if (food.getFoodtype() == EFoodType.MEAT) {
+                Carnivore carnivore = new Carnivore();
+                return carnivore.eat(animal, food);
+            } else {
+                Herbivore herbivore = new Herbivore();
+                return herbivore.eat(animal, food);
+            }
+        }
         return 0;
     }
 
     @Override
     public boolean canEat(EFoodType food) {
-        // can eat all except NOTFOOD.
-        return false;
+        return food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
     }
 }

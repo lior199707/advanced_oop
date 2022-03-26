@@ -1,4 +1,4 @@
-package mobility;
+package com.mobility;
 
 /**
  * Mobile is an abstract class implementing Ilocatable.
@@ -20,6 +20,7 @@ public abstract class Mobile implements Ilocatable {
     public Mobile(Point location) {
         setLocation(location);
         totalDistance = 0;
+
     }
 
     /**
@@ -78,11 +79,12 @@ public abstract class Mobile implements Ilocatable {
      */
     @Override
     public boolean setLocation(Point point) {
-        if (point.isViable(point.getX(), point.getY())) {
+        boolean isSuccess = false;
+        if (Point.checkBoundaries(point)) {
             this.location = new Point(point);
-            return true;
+            isSuccess = true;
         }
-        return false;
+        return isSuccess;
     }
 
     /**

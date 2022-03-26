@@ -1,4 +1,4 @@
-package food;
+package com.food;
 
 public interface IEdible {
     /**

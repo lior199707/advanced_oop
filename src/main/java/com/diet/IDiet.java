@@ -1,5 +1,9 @@
 package com.diet;
 
+import com.food.EFoodType;
+import com.animals.Animal;
+import com.food.IEdible;
+
 public interface IDiet {
     /**
      *

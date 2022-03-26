@@ -1,18 +1,18 @@
-package plants;
+package com.plants;
+
+import com.food.EFoodType;
+import com.food.IEdible;
+import com.mobility.Ilocatable;
+import com.mobility.Point;
+import com.utilities.MessageUtility;
 
 import java.util.Random;
-
-import food.EFoodType;
-import food.IEdible;
-import mobility.ILocatable;
-import mobility.Point;
-import utilities.MessageUtility;
 
 /**
  * @author baroh
  *
  */
-public abstract class Plant implements IEdible, ILocatable {
+public abstract class Plant implements IEdible, Ilocatable {
 	/**
 	 * 
 	 */
@@ -100,7 +100,7 @@ public abstract class Plant implements IEdible, ILocatable {
 	 */
 	@Override
 	public boolean setLocation(Point newLocation) {
-		boolean isSuccess = Point.cheackBounderies(newLocation);
+		boolean isSuccess = Point.checkBoundaries(newLocation);
 		if (isSuccess) {
 			this.location = newLocation;
 		}
