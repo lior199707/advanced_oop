@@ -20,19 +20,15 @@ public class Bear extends AnimalRoar {
 
         private final String color;
 
-        private FurColors(String color) {
+        FurColors(String color) {
             this.color = color;
-        }
-
-        public String getColor() {
-            return color;
         }
     }
 
     public Bear(String name, Point location) {
         super(name, location);
         setWeight(DEFAULT_WEIGHT);
-        setFurColor(FurColors.GRAY.toString());
+        setFurColor(FurColors.GRAY);
         setDiet(new Omnivore());
         MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
@@ -40,16 +36,18 @@ public class Bear extends AnimalRoar {
     public Bear(String name) {
         super(name, DEFAULT_STARTING_LOCATION);
         setWeight(DEFAULT_WEIGHT);
-        setFurColor(FurColors.GRAY.toString());
+        setFurColor(FurColors.GRAY);
         setDiet(new Omnivore());
         MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
-    public boolean setFurColor(String furColor) {
+    public boolean setFurColor(FurColors furColor) {
         boolean isSuccess = false;
         for (FurColors f : FurColors.values()) {
-            if (f.name().equals(furColor)) {
+            if (f.name().equals(furColor.toString())) {
+                this.furColor = furColor;
                 isSuccess = true;
+                break;
             }
         }
         MessageUtility.logSetter(getName(), "setFurColor", getFurColor(), isSuccess);
@@ -57,7 +55,7 @@ public class Bear extends AnimalRoar {
     }
 
     public FurColors getFurColor() {
-        MessageUtility.logGetter(getName(), "getFurColor", furColor.getColor());
+        MessageUtility.logGetter(getName(), "getFurColor", furColor);
         return furColor;
     }
 
