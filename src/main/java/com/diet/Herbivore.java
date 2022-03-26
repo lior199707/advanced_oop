@@ -11,7 +11,7 @@ public class Herbivore implements IDiet {
     @Override
     public double eat(Animal animal, IEdible food) {
         // eating veggies increase animal weight by 7%
-        if (canEat(food.getFoodtype())) {
+        if (canEat(food.getFoodtype()) && !(animal == food)) {
             return (animal.getWeight() * 0.07);
         }
         return 0;
