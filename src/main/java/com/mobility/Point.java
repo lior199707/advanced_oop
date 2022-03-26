@@ -2,8 +2,6 @@ package com.mobility;
 
 import com.utilities.MessageUtility;
 
-import java.util.Random;
-
 /**
  * Point class
  * 
@@ -26,13 +24,11 @@ public class Point {
      */
     public Point(int x, int y) {
         // see usage of point and figure out the default values.
-        if (checkBoundaries(this)){
-            this.x = x;
-            this.y = y;
-        } else {
-            Random random = new Random();
-            this.x = random.nextInt(MAX_X+1);
-            this.y = random.nextInt(MAX_Y+1);
+        this.x = x;
+        this.y = y;
+        if (!checkBoundaries(this)){
+            this.x = 0;
+            this.y = 0;
         }
         MessageUtility.logConstractor(this.getClass().getSimpleName(), "Point");
     }
