@@ -1,10 +1,10 @@
-package main.java.com.animals;
+package com.animals;
 
-import main.java.com.diet.IDiet;
-import main.java.com.food.IEdible;
-import main.java.com.mobility.Mobile;
-import main.java.com.mobility.Point;
-import main.java.com.utilities.MessageUtility;
+import com.diet.IDiet;
+import com.food.IEdible;
+import com.mobility.Mobile;
+import com.mobility.Point;
+import com.utilities.MessageUtility;
 
 public abstract class Animal extends Mobile implements IEdible {
     private String name;
@@ -34,6 +34,7 @@ public abstract class Animal extends Mobile implements IEdible {
 
     public boolean setName(String name) {
         boolean isSuccess = false;
+        this.name = this.name.replaceAll("[0-9]","");
         if (name.matches("[a-zA-Z]+")) {
             this.name = name;
             isSuccess = true;
