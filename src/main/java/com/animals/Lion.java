@@ -1,9 +1,10 @@
 package com.animals;
 
+import com.diet.Carnivore;
 import com.food.EFoodType;
 import com.food.IEdible;
-import com.utilities.MessageUtility;
 import com.mobility.Point;
+import com.utilities.MessageUtility;
 
 import java.util.Random;
 
@@ -17,6 +18,7 @@ public class Lion extends AnimalRoar {
     public Lion(String name, Point location) {
         super(name, location);
         setWeight(DEFAULT_WEIGHT);
+        setDiet(new Carnivore());
         scarCount = DEFAULT_SCAR_COUNT;
         MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
@@ -24,6 +26,7 @@ public class Lion extends AnimalRoar {
     public Lion(String name) {
         super(name, DEFAULT_STARTING_LOCATION);
         setWeight(DEFAULT_WEIGHT);
+        setDiet(new Carnivore());
         scarCount = DEFAULT_SCAR_COUNT;
         MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
