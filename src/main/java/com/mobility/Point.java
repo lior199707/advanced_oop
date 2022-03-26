@@ -1,6 +1,8 @@
 package main.java.com.mobility;
 
-import main.java.com.privateutil.PointOutOfBoundException;
+import main.java.com.utilities.MessageUtility;
+
+import java.util.Random;
 
 /**
  * Point class
@@ -22,14 +24,17 @@ public class Point {
      * @param y - int value of y coordinate.
      *          if not viable values, the constructor will initialize them with 0.
      */
-    public Point(int x, int y) throws PointOutOfBoundException {
+    public Point(int x, int y) {
         // see usage of point and figure out the default values.
-        if ((MIN_XY <=  x && x <= MAX_X) && (MIN_XY <= y && y <= MAX_Y)) {
+        if (checkBoundaries(this)){
             this.x = x;
             this.y = y;
         } else {
-            throw new PointOutOfBoundException("Values are out of valid boundaries.");
+            Random random = new Random();
+            this.x = random.nextInt(MAX_X+1);
+            this.y = random.nextInt(MAX_Y+1);
         }
+        MessageUtility.logConstractor(this.getClass().getSimpleName(), "Point");
     }
 
     /**
