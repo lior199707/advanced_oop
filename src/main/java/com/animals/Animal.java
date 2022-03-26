@@ -31,6 +31,13 @@ public abstract class Animal extends Mobile implements IEdible {
         return isSuccess;
     }
 
+    @Override
+    public double move(Point nextLocation) {
+        double distance =  super.move(nextLocation);
+        this.setWeight(getWeight() - (distance * getWeight() * 0.00025));
+        return distance;
+    }
+
     public boolean setName(String name) {
         boolean isSuccess = false;
         this.name = name.replaceAll("[0-9]","");
