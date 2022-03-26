@@ -53,8 +53,8 @@ public abstract class Mobile implements Ilocatable {
      *
      */
     public double move(Point nextLocation) {
+        double distance = calcDistance(nextLocation);
         if (setLocation(nextLocation)) {
-            double distance = calcDistance(nextLocation);
             addTotalDistance(distance);
             return distance;
         }
