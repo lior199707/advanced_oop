@@ -1,7 +1,7 @@
-package main.java.com.animals;
+package com.animals;
 
-import main.java.com.mobility.Point;
-import main.java.com.utilities.MessageUtility;
+import com.mobility.Point;
+import com.utilities.MessageUtility;
 
 public abstract class AnimalChew extends Animal {
     public AnimalChew(String name, Point location) {

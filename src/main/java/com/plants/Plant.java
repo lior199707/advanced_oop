@@ -1,10 +1,10 @@
-package main.java.com.plants;
+package com.plants;
 
-import main.java.com.food.EFoodType;
-import main.java.com.food.IEdible;
-import main.java.com.mobility.Ilocatable;
-import main.java.com.mobility.Point;
-import main.java.com.utilities.MessageUtility;
+import com.food.EFoodType;
+import com.food.IEdible;
+import com.mobility.Ilocatable;
+import com.mobility.Point;
+import com.utilities.MessageUtility;
 
 import java.util.Random;
 

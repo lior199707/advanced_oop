@@ -1,4 +1,4 @@
-package main.java.com.privateutil;
+package com.privateutil;
 
 public class PointOutOfBoundException extends Exception {
     public PointOutOfBoundException(String message){

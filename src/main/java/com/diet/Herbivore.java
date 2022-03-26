@@ -1,8 +1,8 @@
-package main.java.com.diet;
+package com.diet;
 
-import main.java.com.animals.Animal;
-import main.java.com.food.IEdible;
-import main.java.com.food.EFoodType;
+import com.animals.Animal;
+import com.food.IEdible;
+import com.food.EFoodType;
 
 /**
  * Plant eating animals.

@@ -1,4 +1,4 @@
-package main.java.com.utilities;
+package com.utilities;
 
 /**
  * A set of Logging functions to be used in appropriate classes

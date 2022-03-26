@@ -1,4 +1,4 @@
-package main.java.com.zoo;
+package com.zoo;
 
 public class ZooActions
 {

@@ -1,6 +1,6 @@
-package main.java.com.plants;
+package com.plants;
 
-import main.java.com.utilities.MessageUtility;
+import com.utilities.MessageUtility;
 
 /**
  * @author baroh

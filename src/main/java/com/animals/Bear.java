@@ -1,9 +1,9 @@
-package main.java.com.animals;
+package com.animals;
 
-import main.java.com.diet.Omnivore;
-import main.java.com.food.EFoodType;
-import main.java.com.mobility.Point;
-import main.java.com.utilities.MessageUtility;
+import com.diet.Omnivore;
+import com.food.EFoodType;
+import com.mobility.Point;
+import com.utilities.MessageUtility;
 
 /**
  * Bear

@@ -1,4 +1,4 @@
-package main.java.com.food;
+package com.food;
 
 /**
  * MEAT - all animals excluding lions.

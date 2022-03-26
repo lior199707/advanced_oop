@@ -1,4 +1,4 @@
-package main.java.com.mobility;
+package com.mobility;
 
 /**
  * Mobile is an abstract class implementing Ilocatable.

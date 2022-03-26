@@ -1,9 +1,9 @@
-package main.java.com.animals;
+package com.animals;
 
-import main.java.com.food.EFoodType;
-import main.java.com.food.IEdible;
-import main.java.com.utilities.MessageUtility;
-import main.java.com.mobility.Point;
+import com.food.EFoodType;
+import com.food.IEdible;
+import com.utilities.MessageUtility;
+import com.mobility.Point;
 
 import java.util.Random;
 

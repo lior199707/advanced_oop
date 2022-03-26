@@ -1,6 +1,6 @@
-package main.java.com.mobility;
+package com.mobility;
 
-import main.java.com.utilities.MessageUtility;
+import com.utilities.MessageUtility;
 
 import java.util.Random;
 
