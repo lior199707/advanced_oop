@@ -2,7 +2,6 @@ package com.mobility;
 
 import com.utilities.MessageUtility;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,76 +17,6 @@ public class Point {
     private static final int MIN_XY = 0;
     private int x;
     private int y;
-
-    public static Point pointInput() throws IOException
-    {
-        int x = 0, y = 0;
-        boolean isValid = false;
-        Scanner sc = new Scanner(System.in);
-        while(true)
-        {
-            while (!isValid)
-            {
-                try
-                {
-                    System.out.println("Please enter the x value of the point");
-                    isValid = true;
-                    x = sc.nextInt();
-                }catch (InputMismatchException e)
-                {
-                    System.err.println(e.toString() + " x is not valid");
-                    sc.next();
-                    isValid = false;
-                }
-            }
-            isValid = false;
-            while (!isValid)
-            {
-                try
-                {
-                    System.out.println("Please enter the y value of the point");
-                    isValid = true;
-                    y = sc.nextInt();
-                }catch (InputMismatchException e)
-                {
-                    System.err.println(e.toString() + " y is not valid");
-                    sc.next();
-                    isValid = false;
-                }
-            }
-            Point p = new Point(x, y);
-            if(checkBoundaries(p))
-                return p;
-        }
-    }
-
-//        while(true) {
-//            try {
-//                System.out.print("Please enter the x value of the point");
-//                int x = sc.nextInt();
-//            } catch (InputMismatchException e) {
-//                e.printStackTrace();
-//                sc.next();
-//            }
-//        }
-//
-//        while(true) {
-//            try {
-//                System.out.print("Please enter the y value of the point");
-//                int y = sc.nextInt();
-//            } catch (InputMismatchException e) {
-//                e.printStackTrace();
-//                sc.next();
-//            }
-//        }
-//                if (checkBoundaries(point)) {
-//                    return point;
-//                }
-//            } catch (IOException e) {
-//
-//            }
-//        }
-
 
     /**
      * Parameterized constructor
@@ -171,6 +100,46 @@ public class Point {
             isSuccess = true;
         }
         return isSuccess;
+    }
+
+    public static Point pointInput() {
+        Scanner sc = new Scanner(System.in);
+        boolean isValidX = false;
+        boolean isValidY = false;
+        int x = 0, y = 0;
+
+        while(true) {
+            while (!isValidX) {
+                try {
+                    System.out.println("Please enter the x value of the point");
+                    isValidX = true;
+                    x = sc.nextInt();
+                } catch (InputMismatchException e) {
+                    System.err.println(e + " x is not valid");
+                    sc.next();
+                    isValidX = false;
+                }
+            }
+
+            while (!isValidY) {
+                try {
+                    System.out.println("Please enter the y value of the point");
+                    isValidY = true;
+                    y = sc.nextInt();
+                } catch (InputMismatchException e) {
+                    System.err.println(e + " y is not valid");
+                    sc.next();
+                    isValidY = false;
+                }
+            }
+
+            Point point = new Point(x,y);
+            if(checkBoundaries(point))
+                return point;
+
+            isValidX = false;
+            isValidY = false;
+        }
     }
 
     /**
