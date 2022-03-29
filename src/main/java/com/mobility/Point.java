@@ -2,6 +2,10 @@ package com.mobility;
 
 import com.utilities.MessageUtility;
 
+import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 /**
  * Point class
  * 
@@ -15,6 +19,76 @@ public class Point {
     private int x;
     private int y;
 
+    public static Point pointInput() throws IOException
+    {
+        int x = 0, y = 0;
+        boolean isValid = false;
+        Scanner sc = new Scanner(System.in);
+        while(true)
+        {
+            while (!isValid)
+            {
+                try
+                {
+                    System.out.println("Please enter the x value of the point");
+                    isValid = true;
+                    x = sc.nextInt();
+                }catch (InputMismatchException e)
+                {
+                    System.err.println(e.toString() + " x is not valid");
+                    sc.next();
+                    isValid = false;
+                }
+            }
+            isValid = false;
+            while (!isValid)
+            {
+                try
+                {
+                    System.out.println("Please enter the y value of the point");
+                    isValid = true;
+                    y = sc.nextInt();
+                }catch (InputMismatchException e)
+                {
+                    System.err.println(e.toString() + " y is not valid");
+                    sc.next();
+                    isValid = false;
+                }
+            }
+            Point p = new Point(x, y);
+            if(checkBoundaries(p))
+                return p;
+        }
+    }
+
+//        while(true) {
+//            try {
+//                System.out.print("Please enter the x value of the point");
+//                int x = sc.nextInt();
+//            } catch (InputMismatchException e) {
+//                e.printStackTrace();
+//                sc.next();
+//            }
+//        }
+//
+//        while(true) {
+//            try {
+//                System.out.print("Please enter the y value of the point");
+//                int y = sc.nextInt();
+//            } catch (InputMismatchException e) {
+//                e.printStackTrace();
+//                sc.next();
+//            }
+//        }
+//                if (checkBoundaries(point)) {
+//                    return point;
+//                }
+//            } catch (IOException e) {
+//
+//            }
+//        }
+
+
     /**
      * Parameterized constructor
      * 
@@ -26,10 +100,6 @@ public class Point {
         // see usage of point and figure out the default values.
         this.x = x;
         this.y = y;
-        if (!checkBoundaries(this)){
-            this.x = 0;
-            this.y = 0;
-        }
         MessageUtility.logConstractor(this.getClass().getSimpleName(), "Point");
     }
 
