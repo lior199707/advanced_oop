@@ -8,6 +8,9 @@ import com.food.IEdible;
  * Meat eating animals.
  */
 public class Carnivore implements IDiet {
+
+    public Carnivore(){};
+
     @Override
     public double eat(Animal animal, IEdible food) {
         if (canEat(food.getFoodtype()) && !(animal == food)) {

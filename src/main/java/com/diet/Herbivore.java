@@ -8,6 +8,9 @@ import com.food.EFoodType;
  * Plant eating animals.
  */
 public class Herbivore implements IDiet {
+
+    public Herbivore(){};
+
     @Override
     public double eat(Animal animal, IEdible food) {
         // eating veggies increase animal weight by 7%
