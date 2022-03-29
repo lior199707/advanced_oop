@@ -80,4 +80,10 @@ public abstract class Animal extends Mobile implements IEdible {
         MessageUtility.logGetter(getName(), "getDiet", this.diet);
         return diet;
     }
+
+    @Override
+    public Point getLocation() {
+        MessageUtility.logGetter(getName(), "getLocation", super.getLocation());
+        return super.getLocation();
+    }
 }
