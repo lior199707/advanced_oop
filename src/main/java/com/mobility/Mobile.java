@@ -20,7 +20,6 @@ public abstract class Mobile implements Ilocatable {
     public Mobile(Point location) {
         setLocation(location);
         totalDistance = 0;
-
     }
 
     /**
@@ -95,5 +94,16 @@ public abstract class Mobile implements Ilocatable {
     @Override
     public Point getLocation() {
         return location;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Mobile mobile = (Mobile) o;
+
+        if (Double.compare(mobile.getTotalDistance(), getTotalDistance()) != 0) return false;
+        return getLocation() != null ? getLocation().equals(mobile.getLocation()) : mobile.getLocation() == null;
     }
 }
