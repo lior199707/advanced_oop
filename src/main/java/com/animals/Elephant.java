@@ -19,15 +19,10 @@ public class Elephant extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setTrunkLength(DEFAULT_TRUNK_LENGTH);
         setDiet(new Herbivore());
-        MessageUtility.logConstractor(this.getClass().getSimpleName(), name);
     }
 
     public Elephant(String name) {
-        super(name, DEFAULT_STARTING_LOCATION);
-        setWeight(DEFAULT_WEIGHT);
-        setTrunkLength(DEFAULT_TRUNK_LENGTH);
-        setDiet(new Herbivore());
-        MessageUtility.logConstractor(this.getClass().getSimpleName(), name);
+        this(name, DEFAULT_STARTING_LOCATION);
     }
 
     @Override

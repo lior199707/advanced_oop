@@ -19,15 +19,10 @@ public class Turtle extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     public Turtle(String name) {
-        super(name, DEFAULT_STARTING_LOCATION);
-        setWeight(DEFAULT_WEIGHT);
-        setAge(DEFAULT_AGE);
-        setDiet(new Herbivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        this(name, DEFAULT_STARTING_LOCATION);
     }
 
     @Override

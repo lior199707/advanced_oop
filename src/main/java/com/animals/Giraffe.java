@@ -19,15 +19,10 @@ public class Giraffe extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setNeckLength(DEFAULT_NECK_LENGTH);
         setDiet(new Herbivore());
-        MessageUtility.logConstractor(this.getClass().getSimpleName(), name);
     }
 
     public Giraffe(String name) {
-        super(name, DEFAULT_STARTING_LOCATION);
-        setWeight(DEFAULT_WEIGHT);
-        setNeckLength(DEFAULT_NECK_LENGTH);
-        setDiet(new Herbivore());
-        MessageUtility.logConstractor(this.getClass().getSimpleName(), name);
+        this(name, DEFAULT_STARTING_LOCATION);
     }
 
     @Override
@@ -53,7 +48,7 @@ public class Giraffe extends AnimalChew {
             this.neckLength = neckLength;
             isSuccess = true;
         }
-        MessageUtility.logSetter(getName(), "setNeckLength", neckLength, isSuccess);
+        MessageUtility.logSetter(this.getName(), "setNeckLength", neckLength, isSuccess);
         return isSuccess;
     }
 

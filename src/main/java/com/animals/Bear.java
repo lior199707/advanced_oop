@@ -30,15 +30,10 @@ public class Bear extends AnimalRoar {
         setWeight(DEFAULT_WEIGHT);
         setFurColor(FurColors.GRAY);
         setDiet(new Omnivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     public Bear(String name) {
-        super(name, DEFAULT_STARTING_LOCATION);
-        setWeight(DEFAULT_WEIGHT);
-        setFurColor(FurColors.GRAY);
-        setDiet(new Omnivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        this(name, DEFAULT_STARTING_LOCATION);
     }
 
     public boolean setFurColor(FurColors furColor) {

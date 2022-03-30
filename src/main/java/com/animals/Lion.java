@@ -20,15 +20,10 @@ public class Lion extends AnimalRoar {
         setWeight(DEFAULT_WEIGHT);
         setDiet(new Carnivore());
         scarCount = DEFAULT_SCAR_COUNT;
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     public Lion(String name) {
-        super(name, DEFAULT_STARTING_LOCATION);
-        setWeight(DEFAULT_WEIGHT);
-        setDiet(new Carnivore());
-        scarCount = DEFAULT_SCAR_COUNT;
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        this(name, DEFAULT_STARTING_LOCATION);
     }
 
     @Override
