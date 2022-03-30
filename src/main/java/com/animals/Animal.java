@@ -86,4 +86,22 @@ public abstract class Animal extends Mobile implements IEdible {
         MessageUtility.logGetter(getName(), "getLocation", super.getLocation());
         return super.getLocation();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Animal animal = (Animal) o;
+
+        if (Double.compare(animal.getWeight(), getWeight()) != 0) return false;
+        if (getName() != null ? !getName().equals(animal.getName()) : animal.getName() != null) return false;
+        return getDiet() != null ? getDiet().equals(animal.getDiet()) : animal.getDiet() == null;
+    }
+
+    @Override
+    public String toString() {
+        return "[!]" + this.name + ": total distance: [" + getTotalDistance() + "], weight: [" + this.weight + "]";
+    }
 }
