@@ -1,12 +1,10 @@
 package com.animals;
 
 import com.mobility.Point;
-import com.utilities.MessageUtility;
 
 public abstract class AnimalRoar extends Animal {
     public AnimalRoar(String name, Point location) {
         super(name, location);
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     public abstract void roar();
@@ -14,5 +12,15 @@ public abstract class AnimalRoar extends Animal {
     @Override
     public void makeSound() {
         roar();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }
