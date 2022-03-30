@@ -1,10 +1,5 @@
 package com.mobility;
 
-import com.utilities.MessageUtility;
-
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 /**
  * Point class
  * 
@@ -29,7 +24,6 @@ public class Point {
         // see usage of point and figure out the default values.
         this.x = x;
         this.y = y;
-        MessageUtility.logConstractor(this.getClass().getSimpleName(), "Point");
     }
 
     /**
@@ -102,44 +96,14 @@ public class Point {
         return isSuccess;
     }
 
-    public static Point pointInput() {
-        Scanner sc = new Scanner(System.in);
-        boolean isValidX = false;
-        boolean isValidY = false;
-        int x = 0, y = 0;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        while(true) {
-            while (!isValidX) {
-                try {
-                    System.out.println("Please enter the x value of the point");
-                    isValidX = true;
-                    x = sc.nextInt();
-                } catch (InputMismatchException e) {
-                    System.err.println(e + " x is not valid");
-                    sc.next();
-                    isValidX = false;
-                }
-            }
+        Point point = (Point) o;
 
-            while (!isValidY) {
-                try {
-                    System.out.println("Please enter the y value of the point");
-                    isValidY = true;
-                    y = sc.nextInt();
-                } catch (InputMismatchException e) {
-                    System.err.println(e + " y is not valid");
-                    sc.next();
-                    isValidY = false;
-                }
-            }
-
-            Point point = new Point(x,y);
-            if(checkBoundaries(point))
-                return point;
-
-            isValidX = false;
-            isValidY = false;
-        }
+        return getX() == point.getX() && getY() == point.getY();
     }
 
     /**
@@ -149,18 +113,6 @@ public class Point {
      */
     @Override
     public String toString() {
-        return "(" + getX() + "," + getY() + ")\n";
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-        if (!(obj instanceof Point point))
-            return false;
-        else {
-            return (this.getX() == point.getX() && this.getY() == point.getY());
-        }
-
+        return "(" + getX() + "," + getY() + ")";
     }
 }
