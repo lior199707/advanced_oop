@@ -14,7 +14,7 @@ public abstract class Animal extends Mobile implements IEdible {
     public Animal(String name, Point location) {
         super(location);
         setName(name);
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        MessageUtility.logConstractor("Animal", name);
     }
 
     public abstract void makeSound();
@@ -24,17 +24,17 @@ public abstract class Animal extends Mobile implements IEdible {
         double updatedWeight = getDiet().eat(this, food);
         if (updatedWeight != 0) {
             makeSound();
-            setWeight(getWeight() + updatedWeight);
+            setWeight(this.weight + updatedWeight);
             isSuccess = true;
         }
-        MessageUtility.logBooleanFunction(getName(), "eat", food, isSuccess);
+        MessageUtility.logBooleanFunction(this.name, "eat", food, isSuccess);
         return isSuccess;
     }
 
     @Override
     public double move(Point nextLocation) {
         double distance =  super.move(nextLocation);
-        this.setWeight(getWeight() - (distance * getWeight() * 0.00025));
+        this.setWeight(this.weight - (distance * this.weight * 0.00025));
         return distance;
     }
 
@@ -45,7 +45,7 @@ public abstract class Animal extends Mobile implements IEdible {
             this.name = name;
             isSuccess = true;
         }
-        MessageUtility.logSetter(getName(), "setName", name, isSuccess);
+        MessageUtility.logSetter(this.name, "setName", name, isSuccess);
         return isSuccess;
     }
 
@@ -55,7 +55,7 @@ public abstract class Animal extends Mobile implements IEdible {
     }
 
     public double getWeight() {
-        MessageUtility.logGetter(getName(), "getWeight", weight);
+        MessageUtility.logGetter(this.name, "getWeight", weight);
         return weight;
     }
 
@@ -72,18 +72,18 @@ public abstract class Animal extends Mobile implements IEdible {
     public boolean setDiet(IDiet diet) {
         boolean isSuccess = true;
         this.diet = diet;
-        MessageUtility.logSetter(getName(), "setDiet", getDiet(), isSuccess);
+        MessageUtility.logSetter(this.name, "setDiet", this.diet, isSuccess);
         return isSuccess;
     }
 
     public IDiet getDiet() {
-        MessageUtility.logGetter(getName(), "getDiet", this.diet);
+        MessageUtility.logGetter(this.name, "getDiet", this.diet);
         return diet;
     }
 
     @Override
     public Point getLocation() {
-        MessageUtility.logGetter(getName(), "getLocation", super.getLocation());
+        MessageUtility.logGetter(this.name, "getLocation", super.getLocation());
         return super.getLocation();
     }
 
