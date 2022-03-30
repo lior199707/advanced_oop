@@ -6,6 +6,8 @@ import com.mobility.Mobile;
 import com.mobility.Point;
 import com.utilities.MessageUtility;
 
+import java.util.Objects;
+
 public abstract class Animal extends Mobile implements IEdible {
     private String name;
     private double weight;
@@ -39,11 +41,14 @@ public abstract class Animal extends Mobile implements IEdible {
     }
 
     public boolean setName(String name) {
-        boolean isSuccess = false;
-        this.name = name.replaceAll("[0-9]","");
-        if (name.matches("[a-zA-Z]+")) {
+        boolean isSuccess = name.chars().allMatch(Character::isAlphabetic);
+        if (isSuccess){
             this.name = name;
-            isSuccess = true;
+        } else {
+            System.out.println("-- Removing non-alphabetic characters from name --");
+            this.name = name.replaceAll("[^A-Za-z]", "");
+            System.out.println("New name: " + this.name);
+            isSuccess = !Objects.equals(this.name, "");
         }
         MessageUtility.logSetter(this.name, "setName", name, isSuccess);
         return isSuccess;
