@@ -23,14 +23,19 @@ public class ZooActions {
         return distanceTraveled != 0;
     }
 //
-    
-    public static Animal loadAnimalWithName(String type, String name){
+
+    public static Animal loadAnimal(String type, String name, Point location) {
         Animal animal = null;
         try {
             ClassLoader clsLoader = ClassLoader.getSystemClassLoader();
-            Class c = clsLoader.loadClass("com.animals." + type);
-            Constructor<Animal> con = c.getConstructor(String.class);
-            animal = con.newInstance(name);
+            Class<?> c = clsLoader.loadClass("com.animals." + type);
+            if (location != null) {
+                Constructor<?> con = c.getConstructor(String.class, Point.class);
+                animal = (Animal) con.newInstance(name, location);
+            } else {
+                Constructor<?> con = c.getConstructor(String.class);
+                animal = (Animal) con.newInstance(name);
+            }
         } catch (NoSuchMethodException | ClassNotFoundException e) {
             System.out.println(e + " unable to load animal");
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -39,20 +44,6 @@ public class ZooActions {
         return animal;
     }
 
-    public static Animal loadAnimalWithNameAndPoint(String type, String name, Point location){
-        Animal animal = null;
-        try {
-            ClassLoader clsLoader = ClassLoader.getSystemClassLoader();
-            Class c = clsLoader.loadClass("com.animals." + type);
-            Constructor<Animal> con = c.getConstructor(String.class, Point.class);
-            animal = con.newInstance(name, location);
-        } catch (NoSuchMethodException | ClassNotFoundException e) {
-            System.out.println(e + " unable to load animal");
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return animal;
-    }
     private static Animal[] createAnimalArray(int size) {
         Animal[] animals = new Animal[size];
         int userChoice;
@@ -99,18 +90,14 @@ public class ZooActions {
             System.out.println("2. Yes");
             pointChoice = sc.nextInt();
 
-            while (pointChoice < 0 || pointChoice > 2) {
-                System.out.println("The number you chose isn't valid, please try again");
-                pointChoice = sc.nextInt();
-            }
 
             if (pointChoice == 1) {
-                animals[i] = loadAnimalWithName(type,name);
+                animals[i] = loadAnimal(type,name,null);
             } else {
-                Point location = Point.pointInput();
-                animals[i] = loadAnimalWithNameAndPoint(type,name,location);
+                Point location = pointInput();
+                animals[i] = loadAnimal(type,name,location);
             }
-
+            System.out.println();
         }
         return animals;
     }
