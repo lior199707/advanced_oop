@@ -60,12 +60,13 @@ public abstract class Animal extends Mobile implements IEdible {
     }
 
     public boolean setWeight(double weight) {
-        boolean isSuccess = false;
-        if (weight > 0) {
+        boolean isSuccess = (weight >= 0.0);
+        if (isSuccess) {
             this.weight = weight;
-            isSuccess = true;
+        } else {
+            this.weight = 0.0;
         }
-        MessageUtility.logSetter(getName(), "setWeight", getWeight(), isSuccess);
+        MessageUtility.logSetter(this.name, "setWeight", this.weight, isSuccess);
         return isSuccess;
     }
 
