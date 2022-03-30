@@ -32,4 +32,20 @@ public class Omnivore implements IDiet {
     public boolean canEat(EFoodType food) {
         return food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Omnivore omnivore = (Omnivore) o;
+
+        return carnivore.equals(omnivore.carnivore) || herbivore.equals(omnivore.herbivore);
+    }
+
+    @Override
+    public String toString() {
+        return "[Omnivore]";
+    }
+
 }
