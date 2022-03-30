@@ -9,6 +9,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import java.util.Scanner;
 
+import static com.privateutil.PrivateUtils.pointInput;
+import static com.privateutil.PrivateUtils.userChoiceInput;
+
 public class ZooActions {
     private static final Scanner sc = new Scanner(System.in);
 
@@ -46,10 +49,12 @@ public class ZooActions {
 
     private static Animal[] createAnimalArray(int size) {
         Animal[] animals = new Animal[size];
+        String type = null;
         int userChoice;
         int pointChoice;
+
         for (int i = 0; i < size; i++) {
-            System.out.println("Selecting animal number " + (i + 1) + " or exit program\n");
+            System.out.println("--Select animal #" + (i + 1) + " or exit program--");
             System.out.println("1. Lion");
             System.out.println("2. Bear");
             System.out.println("3. Giraffe");
@@ -57,29 +62,22 @@ public class ZooActions {
             System.out.println("5. Elephant");
             System.out.println("6. Exit Program");
             System.out.print("Choose an option: ");
-            userChoice = sc.nextInt();
+
 
             // checking if userChoice is in boundaries.
-            while (userChoice < 0 || userChoice > 6) {
-                System.out.println("Invalid option, please try again");
-                userChoice = sc.nextInt();
-            }
+            userChoice = userChoiceInput(1, 6);
 
-            // exiting before initiation of array.
-            if (userChoice == 6) {
-                System.out.println("Goodbye");
-                System.exit(1);
-            }
-
-            String type = null;
             switch (userChoice) {
                 case 1 -> type = "Lion";
                 case 2 -> type = "Bear";
                 case 3 -> type = "Giraffe";
                 case 4 -> type = "Turtle";
                 case 5 -> type = "Elephant";
+                case 6 -> {
+                    System.out.println("Goodbye!");
+                    System.exit(1);
+                }
             }
-
 
             // input animal name.
             System.out.print("Please enter the animal's name: ");
@@ -88,7 +86,8 @@ public class ZooActions {
             System.out.println("Do you wish to enter the animal's spawn point?");
             System.out.println("1. No");
             System.out.println("2. Yes");
-            pointChoice = sc.nextInt();
+            System.out.print("Choose option: ");
+            pointChoice = userChoiceInput(1,2);
 
 
             if (pointChoice == 1) {
@@ -103,13 +102,12 @@ public class ZooActions {
     }
 
     public static void main(String[] args) {
-        final int MIN_NUM_OF_ANIMALS = 1;
+        final int MAX_NUM_OF_ANIMALS = 1000;
+        final int MIN_NUM_OF_ANIMALS = 3;
         Random rand = new Random();
-        int size = 0;
-        while(size < MIN_NUM_OF_ANIMALS){
-            System.out.println("Please enter the number of animals (MINIMUM OF 3): ");
-            size = sc.nextInt();
-        }
+
+        System.out.print("Please enter the number of animals (MINIMUM OF 3): ");
+        int size = userChoiceInput(MIN_NUM_OF_ANIMALS, MAX_NUM_OF_ANIMALS);
 
         Animal[] animals = createAnimalArray(size);
 
