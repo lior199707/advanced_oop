@@ -56,4 +56,20 @@ public class Turtle extends AnimalChew {
         MessageUtility.logSetter(getName(), "setAge", getAge(), isSuccess);
         return isSuccess;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Turtle turtle = (Turtle) o;
+
+        return getAge() == turtle.getAge();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ": " + getClass().getSimpleName();
+    }
 }

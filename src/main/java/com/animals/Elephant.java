@@ -56,4 +56,20 @@ public class Elephant extends AnimalChew {
         MessageUtility.logSetter(getName(), "setTrunkLength", trunkLength, isSuccess);
         return isSuccess;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Elephant elephant = (Elephant) o;
+
+        return Double.compare(elephant.getTrunkLength(), getTrunkLength()) == 0;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " : " + getClass().getSimpleName();
+    }
 }

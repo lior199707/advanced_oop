@@ -56,4 +56,20 @@ public class Giraffe extends AnimalChew {
         MessageUtility.logSetter(getName(), "setNeckLength", neckLength, isSuccess);
         return isSuccess;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Giraffe giraffe = (Giraffe) o;
+
+        return Double.compare(giraffe.getNeckLength(), getNeckLength()) == 0;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " : " + getClass().getSimpleName();
+    }
 }

@@ -69,4 +69,20 @@ public class Bear extends AnimalRoar {
         MessageUtility.logGetter(getName(), "getFoodtype", EFoodType.MEAT);
         return EFoodType.MEAT;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Bear bear = (Bear) o;
+
+        return getFurColor() == bear.getFurColor();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " : " + getClass().getSimpleName();
+    }
 }
