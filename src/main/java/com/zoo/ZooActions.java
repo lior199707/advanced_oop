@@ -112,21 +112,27 @@ public class ZooActions {
         Animal[] animals = createAnimalArray(size);
 
         for (Animal animal : animals){
-            System.out.println(animal.getLocation());
-        }
-
-        for (Animal animal : animals){
-            Point nextLocation = Point.pointInput();
+            System.out.println(animal.getName() + " is planning to move! enter coordinates:");
+            Point nextLocation = pointInput();
             if (ZooActions.move(animal,nextLocation)){
-                animal.getWeight();
+                System.out.println(animal.getName() + " moved! it's updated weight: " + animal.getWeight());
+            } else {
+                System.out.println(animal.getName() + " did not move.\n");
             }
+            System.out.println();
         }
 
         int raffle = size/2;
+        System.out.println("Animal eating contest! Raffle size: " + raffle);
         for (int i = 0; i < raffle; i++){
             int one = rand.nextInt(size);
             int two = rand.nextInt(size);
-            ZooActions.eat(animals[one], animals[two]);
+            if (ZooActions.eat(animals[one], animals[two])){
+                System.out.println(animals[one].getName() + " ate! it's updated weight: " + animals[one].getWeight());
+            } else {
+                System.out.println(animals[one].getName() + " did not eat.\n");
+            }
+            System.out.println();
         }
         sc.close();
     }
