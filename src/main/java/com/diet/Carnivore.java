@@ -40,7 +40,7 @@ public class Carnivore implements IDiet {
     }
 
     /**
-     * check if this carnivore object is the dame reference as obj
+     * check if this carnivore object is the same reference as obj
      * @param obj , the second object
      * @return true if the same reference, false otherwise
      */
