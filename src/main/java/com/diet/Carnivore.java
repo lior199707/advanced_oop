@@ -5,12 +5,22 @@ import com.food.EFoodType;
 import com.food.IEdible;
 
 /**
- * Meat eating animals.
+ * class Carnivore, handles meat eating animals
  */
 public class Carnivore implements IDiet {
 
-    public Carnivore(){};
+    /**
+     * Carnivore constructor
+     */
+    public Carnivore(){}
 
+    /**
+     * if the animal can eat the food, and the food and the animal aren't pointing to the same animal
+     * returns the weight the eating animal has gained in the process of eating, else returns 0
+     * @param animal , the animal that eats
+     * @param food, the animal that is being eaten
+     * @return double, the weight the animal gained in the process of eating.
+     */
     @Override
     public double eat(Animal animal, IEdible food) {
         if (canEat(food.getFoodtype()) && !(animal == food)) {
@@ -19,16 +29,28 @@ public class Carnivore implements IDiet {
         return 0;
     }
 
+    /**
+     * checks if this object can eat the food
+     * @param food , reference to EFoodType
+     * @return true if the food is meat, false otherwise
+     */
     @Override
     public boolean canEat(EFoodType food) {
         return food == EFoodType.MEAT;
     }
 
+    /**
+     * check if this carnivore object is the same reference as obj
+     * @param obj , the second object
+     * @return true if the same reference, false otherwise
+     */
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object obj) {return super.equals(obj);
     }
 
+    /**
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return "[Carnivore]";

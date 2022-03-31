@@ -5,17 +5,35 @@ import com.food.IEdible;
 import com.food.EFoodType;
 
 /**
- * All-type eating animals.
+ * class Omnivore, handles animal that eat both meat and vegetables
+ * @see com.diet.IDiet
  */
 public class Omnivore implements IDiet {
+    /**
+     * delegator ,handles meat eating processes
+     */
     private final IDiet carnivore;
+    /**
+     * delegator ,handles vegetables eating processes
+     */
     private final IDiet herbivore;
 
+    /**
+     * Omnivore constructor
+     */
     public Omnivore(){
         this.carnivore = new Carnivore();
         this.herbivore = new Herbivore();
     }
 
+    /**
+     * if the animal can eat the food, and the food and the animal aren't pointing to the same animal
+     * if the food is meat type uses Carnivore eat, else if the food is vegetable type uses herbivore eat
+     * returns the weight the eating animal has gained in the process of eating, else returns 0
+     * @param animal , the animal that eats
+     * @param food, the animal that is being eaten
+     * @return double, the weight the animal gained in the process of eating.
+     */
     @Override
     public double eat(Animal animal, IEdible food) {
         if (canEat(food.getFoodtype()) && !(animal == food)) {
@@ -28,11 +46,21 @@ public class Omnivore implements IDiet {
         return 0;
     }
 
+    /**
+     * checks if this object can eat the food
+     * @param food , reference to EFoodType
+     * @return true if the food is vegetable or meat, false otherwise (if the food is NOTFOOD type)
+     * @see com.food.EFoodType
+     */
     @Override
-    public boolean canEat(EFoodType food) {
-        return food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
+    public boolean canEat(EFoodType food) {return food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
     }
 
+    /**
+     * check if this carnivore object is the same reference as o
+     * @param o , the second object
+     * @return true if the same reference, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -43,6 +71,9 @@ public class Omnivore implements IDiet {
         return carnivore.equals(omnivore.carnivore) || herbivore.equals(omnivore.herbivore);
     }
 
+    /**
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return "[Omnivore]";
