@@ -40,7 +40,7 @@ public class ZooActions {
         Random rand = new Random();
 
         System.out.print("Please enter the number of animals (MINIMUM OF 3): ");
-        int size = userInput(MIN_NUM_OF_ANIMALS, MAX_NUM_OF_ANIMALS); // gets the size from the user
+        int size = userChoiceInput(MIN_NUM_OF_ANIMALS, MAX_NUM_OF_ANIMALS); // gets the size from the user
 
         Animal[] animals = createAnimalArray(size); // creates an animals array of given size
 
