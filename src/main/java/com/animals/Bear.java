@@ -59,6 +59,7 @@ public class Bear extends AnimalRoar {
         setWeight(DEFAULT_WEIGHT);
         setFurColor(FurColors.GRAY);
         setDiet(new Omnivore());
+        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
 
@@ -141,6 +142,6 @@ public class Bear extends AnimalRoar {
      */
     @Override
     public String toString() {
-        return super.toString() + " : " + getClass().getSimpleName();
+        return super.toString();
     }
 }

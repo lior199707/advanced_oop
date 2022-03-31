@@ -40,6 +40,7 @@ public class Elephant extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setTrunkLength(DEFAULT_TRUNK_LENGTH);
         setDiet(new Herbivore());
+        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     /**
@@ -121,6 +122,6 @@ public class Elephant extends AnimalChew {
      */
     @Override
     public String toString() {
-        return super.toString() + " : " + getClass().getSimpleName();
+        return super.toString();
     }
 }

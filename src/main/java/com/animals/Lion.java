@@ -44,6 +44,7 @@ public class Lion extends AnimalRoar {
         setWeight(DEFAULT_WEIGHT);
         setDiet(new Carnivore());
         scarCount = DEFAULT_SCAR_COUNT;
+        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     /**
@@ -122,6 +123,6 @@ public class Lion extends AnimalRoar {
      */
     @Override
     public String toString() {
-        return super.toString() + " : " + getClass().getSimpleName();
+        return super.toString();
     }
 }

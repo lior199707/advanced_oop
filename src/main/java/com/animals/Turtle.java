@@ -40,6 +40,7 @@ public class Turtle extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
+        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     /**
@@ -120,6 +121,6 @@ public class Turtle extends AnimalChew {
      */
     @Override
     public String toString() {
-        return super.toString() + ": " + getClass().getSimpleName();
+        return super.toString();
     }
 }

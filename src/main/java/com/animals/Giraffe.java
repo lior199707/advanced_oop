@@ -42,6 +42,7 @@ public class Giraffe extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setNeckLength(DEFAULT_NECK_LENGTH);
         setDiet(new Herbivore());
+        MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
 
     /**
@@ -123,6 +124,6 @@ public class Giraffe extends AnimalChew {
      */
     @Override
     public String toString() {
-        return super.toString() + " : " + getClass().getSimpleName();
+        return super.toString();
     }
 }
