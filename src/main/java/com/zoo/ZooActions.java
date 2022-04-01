@@ -43,7 +43,6 @@ public class ZooActions {
         }
         return false;
     }
-//
 
     /**
      * main method!
@@ -58,22 +57,22 @@ public class ZooActions {
      * @param args set of arguments from the command line.
      */
     public static void main(String[] args) {
-        final int MAX_NUM_OF_ANIMALS = 1000;
         final int MIN_NUM_OF_ANIMALS = 3;
         Random rand = new Random();
 
-        System.out.print("Please enter the number of animals (MINIMUM OF 3): ");
-        int size = userChoiceInput(MIN_NUM_OF_ANIMALS, MAX_NUM_OF_ANIMALS); // gets the size from the user
 
-        Animal[] animals = createAnimalArray(size); // creates an animals array of given size
+        System.out.println("Please enter the number of animals (MINIMUM OF 3)! ");
+        int size = userChoiceInput(MIN_NUM_OF_ANIMALS);
+
+        ArrayList<Animal> animals = createAnimalArray(size);
 
         for (Animal animal : animals){ // for every animal in the array
-            System.out.println(animal.getName() + " is planning to move! enter coordinates:");
+            System.out.println(animal + " is planning to move! enter coordinates:");
             Point nextLocation = pointInput(); // get the next location of the animal from the user
-            if (ZooActions.move(animal,nextLocation)){ //try to move the animal to this location
-                System.out.println(animal.getName() + " moved! it's updated weight: " + animal.getWeight());
+            if (ZooActions.move(animal,nextLocation)){ // try to move the animal to this location
+                System.out.println(animal + " moved! it's updated weight: " + animal.getWeight());
             } else {
-                System.out.println(animal.getName() + " did not move.\n");
+                System.out.println(animal + " did not move.\n");
             }
             System.out.println();
         }
@@ -81,12 +80,17 @@ public class ZooActions {
         int raffle = size/2;
         System.out.println("Animal eating contest! Raffle size: " + raffle);
         for (int i = 0; i < raffle; i++){ // for every 2 random animals: animal1 and animal2
-            int one = rand.nextInt(size);
-            int two = rand.nextInt(size);
-            if (ZooActions.eat(animals[one], animals[two])){ //anima1 tries to eat animal2
-                System.out.println(animals[one].getName() + " ate! it's updated weight: " + animals[one].getWeight());
+            int predator = rand.nextInt(size);
+            int prey = rand.nextInt(size);
+
+            System.out.println(animals.get(predator) + " will attempt to eat " + animals.get(prey) + " !");
+
+            if (ZooActions.eat(animals.get(predator), animals.get(prey))){ //anima1 tries to eat animal2
+                System.out.println(animals.get(predator) + " ate " + animals.get(prey)  + "! it's updated weight: "
+                        + animals.get(predator).getWeight());
+                animals.remove(animals.get(prey));
             } else {
-                System.out.println(animals[one].getName() + " did not eat.\n");
+                System.out.println(animals.get(predator) + " could not eat" + animals.get(prey));
             }
             System.out.println();
         }
