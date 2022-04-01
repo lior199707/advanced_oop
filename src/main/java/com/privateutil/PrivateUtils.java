@@ -233,4 +233,27 @@ public class PrivateUtils {
         }
         return animals;
     }
+
+    /**
+     * animalType is performing down-casting to determine what type of animal
+     * is the object at runtime.
+     * returns null in case no object is found.
+     * @param animal the Object type to examine.
+     * @return a type of animal object (lion,bear etc..)
+     * @throws NullPointerException throws null in case no animal type is found.
+     */
+    public static Animal animalType(Object animal) throws NullPointerException{
+        if (animal instanceof Lion)
+            return (Lion) animal;
+        if (animal instanceof Bear)
+            return (Bear) animal;
+        if (animal instanceof Giraffe)
+            return (Giraffe) animal;
+        if (animal instanceof Elephant)
+            return (Elephant) animal;
+        if (animal instanceof Turtle)
+            return (Turtle) animal;
+
+        throw new NullPointerException("Given object to animalType method is not an animal!");
+    }
 }
