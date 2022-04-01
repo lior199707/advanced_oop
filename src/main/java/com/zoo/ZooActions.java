@@ -4,6 +4,7 @@ import com.animals.Animal;
 import com.food.IEdible;
 import com.mobility.Point;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static com.privateutil.PrivateUtils.*;
@@ -18,8 +19,13 @@ public class ZooActions {
      * @return true if the animal ate the food successfully, false otherwise.
      */
     public static boolean eat(Object animal, IEdible food) {
-        Animal creature = (Animal) animal;
-        return creature.eat(food);
+        try {
+            Animal creature = animalType(animal);
+            return creature.eat(food);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -28,9 +34,14 @@ public class ZooActions {
      * @return true if the animal has moved, false otherwise
      */
     public static boolean move(Object animal, Point point) {
-        Animal creature = (Animal) animal;
-        double distanceTraveled = creature.move(point);
-        return distanceTraveled != 0;
+        try {
+            Animal creature = animalType(animal);
+            double distanceTraveled = creature.move(point);
+            return distanceTraveled != 0;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 //
 
