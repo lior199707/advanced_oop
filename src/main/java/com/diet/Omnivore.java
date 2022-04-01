@@ -72,6 +72,7 @@ public class Omnivore implements IDiet {
     }
 
     /**
+     * toString method of Herbivore.
      * @return a string representation of the object
      */
     @Override

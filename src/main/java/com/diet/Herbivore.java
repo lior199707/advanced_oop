@@ -9,6 +9,9 @@ import com.food.EFoodType;
  */
 public class Herbivore implements IDiet {
 
+    /**
+     * Herbivore constructor.
+     */
     public Herbivore(){}
 
     /**
@@ -49,6 +52,7 @@ public class Herbivore implements IDiet {
     }
 
     /**
+     * toString method of Herbivore.
      * @return a string representation of the object
      */
     @Override

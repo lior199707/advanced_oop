@@ -27,8 +27,17 @@ public class Bear extends AnimalRoar {
      * private enum class to hold different fur colors
      */
     private enum FurColors {
+        /**
+         * White fur color
+         */
         WHITE("WHITE"),
+        /**
+         * Gray fur color
+         */
         GRAY("GRAY"),
+        /**
+         * Black fur color
+         */
         BLACK("BLACK");
 
         /**
@@ -78,7 +87,7 @@ public class Bear extends AnimalRoar {
      * leaving the field as is.
      *
      * @param furColor the color to set.
-     * @return boolean value if the color was found & set or not.
+     * @return boolean value if the color was found and set or not.
      */
     public boolean setFurColor(FurColors furColor) {
         boolean isSuccess = false;

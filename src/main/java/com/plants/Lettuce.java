@@ -7,6 +7,9 @@ import com.utilities.MessageUtility;
  *
  */
 public class Lettuce extends Plant {
+	/**
+	 * Lettuce constructor.
+	 */
 	public Lettuce() {
 		MessageUtility.logConstractor("Lettuce", "Lettuce");
 	}

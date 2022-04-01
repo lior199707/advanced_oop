@@ -8,7 +8,13 @@ package com.mobility;
  * @author Lior Shilon
  */
 public abstract class Mobile implements Ilocatable {
+    /**
+     * Point object indicating Mobile object's location.
+     */
     private Point location;
+    /**
+     * double value representing the total distance a mobile object has made.
+     */
     private double totalDistance;
 
     /**

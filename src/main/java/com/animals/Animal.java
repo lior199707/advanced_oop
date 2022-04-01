@@ -35,8 +35,9 @@ public abstract class Animal extends Mobile implements IEdible {
      */
     public Animal(String name, Point location) {
         super(location);
-        setName(name);
         MessageUtility.logConstractor("Animal", name);
+        setName(name);
+        getLocation();
     }
 
     /**
@@ -65,7 +66,7 @@ public abstract class Animal extends Mobile implements IEdible {
 
     /**
      * move uses Mobile.move() method to set the new location and calculate the distance between
-     * the current & nextLocation.
+     * the current and nextLocation.
      * It evaluates the new weight with the distance based on this formula:
      * current weight - (distance * current weight * CONST = 0.00025)
      *

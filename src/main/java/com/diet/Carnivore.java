@@ -49,6 +49,7 @@ public class Carnivore implements IDiet {
     }
 
     /**
+     * toString method of Carnivore.
      * @return a string representation of the object
      */
     @Override
