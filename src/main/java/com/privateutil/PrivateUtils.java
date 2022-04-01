@@ -75,7 +75,6 @@ public class PrivateUtils {
                 }
             }
         }
-        sc.close();
         return userChoice;
     }
 
@@ -88,10 +87,10 @@ public class PrivateUtils {
      * @return Point object with set x,y coordinates.
      */
     public static Point pointInput() {
-        Scanner sc = new Scanner(System.in);
+        Point point = new Point();
         boolean isValidX = false;
         boolean isValidY = false;
-        int x = 0, y = 0;
+        int x,y;
 
         // infinitely request for user input until successful.
         while(true) {
@@ -99,14 +98,16 @@ public class PrivateUtils {
             while (!isValidX) {
                 try {
                     System.out.print("Please enter the x value of the point: ");
-                    isValidX = true;
                     x = sc.nextInt();
+                    isValidX = point.setX(x);
+                    if (!isValidX) {
+                        System.out.println("X value is out of range!");
+                    }
                 } catch (InputMismatchException e) {
                     System.out.println(e + " expecting integer!");
                     if (sc.next().isEmpty()) {
                         break;
                     }
-                    isValidX = false;
                 }
             }
 
@@ -114,29 +115,29 @@ public class PrivateUtils {
             while (!isValidY) {
                 try {
                     System.out.print("Please enter the y value of the point: ");
-                    isValidY = true;
                     y = sc.nextInt();
+                    isValidY = point.setY(y);
+                    if (!isValidY) {
+                        System.out.println("Y value is out of range!");
+                    }
                 } catch (InputMismatchException e) {
                     System.out.println(e + " expecting integer!");
                     if (sc.next().isEmpty()) {
                         break;
                     }
-                    isValidY = false;
                 }
             }
 
-            sc.close();
 
-            // creating new point object.
-            Point point = new Point(x,y);
             // if point is valid, return it.
-            if (Point.checkBoundaries(point))
+            if (Point.checkBoundaries(point)) {
                 return point;
+            } else {
+                System.out.println(point + " values are out of bound");
 
-            System.out.println(point + " values are out of bound");
-
-            isValidX = false;
-            isValidY = false;
+                isValidX = false;
+                isValidY = false;
+            }
         }
     }
 
@@ -162,7 +163,7 @@ public class PrivateUtils {
                 Constructor<?> con = c.getConstructor(String.class);
                 animal = (Animal) con.newInstance(name);
             }
-        } catch (NoSuchMethodException | ClassNotFoundException e) {
+        } catch (NoSuchMethodException | ClassNotFoundException | NullPointerException e) {
             System.out.println(e + " unable to load animal");
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
@@ -193,7 +194,7 @@ public class PrivateUtils {
             System.out.println("6. Exit Program");
 
             // requesting choice input from user.
-            userChoice = userChoiceInput(1, 6);
+            userChoice = userChoiceInputRange(1, 6);
 
             // setting type based on user's choice or exiting program.
             switch (userChoice) {
@@ -215,10 +216,9 @@ public class PrivateUtils {
             System.out.println("Do you wish to enter the animal's spawn point?");
             System.out.println("1. No");
             System.out.println("2. Yes");
-            System.out.print("Choose option: ");
 
             // requesting choice input from user.
-            pointChoice = userChoiceInput(1,2);
+            userChoice = userChoiceInputRange(1,2);
 
 
             // if user does not wish to initiate spawn point.
