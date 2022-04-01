@@ -29,7 +29,7 @@ public class Point {
     private int y;
 
     /**
-     * Parameterized constructor
+     * Point constructor.
      * 
      * @param x - int value of x coordinate.
      * @param y - int value of y coordinate.
@@ -38,6 +38,14 @@ public class Point {
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     * Point constructor
+     * initializing with MIN_XY values.
+     */
+    public Point(){
+        this(MIN_XY,MIN_XY);
     }
 
     /**
@@ -92,7 +100,6 @@ public class Point {
             isSuccess = true;
         }
         return isSuccess;
-
     }
 
     /**
