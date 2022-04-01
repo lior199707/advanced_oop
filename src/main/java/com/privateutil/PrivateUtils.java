@@ -15,18 +15,22 @@ import java.util.Scanner;
  */
 public class PrivateUtils {
     /**
+     * Scanner object using System.in to request input from user.
+     */
+    static final Scanner sc = new Scanner(System.in);
+    /**
      * userInput handles integer input.
      * @param MIN_RANGE integer value representing the minimum range.
      * @param MAX_RANGE integer value representing the maximum range.
      * @return integer value of the user choice.
      */
-    public static int userChoiceInput(int MIN_RANGE, int MAX_RANGE) {
-        Scanner sc = new Scanner(System.in);
+    public static int userChoiceInputRange(int MIN_RANGE, int MAX_RANGE) {
         int userChoice = 0;
 
         // infinitely request for user input until successful.
         while (true) {
             try {
+                System.out.print("Choose an option: ");
                 userChoice = sc.nextInt();
                 // if userChoice not in range
                 if (userChoice < MIN_RANGE || userChoice > MAX_RANGE) {
@@ -34,10 +38,38 @@ public class PrivateUtils {
                 } else {
                     return userChoice;
                 }
+
             } catch (InputMismatchException e) {
                 // handles wrong values given to scanner.
                 System.out.println(e + " expecting integer!");
-                System.out.print("Invalid choice, please try again: ");
+                if (sc.next().isEmpty()) {
+                    break;
+                }
+            }
+        }
+        return userChoice;
+    }
+    /**
+     * userChoiceInput handles integer input.
+     * @param MIN_VALUE integer value representing the minimum allowed for input.
+     * @return integer value of the user choice.
+     */
+    public static int userChoiceInput(int MIN_VALUE) {
+        int userChoice = 0;
+        boolean isValid = false;
+
+        // infinitely request for user input until successful.
+        while (true) {
+            try {
+                System.out.print("Enter value: ");
+                userChoice = sc.nextInt();
+                if (userChoice < MIN_VALUE)
+                    System.out.println("Value is out of range!");
+                else
+                    return userChoice;
+            } catch (InputMismatchException e) {
+                // handles wrong values given to scanner.
+                System.out.println(e + " expecting integer!");
                 if (sc.next().isEmpty()) {
                     break;
                 }
