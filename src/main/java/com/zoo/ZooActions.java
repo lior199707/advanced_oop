@@ -29,8 +29,8 @@ public class ZooActions {
     }
 
     /**
-     * @param animal , the animal that is moving.
-     * @param point , the location the animal is moving to.
+     * @param animal the animal that is moving.
+     * @param point the location the animal is moving to.
      * @return true if the animal has moved, false otherwise
      */
     public static boolean move(Object animal, Point point) {
@@ -45,6 +45,18 @@ public class ZooActions {
     }
 //
 
+    /**
+     * main method!
+     * initializing animals arraylist with a minimum amount of animals.
+     * for each animal it makes an attempt to use the move method.
+     *
+     * it also raffles references of two animals at a time.
+     * predator makes an attempt to eat its prey, if possible.
+     *
+     * @see com.privateutil.PrivateUtils methods for reference!
+     * @see com.animals.Animal move() method for reference!
+     * @param args set of arguments from the command line.
+     */
     public static void main(String[] args) {
         final int MAX_NUM_OF_ANIMALS = 1000;
         final int MIN_NUM_OF_ANIMALS = 3;
