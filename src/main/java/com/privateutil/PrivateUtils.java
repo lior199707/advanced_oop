@@ -1,10 +1,11 @@
 package com.privateutil;
 
-import com.animals.Animal;
+import com.animals.*;
 import com.mobility.Point;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -144,12 +145,10 @@ public class PrivateUtils {
      * @param size integer value of the array size.
      * @return Animal[], array containing Animal references.
      */
-    public static Animal[] createAnimalArray(int size) {
-        Scanner sc = new Scanner(System.in);
-        Animal[] animals = new Animal[size];
+    public static ArrayList<Animal> createAnimalArray(int size) {
+        ArrayList<Animal> animals = new ArrayList<>(size);
         String type = null;
         int userChoice;
-        int pointChoice;
 
         // Menu
         for (int i = 0; i < size; i++) {
@@ -160,7 +159,6 @@ public class PrivateUtils {
             System.out.println("4. Turtle");
             System.out.println("5. Elephant");
             System.out.println("6. Exit Program");
-            System.out.print("Choose an option: ");
 
             // requesting choice input from user.
             userChoice = userChoiceInput(1, 6);
@@ -192,16 +190,15 @@ public class PrivateUtils {
 
 
             // if user does not wish to initiate spawn point.
-            if (pointChoice == 1) {
-                animals[i] = loadAnimal(type,name,null);
+            if (userChoice == 1) {
+                animals.add(loadAnimal(type,name,null));
             } else {
-                // otherwise, instantiating Point object based on use input.
+                // otherwise, instantiating Point object based on user input.
                 Point location = pointInput();
-                animals[i] = loadAnimal(type,name,location);
+                animals.add(loadAnimal(type,name,location));
             }
             System.out.println();
         }
-        sc.close();
         return animals;
     }
 }
