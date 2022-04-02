@@ -1,7 +1,6 @@
 package com.animals;
 
 import com.diet.Omnivore;
-import com.food.EFoodType;
 import com.mobility.Point;
 import com.utilities.MessageUtility;
 
@@ -66,7 +65,7 @@ public class Bear extends AnimalRoar {
     public Bear(String name, Point location) {
         super(name, location);
         setWeight(DEFAULT_WEIGHT);
-        setFurColor(FurColors.GRAY);
+        setFurColor(String.valueOf(FurColors.GRAY));
         setDiet(new Omnivore());
         MessageUtility.logConstractor(getClass().getSimpleName(), name);
     }
@@ -89,16 +88,16 @@ public class Bear extends AnimalRoar {
      * @param furColor the color to set.
      * @return boolean value if the color was found and set or not.
      */
-    public boolean setFurColor(FurColors furColor) {
+    public boolean setFurColor(String furColor) {
         boolean isSuccess = false;
         for (FurColors f : FurColors.values()) {
-            if (f.name().equals(furColor.toString())) {
-                this.furColor = furColor;
+            if (f.name().equals(furColor)) {
+                this.furColor = FurColors.valueOf(furColor);
                 isSuccess = true;
                 break;
             }
         }
-        MessageUtility.logSetter(getName(), "setFurColor", getFurColor(), isSuccess);
+        MessageUtility.logSetter(this.toString(), "setFurColor", furColor, isSuccess);
         return isSuccess;
     }
 
@@ -117,16 +116,6 @@ public class Bear extends AnimalRoar {
     @Override
     public void roar() {
         MessageUtility.logSound(getName(), "Stands on its hind legs, roars and scratches its belly");
-    }
-
-    /**
-     * food type getter.
-     * @return EFoodType MEAT.
-     */
-    @Override
-    public EFoodType getFoodtype() {
-        MessageUtility.logGetter(getName(), "getFoodtype", EFoodType.MEAT);
-        return EFoodType.MEAT;
     }
 
     /**
