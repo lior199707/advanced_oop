@@ -30,18 +30,18 @@ public class PrivateUtils {
         // infinitely request for user input until successful.
         while (true) {
             try {
-                System.out.print("Choose an option: ");
+                System.out.println("Choose an option: ");
                 userChoice = sc.nextInt();
                 // if userChoice not in range
                 if (userChoice < MIN_RANGE || userChoice > MAX_RANGE) {
-                    System.out.print("Choice out of range, please try again: ");
+                    System.out.println("Choice out of range, please try again! ");
                 } else {
                     return userChoice;
                 }
 
             } catch (InputMismatchException e) {
                 // handles wrong values given to scanner.
-                System.out.println(e + " expecting integer!");
+                System.err.println(e + " expecting integer!");
                 if (sc.next().isEmpty()) {
                     break;
                 }
@@ -56,20 +56,18 @@ public class PrivateUtils {
      */
     public static int userChoiceInput(int MIN_VALUE) {
         int userChoice = 0;
-        boolean isValid = false;
-
         // infinitely request for user input until successful.
         while (true) {
             try {
-                System.out.print("Enter value: ");
-                userChoice = sc.nextInt();
+                System.out.println("Enter value: ");
+               userChoice = sc.nextInt();
                 if (userChoice < MIN_VALUE)
                     System.out.println("Value is out of range!");
                 else
                     return userChoice;
             } catch (InputMismatchException e) {
                 // handles wrong values given to scanner.
-                System.out.println(e + " expecting integer!");
+                System.err.println(e + "Invalid input");
                 if (sc.next().isEmpty()) {
                     break;
                 }
@@ -97,14 +95,14 @@ public class PrivateUtils {
             // while x value is not set.
             while (!isValidX) {
                 try {
-                    System.out.print("Please enter the x value of the point: ");
+                    System.out.println("Please enter the x value of the point: ");
                     x = sc.nextInt();
                     isValidX = point.setX(x);
                     if (!isValidX) {
                         System.out.println("X value is out of range!");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println(e + " expecting integer!");
+                    System.err.println(e + " expecting integer!");
                     if (sc.next().isEmpty()) {
                         break;
                     }
@@ -114,14 +112,14 @@ public class PrivateUtils {
             // while y value is not set.
             while (!isValidY) {
                 try {
-                    System.out.print("Please enter the y value of the point: ");
+                    System.out.println("Please enter the y value of the point: ");
                     y = sc.nextInt();
                     isValidY = point.setY(y);
                     if (!isValidY) {
                         System.out.println("Y value is out of range!");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println(e + " expecting integer!");
+                    System.err.println(e + " expecting integer!");
                     if (sc.next().isEmpty()) {
                         break;
                     }
@@ -133,7 +131,7 @@ public class PrivateUtils {
             if (Point.checkBoundaries(point)) {
                 return point;
             } else {
-                System.out.println(point + " values are out of bound");
+                System.err.println(point + " values are out of bound");
 
                 isValidX = false;
                 isValidY = false;
@@ -163,10 +161,9 @@ public class PrivateUtils {
                 Constructor<?> con = c.getConstructor(String.class);
                 animal = (Animal) con.newInstance(name);
             }
-        } catch (NoSuchMethodException | ClassNotFoundException | NullPointerException e) {
-            System.out.println(e + " unable to load animal");
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (NoSuchMethodException | ClassNotFoundException | NullPointerException |
+                InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            System.err.println(e + " unable to load animal");
         }
         return animal;
     }
@@ -210,7 +207,7 @@ public class PrivateUtils {
             }
 
             // input animal name.
-            System.out.print("Please enter the animal's name: ");
+            System.out.println("Please enter the animal's name: ");
             String name = sc.next();
 
             System.out.println("Do you wish to enter the animal's spawn point?");
@@ -220,15 +217,15 @@ public class PrivateUtils {
             // requesting choice input from user.
             userChoice = userChoiceInputRange(1,2);
 
-
             // if user does not wish to initiate spawn point.
             if (userChoice == 1) {
-                animals.add(loadAnimal(type,name,null));
+                animals.add(loadAnimal(type, name, null));
             } else {
                 // otherwise, instantiating Point object based on user input.
                 Point location = pointInput();
                 animals.add(loadAnimal(type,name,location));
             }
+
             System.out.println();
         }
         return animals;
