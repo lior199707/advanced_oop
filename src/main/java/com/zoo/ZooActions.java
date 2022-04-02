@@ -14,8 +14,8 @@ import static com.privateutil.PrivateUtils.*;
  */
 public class ZooActions {
     /**
-     * @param animal , the animal that is eating.
-     * @param food, the edible object to eat (plant / animal).
+     * @param animal  the animal that is eating.
+     * @param food  the edible object to eat (plant / animal).
      * @return true if the animal ate the food successfully, false otherwise.
      */
     public static boolean eat(Object animal, IEdible food) {
@@ -23,14 +23,14 @@ public class ZooActions {
             Animal creature = animalType(animal);
             return creature.eat(food);
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            System.err.println(e + animal.toString() + " is faulty!");
         }
         return false;
     }
 
     /**
      * @param animal the animal that is moving.
-     * @param point the location the animal is moving to.
+     * @param point  the location the animal is moving to.
      * @return true if the animal has moved, false otherwise
      */
     public static boolean move(Object animal, Point point) {
@@ -39,7 +39,7 @@ public class ZooActions {
             double distanceTraveled = creature.move(point);
             return distanceTraveled != 0;
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            System.err.println(e + animal.toString() + " is faulty!");
         }
         return false;
     }
@@ -60,16 +60,15 @@ public class ZooActions {
         final int MIN_NUM_OF_ANIMALS = 3;
         Random rand = new Random();
 
-
         System.out.println("Please enter the number of animals (MINIMUM OF 3)! ");
         int size = userChoiceInput(MIN_NUM_OF_ANIMALS);
 
         ArrayList<Animal> animals = createAnimalArray(size);
 
-        for (Animal animal : animals){ // for every animal in the array
-            System.out.println(animal + " is planning to move! enter coordinates:");
+        for (Animal animal : animals) { // for every animal in the array
+            System.out.println(animal + animal.getLocation().toString() + " is planning to move! enter coordinates:");
             Point nextLocation = pointInput(); // get the next location of the animal from the user
-            if (ZooActions.move(animal,nextLocation)){ // try to move the animal to this location
+            if (ZooActions.move(animal, nextLocation)) { // try to move the animal to this location
                 System.out.println(animal + " moved! it's updated weight: " + animal.getWeight());
             } else {
                 System.out.println(animal + " did not move.\n");
@@ -77,21 +76,32 @@ public class ZooActions {
             System.out.println();
         }
 
-        int raffle = size/2;
+        int raffle = size / 2;
         System.out.println("Animal eating contest! Raffle size: " + raffle);
-        for (int i = 0; i < raffle; i++){ // for every 2 random animals: animal1 and animal2
-            int predator = rand.nextInt(size);
-            int prey = rand.nextInt(size);
+        for (int i = 0; i < raffle; i++) { // for every 2 random animals: animal1 and animal2
+            int predator = rand.nextInt(animals.size());
+            int prey = rand.nextInt(animals.size());
+
+
+            // ensure no cannibalism - cannot eat itself.
+            if (predator == prey){
+                if (prey == animals.size() - 1)
+                    prey--;
+                else
+                    prey++;
+                // ensure the prey is not the same element in array list.
+            }
 
             System.out.println(animals.get(predator) + " will attempt to eat " + animals.get(prey) + " !");
 
-            if (ZooActions.eat(animals.get(predator), animals.get(prey))){ //anima1 tries to eat animal2
-                System.out.println(animals.get(predator) + " ate " + animals.get(prey)  + "! it's updated weight: "
+            if (ZooActions.eat(animals.get(predator), animals.get(prey))) { // anima1 tries to eat animal2
+                System.out.println(animals.get(predator) + " ate " + animals.get(prey) + "! it's updated weight: "
                         + animals.get(predator).getWeight());
                 animals.remove(animals.get(prey));
             } else {
                 System.out.println(animals.get(predator) + " could not eat" + animals.get(prey));
             }
+            System.out.println(animals.size());
             System.out.println();
         }
     }
