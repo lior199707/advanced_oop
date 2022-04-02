@@ -32,3 +32,6 @@ replay_pid*
 
 # macOS generated file
 .DS_Store
+
+# Javadoc
+docs/*
