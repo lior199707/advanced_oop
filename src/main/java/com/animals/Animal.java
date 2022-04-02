@@ -1,6 +1,7 @@
 package com.animals;
 
 import com.diet.IDiet;
+import com.food.EFoodType;
 import com.food.IEdible;
 import com.mobility.Mobile;
 import com.mobility.Point;
@@ -35,9 +36,11 @@ public abstract class Animal extends Mobile implements IEdible {
      */
     public Animal(String name, Point location) {
         super(location);
-        MessageUtility.logConstractor("Animal", name);
         setName(name);
-        getLocation();
+        if (location != null) {
+            getLocation();
+        }
+        MessageUtility.logConstractor("Animal", getName());
     }
 
     /**
@@ -54,7 +57,7 @@ public abstract class Animal extends Mobile implements IEdible {
      */
     public boolean eat(IEdible food) {
         boolean isSuccess = false;
-        double updatedWeight = getDiet().eat(this, food);
+        double updatedWeight = this.diet.eat(this, food);
         if (updatedWeight != 0) {
             makeSound();
             setWeight(this.weight + updatedWeight);
@@ -77,8 +80,9 @@ public abstract class Animal extends Mobile implements IEdible {
     @Override
     public double move(Point nextLocation) {
         final double CONST = 0.00025;
-        double distance =  super.move(nextLocation);
-        this.setWeight(this.weight - (distance * this.weight * CONST));
+        double distance = super.move(nextLocation);
+        if (distance > 0)
+            this.setWeight(this.weight - (distance * this.weight * CONST));
         return distance;
     }
 
@@ -136,13 +140,11 @@ public abstract class Animal extends Mobile implements IEdible {
      * @return boolean value if weight was set or not.
      */
     public boolean setWeight(double weight) {
-        boolean isSuccess = (weight >= 0.0);
+        boolean isSuccess = weight > 0;
         if (isSuccess) {
             this.weight = weight;
-        } else {
-            this.weight = 0.0;
         }
-        MessageUtility.logSetter(this.name, "setWeight", this.weight, isSuccess);
+        MessageUtility.logSetter(this.name, "setWeight", weight, isSuccess);
         return isSuccess;
     }
 
@@ -153,7 +155,7 @@ public abstract class Animal extends Mobile implements IEdible {
      */
     public boolean setDiet(IDiet diet) {
         this.diet = diet;
-        MessageUtility.logSetter(this.name, "setDiet", this.diet, true);
+        MessageUtility.logSetter(this.name, "setDiet", diet, true);
         return true;
     }
 
@@ -175,6 +177,12 @@ public abstract class Animal extends Mobile implements IEdible {
     public Point getLocation() {
         MessageUtility.logGetter(this.name, "getLocation", super.getLocation());
         return super.getLocation();
+    }
+
+    @Override
+    public EFoodType getFoodtype() {
+        MessageUtility.logGetter(this.name, "getFoodtype", EFoodType.MEAT);
+        return EFoodType.MEAT;
     }
 
     /**
