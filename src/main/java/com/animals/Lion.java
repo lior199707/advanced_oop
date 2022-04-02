@@ -44,7 +44,7 @@ public class Lion extends AnimalRoar {
         setWeight(DEFAULT_WEIGHT);
         setDiet(new Carnivore());
         scarCount = DEFAULT_SCAR_COUNT;
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -71,7 +71,7 @@ public class Lion extends AnimalRoar {
                 this.scarCount++;
             }
         }
-        MessageUtility.logBooleanFunction(getName(), "eat", food, isSuccess);
+        MessageUtility.logBooleanFunction(getName(),"eat",food,isSuccess);
         return isSuccess;
     }
 
@@ -85,7 +85,7 @@ public class Lion extends AnimalRoar {
 
     /**
      * food type getter.
-     * @return EFoodType.MEAT
+     * @return EFoodType.NOTFOOD
      */
     @Override
     public EFoodType getFoodtype() {

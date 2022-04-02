@@ -1,7 +1,6 @@
 package com.animals;
 
 import com.diet.Herbivore;
-import com.food.EFoodType;
 import com.mobility.Point;
 import com.utilities.MessageUtility;
 
@@ -40,7 +39,7 @@ public class Turtle extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -58,16 +57,6 @@ public class Turtle extends AnimalChew {
     @Override
     public void chew() {
         MessageUtility.logSound(getName(), "Retracts its head in then eats quietly");
-    }
-
-    /**
-     * food type getter.
-     * @return EFoodType.MEAT
-     */
-    @Override
-    public EFoodType getFoodtype() {
-        MessageUtility.logGetter(getName(), "getFoodtype", EFoodType.MEAT);
-        return EFoodType.MEAT;
     }
 
     /**
@@ -95,7 +84,7 @@ public class Turtle extends AnimalChew {
             this.age = age;
             isSuccess = true;
         }
-        MessageUtility.logSetter(getName(), "setAge", getAge(), isSuccess);
+        MessageUtility.logSetter(getName(), "setAge", age, isSuccess);
         return isSuccess;
     }
 

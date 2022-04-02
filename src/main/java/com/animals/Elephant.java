@@ -1,7 +1,6 @@
 package com.animals;
 
 import com.diet.Herbivore;
-import com.food.EFoodType;
 import com.mobility.Point;
 import com.utilities.MessageUtility;
 
@@ -40,7 +39,7 @@ public class Elephant extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setTrunkLength(DEFAULT_TRUNK_LENGTH);
         setDiet(new Herbivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -59,16 +58,6 @@ public class Elephant extends AnimalChew {
     @Override
     public void chew() {
         MessageUtility.logSound(this.getName(), "Trumpets with joy while flapping its ears, then chews");
-    }
-
-    /**
-     * food type getter.
-     * @return EFoodType.MEAT
-     */
-    @Override
-    public EFoodType getFoodtype() {
-        MessageUtility.logGetter(this.getName(), "getFoodtype", EFoodType.MEAT);
-        return EFoodType.MEAT;
     }
 
     /**

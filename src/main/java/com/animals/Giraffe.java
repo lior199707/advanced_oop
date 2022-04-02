@@ -1,9 +1,8 @@
 package com.animals;
 
 import com.diet.Herbivore;
-import com.food.EFoodType;
-import com.utilities.MessageUtility;
 import com.mobility.Point;
+import com.utilities.MessageUtility;
 
 /**
  * Giraffe class representing the Giraffe animal. It can chew!
@@ -42,7 +41,7 @@ public class Giraffe extends AnimalChew {
         setWeight(DEFAULT_WEIGHT);
         setNeckLength(DEFAULT_NECK_LENGTH);
         setDiet(new Herbivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -61,17 +60,6 @@ public class Giraffe extends AnimalChew {
     public void chew() {
         MessageUtility.logSound(this.getName(), "Bleats and Stomps its legs, then chews");
     }
-
-    /**
-     * food type getter.
-     * @return EFoodType.MEAT
-     */
-    @Override
-    public EFoodType getFoodtype() {
-        MessageUtility.logGetter(this.getName(), "getFoodtype", EFoodType.MEAT);
-        return EFoodType.MEAT;
-    }
-
 
     /**
      * neck length getter.

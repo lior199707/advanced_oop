@@ -67,7 +67,7 @@ public class Bear extends AnimalRoar {
         setWeight(DEFAULT_WEIGHT);
         setFurColor(String.valueOf(FurColors.GRAY));
         setDiet(new Omnivore());
-        MessageUtility.logConstractor(getClass().getSimpleName(), name);
+        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
 
