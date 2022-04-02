@@ -136,7 +136,7 @@ public class MessageUtility {
 
         } else {
 
-            System.err.println(str);
+            System.out.println(str);
 
         }
 
