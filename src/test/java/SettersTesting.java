@@ -1,11 +1,10 @@
+import com.animals.*;
 import com.mobility.Point;
 import com.privateutil.PrivateUtils;
-import org.junit.Test;
-import com.animals.*;
+import org.junit.jupiter.api.Test;
 
-import java.nio.FloatBuffer;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SettersTesting {
     private Animal lion = PrivateUtils.loadAnimal("Lion", "simba", null);
@@ -27,6 +26,7 @@ public class SettersTesting {
         assertFalse(giraffe.setName("1234"));
         assertFalse(elephant.setName("1234"));
     }
+
     @Test
     public void setWeightTesting(){
         assertTrue(lion.setWeight(1));
