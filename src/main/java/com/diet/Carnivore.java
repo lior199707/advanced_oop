@@ -3,6 +3,7 @@ package com.diet;
 import com.animals.Animal;
 import com.food.EFoodType;
 import com.food.IEdible;
+import com.utilities.MessageUtility;
 
 /**
  * class Carnivore, handles meat eating animals
@@ -17,9 +18,9 @@ public class Carnivore implements IDiet {
     /**
      * if the animal can eat the food, and the food and the animal aren't pointing to the same animal
      * returns the weight the eating animal has gained in the process of eating, else returns 0
-     * @param animal , the animal that eats
-     * @param food, the animal that is being eaten
-     * @return double, the weight the animal gained in the process of eating.
+     * @param animal  the animal that eats
+     * @param food the animal that is being eaten
+     * @return double the weight the animal gained in the process of eating.
      */
     @Override
     public double eat(Animal animal, IEdible food) {
@@ -36,7 +37,9 @@ public class Carnivore implements IDiet {
      */
     @Override
     public boolean canEat(EFoodType food) {
-        return food == EFoodType.MEAT;
+        boolean isSuccess = food == EFoodType.MEAT;
+        MessageUtility.logBooleanFunction(this.toString(),"canEat", food, isSuccess);
+        return isSuccess;
     }
 
     /**

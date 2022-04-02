@@ -1,8 +1,9 @@
 package com.diet;
 
 import com.animals.Animal;
-import com.food.IEdible;
 import com.food.EFoodType;
+import com.food.IEdible;
+import com.utilities.MessageUtility;
 
 /**
  * class Omnivore, handles animal that eat both meat and vegetables
@@ -36,8 +37,9 @@ public class Omnivore implements IDiet {
      */
     @Override
     public double eat(Animal animal, IEdible food) {
-        if (canEat(food.getFoodtype()) && !(animal == food)) {
-            if (food.getFoodtype() == EFoodType.MEAT) {
+        EFoodType foodType = food.getFoodtype();
+        if (canEat(foodType) && !(animal == food)) {
+            if (foodType == EFoodType.MEAT) {
                 return carnivore.eat(animal, food);
             } else {
                 return herbivore.eat(animal, food);
@@ -53,7 +55,10 @@ public class Omnivore implements IDiet {
      * @see com.food.EFoodType
      */
     @Override
-    public boolean canEat(EFoodType food) {return food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
+    public boolean canEat(EFoodType food) {
+        boolean isSuccess = food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
+        MessageUtility.logBooleanFunction(this.toString(),"canEat", food, isSuccess);
+        return isSuccess;
     }
 
     /**

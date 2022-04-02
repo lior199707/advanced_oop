@@ -1,8 +1,9 @@
 package com.diet;
 
 import com.animals.Animal;
-import com.food.IEdible;
 import com.food.EFoodType;
+import com.food.IEdible;
+import com.utilities.MessageUtility;
 
 /**
  * class Herbivore, handles plant eating animals.
@@ -38,7 +39,9 @@ public class Herbivore implements IDiet {
     @Override
     public boolean canEat(EFoodType food) {
         // can eat VEGETABLE.
-        return food == EFoodType.VEGETABLE;
+        boolean isSuccess = food == EFoodType.VEGETABLE;
+        MessageUtility.logBooleanFunction(this.toString(),"canEat", food, isSuccess);
+        return isSuccess;
     }
 
     /**
