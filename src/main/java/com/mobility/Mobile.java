@@ -81,7 +81,7 @@ public abstract class Mobile implements Ilocatable {
     /**
      * implementation of Ilocatable interface setLocation.
      * @see com.mobility.Ilocatable
-     * 
+     *
      * @param point - Point object to set the location to
      * @return boolean value if the set was successful or not.
      */
@@ -90,9 +90,12 @@ public abstract class Mobile implements Ilocatable {
         boolean isSuccess = Point.checkBoundaries(point);
         if (isSuccess) {
             this.location = new Point(point);
+        } else {
+            this.location = new Point();
         }
         return isSuccess;
     }
+
 
     /**
      * implementation of Ilocatable interface setLocation.
