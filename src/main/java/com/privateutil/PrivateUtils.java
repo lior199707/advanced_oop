@@ -218,7 +218,71 @@ public class PrivateUtils {
     }
 
     /**
+     * initAnimalUniqueDetails suggests the user to input values to unique fields of
+     * animal descendants (references). It uses userInputChoiceBoolean with a set message
+     * for each animal, if the user proceeds with the action on animal descendant it updates
+     * the field using setters. otherwise, it does not perform the set action and the values are
+     * set by default through the relevant constructor of each animal.
+     * @param animal Animal object instantiated in loadAnimal.
+     * @param type String representation of the animal type.
+     */
+    public static void initAnimalUniqueDetails(Animal animal, String type) {
+        // Ask for third object.
+        String message;
+
+        message = "Do you wish to set the animal's weight?";
+        if (userInputChoiceBoolean(message)) {
+            System.out.println("Please enter the weight, it must be greater than 0: ");
+            double weight = userInputChoiceDouble(0);
+            animal.setWeight(weight);
+        }
+
+        switch (Objects.requireNonNull(type)) {
+            case "Lion" -> {
+                //
+            }
+
+            case "Turtle" -> {
+                message = "Do you wish to set the age of the turtle?";
+                if (userInputChoiceBoolean(message)) {
+                    int age = userInputIntegerRange(0, 500);
+                    ((Turtle) animal).setAge(age);
+                }
+            }
+
+            case "Giraffe" -> {
+                message = "Do you wish to set the neck's length of the giraffe?";
+                if (userInputChoiceBoolean(message)){
+                    double neckLength = userInputDoubleRange(1.0, 2.5);
+                    ((Giraffe) animal).setNeckLength(neckLength);
+                }
+            }
+            case "Elephant" -> {
+                message = "Do you wish to set the trunk's length of the elephant?";
+                if (userInputChoiceBoolean(message)){
+                    double trunkLength = userInputDoubleRange(0.5, 3.0);
+                    ((Elephant) animal).setTrunkLength(trunkLength);
+                }
+            }
+            case "Bear" -> {
+                message = "Do you wish to set the fur color of the bear?";
+                if (userInputChoiceBoolean(message)){
+                    String[] colors = { "WHITE", "GREY", "BLACK" };
+                    System.out.println("Please choose the color:");
+                    System.out.println("1. White");
+                    System.out.println("2. Grey");
+                    System.out.println("3. Black");
+                    int color = userInputIntegerRange(1, 3);
+                    ((Bear) animal).setFurColor(colors[color - 1]);
+                }
+            }
+        }
+    }
+
+    /**
      * loadAnimal is a reflection API method to instantiate an Animal object.
+     * after instantiating an animal it calls initAnimalUniqueDetails.
+     * @see com.privateutil.PrivateUtils initAnimalUniqueDetails.
      * @param type String representation of an animal type.
      * @param name String representation of an animal name.
      * @param location Point coordinates of an animal location.
@@ -239,6 +303,7 @@ public class PrivateUtils {
                 Constructor<?> con = c.getConstructor(String.class);
                 animal = (Animal) con.newInstance(name);
             }
+            initAnimalUniqueDetails(animal, type);
         } catch (NoSuchMethodException | ClassNotFoundException | NullPointerException |
                 InvocationTargetException | InstantiationException | IllegalAccessException e) {
             System.err.println(e + " unable to load animal");
