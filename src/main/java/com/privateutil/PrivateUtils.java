@@ -7,34 +7,39 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
 
 
 /**
  * PrivateUtils class holds utility methods used within the project.
+ *
+ * @author Sagie Baram
+ * @author Lior Shilon
  */
 public class PrivateUtils {
     /**
      * Scanner object using System.in to request input from user.
      */
     static final Scanner sc = new Scanner(System.in);
+
     /**
-     * userInput handles integer input.
+     * userInputIntegerRange handles integer input between set range.
      * @param MIN_RANGE integer value representing the minimum range.
      * @param MAX_RANGE integer value representing the maximum range.
      * @return integer value of the user choice.
      */
-    public static int userChoiceInputRange(int MIN_RANGE, int MAX_RANGE) {
+    public static int userInputIntegerRange(int MIN_RANGE, int MAX_RANGE) {
         int userChoice = 0;
 
         // infinitely request for user input until successful.
         while (true) {
             try {
-                System.out.println("Choose an option: ");
+                System.out.println("Enter integer value between " + MIN_RANGE + " and " + MAX_RANGE + ":");
                 userChoice = sc.nextInt();
                 // if userChoice not in range
                 if (userChoice < MIN_RANGE || userChoice > MAX_RANGE) {
-                    System.out.println("Choice out of range, please try again! ");
+                    System.out.println("Value out of range, please try again! ");
                 } else {
                     return userChoice;
                 }
@@ -49,31 +54,104 @@ public class PrivateUtils {
         }
         return userChoice;
     }
+
     /**
-     * userChoiceInput handles integer input.
-     * @param MIN_VALUE integer value representing the minimum allowed for input.
-     * @return integer value of the user choice.
+     * userInputDoubleRange handles double input between set range.
+     * @param MIN_RANGE double value representing the minimum range.
+     * @param MAX_RANGE double value representing the maximum range.
+     * @return double value of the user choice.
      */
-    public static int userChoiceInput(int MIN_VALUE) {
-        int userChoice = 0;
+    public static double userInputDoubleRange(double MIN_RANGE, double MAX_RANGE){
+        double userChoice = 0;
+
         // infinitely request for user input until successful.
         while (true) {
             try {
-                System.out.println("Enter value: ");
-               userChoice = sc.nextInt();
-                if (userChoice < MIN_VALUE)
-                    System.out.println("Value is out of range!");
-                else
+                System.out.println("Enter double value between " + MIN_RANGE + " and " + MAX_RANGE + ":");
+                userChoice = sc.nextDouble();
+                // if userChoice not in range
+                if (userChoice < MIN_RANGE || userChoice > MAX_RANGE) {
+                    System.out.println("Value out of range, please try again! ");
+                } else {
                     return userChoice;
+                }
+
             } catch (InputMismatchException e) {
                 // handles wrong values given to scanner.
-                System.err.println(e + "Invalid input");
+                System.err.println(e + " expecting double!");
                 if (sc.next().isEmpty()) {
                     break;
                 }
             }
         }
         return userChoice;
+    }
+    /**
+     * userInputInteger handles integer input.
+     * @param MIN_RANGE integer value representing the minimum allowed for input.
+     * @return integer value of the user choice.
+     */
+    public static int userInputInteger(int MIN_RANGE) {
+        int userChoice = 0;
+        // infinitely request for user input until successful.
+        while (true) {
+            try {
+                System.out.println("Enter value: ");
+                userChoice = sc.nextInt();
+                if (userChoice < MIN_RANGE)
+                    System.out.println("Value is out of range!");
+                else
+                    return userChoice;
+            } catch (InputMismatchException e) {
+                // handles wrong values given to scanner.
+                System.err.println(e + " expecting integer");
+                if (sc.next().isEmpty()) {
+                    break;
+                }
+            }
+        }
+        return userChoice;
+    }
+    /**
+     * userInputChoiceDouble handles double input.
+     * @param MIN_RANGE double value representing the minimum allowed for input.
+     * @return double value of the user choice.
+     */
+    public static double userInputChoiceDouble(double MIN_RANGE){
+        double userChoice = 0;
+        // infinitely request for user input until successful.
+        while (true) {
+            try {
+                System.out.println("Enter value: ");
+                userChoice = sc.nextDouble();
+                if (userChoice < MIN_RANGE)
+                    System.out.println("Value is out of range!");
+                else
+                    return userChoice;
+            } catch (InputMismatchException e) {
+                // handles wrong values given to scanner.
+                System.err.println(e + " expecting double!");
+                if (sc.next().isEmpty()) {
+                    break;
+                }
+            }
+        }
+        return userChoice;
+    }
+
+    /**
+     * userInputChoiceBoolean prints user message, it asks the user a binary question
+     * and returns the boolean result.
+     * @param message String representation of a user made message.
+     * @return boolean value indicating if the user wishes to proceed or not.
+     */
+    public static boolean userInputChoiceBoolean(String message){
+        int userChoice;
+        System.out.println(message);
+        System.out.println("1. No");
+        System.out.println("2. Yes");
+        userChoice = userInputIntegerRange(1, 2);
+        return userChoice == 2;
     }
 
     /**
@@ -173,7 +251,7 @@ public class PrivateUtils {
      * the user will select different types of animals, input their name and location - (not required).
      * the animal objects will be instantiated via loadAnimal method.
      * @param size integer value of the array size.
-     * @return Animal[], array containing Animal references.
+     * @return ArrayList of Animals, array containing Animal references.
      */
     public static ArrayList<Animal> createAnimalArray(int size) {
         ArrayList<Animal> animals = new ArrayList<>(size);
@@ -191,7 +269,7 @@ public class PrivateUtils {
             System.out.println("6. Exit Program");
 
             // requesting choice input from user.
-            userChoice = userChoiceInputRange(1, 6);
+            userChoice = userInputIntegerRange(1, 6);
 
             // setting type based on user's choice or exiting program.
             switch (userChoice) {
@@ -210,20 +288,14 @@ public class PrivateUtils {
             System.out.println("Please enter the animal's name: ");
             String name = sc.next();
 
-            System.out.println("Do you wish to enter the animal's spawn point?");
-            System.out.println("1. No");
-            System.out.println("2. Yes");
+            String message = "Do you wish to enter the animal's spawn point?";
 
-            // requesting choice input from user.
-            userChoice = userChoiceInputRange(1,2);
-
-            // if user does not wish to initiate spawn point.
-            if (userChoice == 1) {
-                animals.add(loadAnimal(type, name, null));
-            } else {
+            if (userInputChoiceBoolean(message)){
                 // otherwise, instantiating Point object based on user input.
                 Point location = pointInput();
                 animals.add(loadAnimal(type,name,location));
+            } else {
+                animals.add(loadAnimal(type, name, null));
             }
 
             System.out.println();
