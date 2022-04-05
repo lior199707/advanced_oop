@@ -3,15 +3,15 @@ package com.zoo;
 import com.animals.Animal;
 import com.food.IEdible;
 import com.mobility.Point;
+import com.privateutil.PrivateUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static com.privateutil.PrivateUtils.*;
-
 /**
  * class ZooActions, runner class, contains the main method.
  */
+
 public class ZooActions {
     /**
      * @param animal  the animal that is eating.
@@ -20,7 +20,7 @@ public class ZooActions {
      */
     public static boolean eat(Object animal, IEdible food) {
         try {
-            Animal creature = animalType(animal);
+            Animal creature = PrivateUtils.animalType(animal);
             return creature.eat(food);
         } catch (NullPointerException e) {
             System.err.println(e + animal.toString() + " is faulty!");
@@ -35,7 +35,7 @@ public class ZooActions {
      */
     public static boolean move(Object animal, Point point) {
         try {
-            Animal creature = animalType(animal);
+            Animal creature = PrivateUtils.animalType(animal);
             double distanceTraveled = creature.move(point);
             return distanceTraveled != 0;
         } catch (NullPointerException e) {
@@ -61,13 +61,13 @@ public class ZooActions {
         Random rand = new Random();
 
         System.out.println("Please enter the number of animals (MINIMUM OF 3)! ");
-        int size = userChoiceInput(MIN_NUM_OF_ANIMALS);
+        int size = PrivateUtils.userInputInteger(MIN_NUM_OF_ANIMALS);
 
-        ArrayList<Animal> animals = createAnimalArray(size);
+        ArrayList<Animal> animals = PrivateUtils.createAnimalArray(size);
 
         for (Animal animal : animals) { // for every animal in the array
             System.out.println(animal + animal.getLocation().toString() + " is planning to move! enter coordinates:");
-            Point nextLocation = pointInput(); // get the next location of the animal from the user
+            Point nextLocation = PrivateUtils.pointInput(); // get the next location of the animal from the user
             if (ZooActions.move(animal, nextLocation)) { // try to move the animal to this location
                 System.out.println(animal + " moved! it's updated weight: " + animal.getWeight());
             } else {
