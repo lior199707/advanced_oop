@@ -1,5 +1,7 @@
 package com.graphics;
 
+import com.privateutil.PrivateGraphicUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,8 +18,11 @@ public class ZooFrame extends JFrame{
         this.add(zooPanel, BorderLayout.SOUTH);
         this.setJMenuBar(menuBar);
 
+        int frameX = 1000, frameY = 1000;
+        this.setSize(frameX,frameY);
+
+        this.setLocation(PrivateGraphicUtils.centerWindow(frameX,frameY));
         this.setTitle("Zooshit");
-        this.setSize(1000,1000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
