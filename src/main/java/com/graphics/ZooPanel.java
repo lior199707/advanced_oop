@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 public class ZooPanel extends JPanel implements Runnable, ActionListener {
     private JPanel actionPanel;
+    private JDialog addAnimalDialog;
 
     public ZooPanel(){
         actionPanel = new JPanel();
@@ -56,9 +57,7 @@ public class ZooPanel extends JPanel implements Runnable, ActionListener {
         String actionCommand = e.getActionCommand();
         switch (actionCommand) {
             case "Add Animal" -> {
-                JDialog dialog = AddAnimalDialog.getInstance();
-                dialog.getContentPane();
-                System.out.println("Add Animal pressed!");
+                addAnimalDialog = new AddAnimalDialog();
             }
             case "Move Animal" -> {
                 JDialog dialog = MoveAnimalDialog.getInstance();
