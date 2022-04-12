@@ -108,7 +108,7 @@ public class AddAnimalDialog extends JDialog {
         BufferedImage picture = null;
         Image modifiedImage = null;
         try {
-            picture = ImageIO.read(new File("/Users/sagebaram/workspace/college/current/advanced_oop/assignments/project/src/main/resources/assignment2_pictures/lio_n_1.png"));
+            picture = ImageIO.read(new File("src/main/resources/assignment2_pictures/lio_n_1.png"));
             ImageIcon image = new ImageIcon(picture);
             Image toSizeImage = image.getImage();
             modifiedImage = toSizeImage.getScaledInstance(220, 180, Image.SCALE_SMOOTH);
