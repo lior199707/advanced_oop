@@ -1,18 +1,19 @@
 package com.graphics;
 
+import com.animals.*;
 import com.privateutil.PrivateGraphicUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
+import static com.privateutil.PrivateGraphicUtils.createImageIcon;
+import static com.privateutil.PrivateGraphicUtils.findImagePath;
 
 public class AddAnimalDialog extends JDialog {
-    private final AddAnimalDialogListener listener;
     private final String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
     private final String[] animalColors = {"Natural", "Red", "Blue"};
     private JComboBox<String> animalTypesCmb;
@@ -32,6 +33,18 @@ public class AddAnimalDialog extends JDialog {
     private JLabel locationLabel;
     private JLabel weightLabel;
     private JLabel uniqueLabel;
+    private JLabel imageLabel;
+
+    private JButton addAnimalButton;
+    private JButton validateButton;
+
+    private String color;
+    private String animalType;
+
+    private boolean nameStatus;
+    private boolean sizeStatus;
+    private boolean vSpeedStatus;
+    private boolean hSpeedStatus;
 
     public AddAnimalDialog() {
         int dialogX = 500, dialogY = 350;
@@ -40,7 +53,7 @@ public class AddAnimalDialog extends JDialog {
         this.setModal(true);
         this.setTitle("Add Animal");
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        this.setLocation(PrivateGraphicUtils.centerWindow(dialogX,dialogY));
+        this.setLocation(PrivateGraphicUtils.centerWindow(dialogX, dialogY));
         this.setSize(new Dimension(dialogX, dialogY));
         this.setResizable(false);
 
@@ -63,19 +76,61 @@ public class AddAnimalDialog extends JDialog {
         this.setVisible(true);
         this.pack();
 
-        listener = new AddAnimalDialogListener();
     }
 
     public JPanel createNorthPanel() {
         JPanel animalTypePanel = new JPanel();
         animalTypesCmb = new JComboBox<>(animalTypes);
+        locationLabel = new JLabel("Location: ");
+        animalTypesCmb.setSelectedItem(-1);
 
         // setting border
         TitledBorder animalChoiceBorder = BorderFactory.createTitledBorder("Choose Animal: ");
         animalTypesCmb.setBorder(animalChoiceBorder);
 
         // adding to action listener.
-        animalTypesCmb.addActionListener(listener);
+        animalTypesCmb.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String item = (String) e.getItem();
+                    switch (item) {
+                        case "Lion" -> {
+                            uniqueLabel.setText("Scar Count: " + Lion.getDefaultScarCount());
+                            locationLabel.setText("Location: " + Lion.getDefaultStartingLocation());
+                            animalType = "Lion";
+                        }
+                        case "Bear" -> {
+                            uniqueLabel.setText("Fur Color: " + Bear.getDefaultFurColor());
+                            locationLabel.setText("Location: " + Bear.getDefaultStartingLocation());
+                            animalType = "Bear";
+                        }
+                        case "Giraffe" -> {
+                            uniqueLabel.setText("Neck Length: " + Giraffe.getDefaultNeckLength());
+                            locationLabel.setText("Location: " + Giraffe.getDefaultStartingLocation());
+                            animalType = "Giraffe";
+                        }
+                        case "Turtle" -> {
+                            uniqueLabel.setText("Age: " + Turtle.getDefaultAge());
+                            locationLabel.setText("Location: " + Turtle.getDefaultStartingLocation());
+                            animalType = "Turtle";
+                        }
+                        case "Elephant" -> {
+                            uniqueLabel.setText("Trunk Length: " + Elephant.getDefaultTrunkLength());
+                            locationLabel.setText("Location: " + Elephant.getDefaultStartingLocation());
+                            animalType = "Elephant";
+                        }
+                    }
+
+                    if (color == null) {
+                        color = animalColors[0];
+                    }
+                    imageLabel.setIcon(createImageIcon(findImagePath(animalType, color,1)));
+                    imageLabel.repaint();
+                }
+            }
+        });
+
 
         // adding the combobox to the panel.
         animalTypePanel.add(animalTypesCmb);
@@ -103,34 +158,17 @@ public class AddAnimalDialog extends JDialog {
     }
 
     public JPanel createEastPanel() {
-        // TODO:
-        // -------------- MAKE A METHOD FOR ADDING PICTURES -----------
-        BufferedImage picture = null;
-        Image modifiedImage = null;
-        try {
-            picture = ImageIO.read(new File("src/main/resources/assignment2_pictures/lio_n_1.png"));
-            ImageIcon image = new ImageIcon(picture);
-            Image toSizeImage = image.getImage();
-            modifiedImage = toSizeImage.getScaledInstance(220, 180, Image.SCALE_SMOOTH);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assert picture != null;
-
-        JLabel image = new JLabel(new ImageIcon(modifiedImage));
-        // -------------- MAKE A METHOD FOR ADDING PICTURES -----------
-
         JPanel imagePanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcImagePanel = new GridBagConstraints();
-        TitledBorder border = BorderFactory.createTitledBorder("Picture");
-        border.setTitlePosition(TitledBorder.ABOVE_BOTTOM);
-        image.setBorder(border);
-
         gbcImagePanel.gridx = 5;
         gbcImagePanel.gridy = 5;
         gbcImagePanel.insets = new Insets(0, 0, 0, 10);
-        imagePanel.add(image, gbcImagePanel);
+
+        TitledBorder border = BorderFactory.createTitledBorder("Picture");
+        border.setTitlePosition(TitledBorder.ABOVE_BOTTOM);
+        imageLabel.setBorder(border);
+
+        imagePanel.add(imageLabel, gbcImagePanel);
 
         return imagePanel;
     }
@@ -158,7 +196,21 @@ public class AddAnimalDialog extends JDialog {
         vSpeedTextField = new JTextField("1-10", 10);
         hSpeedTextField = new JTextField("1-10", 10);
         animalColorsCmb = new JComboBox<>(animalColors);
+        animalColorsCmb.setSelectedItem(-1);
 
+        animalColorsCmb.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    color = (String) e.getItem();
+                    if (animalType == null) {
+                        animalType = animalTypes[0];
+                    }
+                    imageLabel.setIcon(createImageIcon(findImagePath(animalType, color,1)));
+                    imageLabel.repaint();
+                }
+            }
+        });
         // setting action commands
         sizeTextField.setActionCommand("SizeTF");
 
