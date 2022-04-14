@@ -1,9 +1,7 @@
 package com.graphics;
 
-import com.animals.Animal;
 import com.privateutil.PrivateGraphicUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -11,8 +9,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MoveAnimalDialog extends JDialog {
@@ -143,22 +139,10 @@ public class MoveAnimalDialog extends JDialog {
 
     private JPanel createCenterPanel(){
         JPanel centerPanel = new JPanel(new GridBagLayout());
+        JLabel imageLabel = new JLabel();
+        imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(PrivateGraphicUtils.findImagePath("Lion","Natural")));
+
         GridBagConstraints centerPanelGbc = new GridBagConstraints();
-        picture = null;
-        Image modifiedImage = null;
-        try {
-            picture = ImageIO.read(new File("src/main/resources/assignment2_pictures/lio_n_1.png"));
-            ImageIcon image = new ImageIcon(picture);
-            Image toSizeImage = image.getImage();
-            modifiedImage = toSizeImage.getScaledInstance(220, 180, Image.SCALE_SMOOTH);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assert picture != null;
-        JLabel imageLabel = new JLabel(new ImageIcon(modifiedImage));
-        TitledBorder border = BorderFactory.createTitledBorder("Picture");
-        border.setTitlePosition(TitledBorder.BELOW_TOP);
-        imageLabel.setBorder(border);
         //default
         centerPanelGbc.weightx = 0;
         centerPanelGbc.weighty = 0;
@@ -180,6 +164,10 @@ public class MoveAnimalDialog extends JDialog {
         centerPanelGbc.gridx = 0;
         centerPanelGbc.gridy = 2;
         centerPanel.add(currAnimalYocationLable, centerPanelGbc);
+
+        TitledBorder border = BorderFactory.createTitledBorder("Picture");
+        border.setTitlePosition(TitledBorder.BELOW_TOP);
+        imageLabel.setBorder(border);
 
         return centerPanel;
     }
