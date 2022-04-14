@@ -16,10 +16,9 @@ public abstract class AnimalRoar extends Animal {
      * @param name String representation of the animal.
      * @param location Point coordinates of the current location of an animal.
      */
-    public AnimalRoar(String name, Point location) {
-        super(name, location);
+    public AnimalRoar(String name, Point location, int size, int horSpeed, int verSpeed, String col){
+        super(name,location,size,horSpeed,verSpeed,col);
     }
-
     /**
      * abstract method, need to be implemented in AnimalRoar descendants.
      */
