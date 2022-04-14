@@ -167,16 +167,81 @@ public class AddAnimalDialog extends JDialog {
         vSpeedTextField.setForeground(Color.GRAY);
         hSpeedTextField.setForeground(Color.GRAY);
 
+        addSpeedInputDocumentListener(vSpeedTextField);
+        addSpeedInputDocumentListener(hSpeedTextField);
+
         // focus listener for input. reset if lost focus & empty.
-        addValidRangeFocusListener(sizeTextField,50,300);
+        addValidRangeFocusListener(sizeTextField, 50, 300);
         addValidRangeFocusListener(vSpeedTextField, 1, 10);
-        addValidRangeFocusListener(hSpeedTextField,1,10);
+        addValidRangeFocusListener(hSpeedTextField, 1, 10);
 
         // action listener for input - TODO: DO WE NEED ACTION LISTENERS HERE?
-        sizeTextField.addActionListener(listener);
-        vSpeedTextField.addActionListener(listener);
-        hSpeedTextField.addActionListener(listener);
-        nameTextField.addActionListener(listener);
+        sizeTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateWeightLabel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateWeightLabel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateWeightLabel();
+            }
+
+            public void updateWeightLabel() {
+                try {
+                    String currentSizeText = sizeTextField.getText();
+                    addAnimalButton.setEnabled(false);
+                    if (currentSizeText.equals("")) {
+                        weightLabel.setText("Weight: ");
+                    } else {
+                        sizeTextField.setForeground(Color.BLACK);
+                        sizeStatus = true;
+                        int size = Integer.parseInt(currentSizeText);
+                        if (size < 50 || size > 300) {
+                            throw new NumberFormatException();
+                        }
+                        weightLabel.setText("Weight: " + getWeightOfSelectedAnimal(size));
+                    }
+                } catch (NumberFormatException ignored) {
+                    sizeTextField.setForeground(Color.RED);
+                    sizeStatus = false;
+                }
+            }
+        });
+
+        nameTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkValidName();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkValidName();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkValidName();
+            }
+
+            public void checkValidName() {
+                String currentText = nameTextField.getText();
+                addAnimalButton.setEnabled(false);
+                if (!currentText.matches("[A-Za-z]+")) {
+                    nameTextField.setForeground(Color.RED);
+                    nameStatus = false;
+                } else {
+                    nameTextField.setForeground(Color.BLACK);
+                    nameStatus = true;
+                }
+            }
+        });
 
         // create south input panel components
         locationLabel = new JLabel("Location:");
@@ -273,43 +338,73 @@ public class AddAnimalDialog extends JDialog {
         dialog.getContentPane().add(createSouthPanel(), BorderLayout.SOUTH);
     }
 
+    public double getWeightOfSelectedAnimal(int sizeOfAnimal) {
+        double animalWeight = 0;
+        // Lion
+        if (animalTypesCmb.getSelectedIndex() == 0) {
+            animalWeight = sizeOfAnimal * 0.8;
+        }
+        if (animalTypesCmb.getSelectedIndex() == 1) {
+            animalWeight = sizeOfAnimal * 1.5;
+        }
+        if (animalTypesCmb.getSelectedIndex() == 2) {
+            animalWeight = sizeOfAnimal * 2.2;
+        }
+        if (animalTypesCmb.getSelectedIndex() == 3) {
+            animalWeight = sizeOfAnimal * 10;
+        }
+        if (animalTypesCmb.getSelectedIndex() == 4) {
+            animalWeight = sizeOfAnimal * 0.5;
+        }
+        return animalWeight;
+    }
 
-    /**
-     * AddAnimalDialogListener is a private class implementing ActionListener.
-     * it responds to certain events occurring in AddAnimalDialog.
-     */
-    private class AddAnimalDialogListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand();
-            double animalWeight = 0;
-            switch (command) {
-                case "SizeTF" -> {
-                    int sizeOfAnimal = Integer.parseInt(sizeTextField.getText());
-                    // Lion
-                    if (animalTypesCmb.getSelectedIndex() == 0) {
-                        animalWeight = sizeOfAnimal * 0.8;
+    public String getColor() {
+        return color;
+    }
+
+    private void addSpeedInputDocumentListener(JTextField speedTextField){
+        speedTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkValidInput();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkValidInput();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkValidInput();
+            }
+
+            public void checkValidInput() {
+                try {
+                    String currentText = speedTextField.getText();
+                    addAnimalButton.setEnabled(false);
+                    speedTextField.setForeground(Color.BLACK);
+                    if (speedTextField == vSpeedTextField){
+                        vSpeedStatus = true;
+                    } else hSpeedStatus = true;
+                    int speed = Integer.parseInt(currentText);
+                    if (speed < 1 || speed > 10){
+                        throw new NumberFormatException();
                     }
-                    if (animalTypesCmb.getSelectedIndex() == 1) {
-                        animalWeight = sizeOfAnimal * 1.5;
-                    }
-                    if (animalTypesCmb.getSelectedIndex() == 2) {
-                        animalWeight = sizeOfAnimal * 2.2;
-                    }
-                    if (animalTypesCmb.getSelectedIndex() == 3) {
-                        animalWeight = sizeOfAnimal * 10;
-                    }
-                    if (animalTypesCmb.getSelectedIndex() == 4) {
-                        animalWeight = sizeOfAnimal * 0.5;
-                    }
-                    weightLabel.setText("Weight: " + animalWeight);
+                } catch (NumberFormatException ignored){
+                    speedTextField.setForeground(Color.RED);
+                    if (speedTextField == vSpeedTextField){
+                        vSpeedStatus = false;
+                    } else hSpeedStatus = false;
                 }
             }
-        }
+        });
     }
 
     /**
      * addValidRangeFocusListener using FocusListener to dynamically change JTextField values.
+     * upon focus events.
      * @param validRangeTextField JTextField object to set focus on/off.
      * @param MIN_RANGE integer value of the minimum range.
      * @param MAX_RANGE integer value of the maximum range.
@@ -326,6 +421,7 @@ public class AddAnimalDialog extends JDialog {
             @Override
             public void focusLost(FocusEvent e) {
                 if (validRangeTextField.getText().isEmpty()) {
+                    validRangeTextField.setText(MIN_RANGE + "-" + MAX_RANGE);
                     validRangeTextField.setForeground(Color.GRAY);
                     validRangeTextField.setText(MIN_RANGE + "-" + MAX_RANGE);
                 }
