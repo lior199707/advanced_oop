@@ -3,10 +3,20 @@ package com.animals;
 import com.diet.IDiet;
 import com.food.EFoodType;
 import com.food.IEdible;
+import com.graphics.IAnimalBehavior;
+import com.graphics.IDrawable;
+import com.graphics.ZooPanel;
 import com.mobility.Mobile;
 import com.mobility.Point;
+import com.privateutil.PrivateGraphicUtils;
 import com.utilities.MessageUtility;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -15,7 +25,7 @@ import java.util.Objects;
  * @see com.mobility.Mobile
  * @see com.food.IEdible
  */
-public abstract class Animal extends Mobile implements IEdible {
+public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior {
     /**
      * String value of the animal name.
      */
@@ -29,19 +39,54 @@ public abstract class Animal extends Mobile implements IEdible {
      */
     private IDiet diet;
 
-    /**
-     * Animal constructor.
-     * @param name - String value of animal name.
-     * @param location - Point object of the current location.
-     */
-    public Animal(String name, Point location) {
+    private Thread thread;
+    private static final String DEFAULT_COLOR = "NATURAL";
+    private static final int EAT_DISTANCE = 10;
+    private boolean coordChanged;
+    private int size;
+    private int horSpeed;
+    private int verSpeed;
+    private String col;
+
+    private final int x_dir = 1;
+    private final int y_dir = 1;
+    private int eatCount;
+
+    private ZooPanel pan;
+    private BufferedImage img1, img2;
+
+
+    public static String getDefaultColor(){
+        return DEFAULT_COLOR;
+    }
+
+    public Animal(String name, Point location, int size, int horSpeed, int verSpeed, String col){
         super(location);
         setName(name);
         if (location != null) {
             getLocation();
         }
+        setSize(size);
+        setHorSpeed(horSpeed);
+        setVerSpeed(verSpeed);
+        setColor(col);
+        loadImages(animalShortPathName());
+
+        this.eatCount = 0;
+        this.coordChanged = false;
         MessageUtility.logConstractor("Animal", getName());
     }
+
+    /**
+     * Animal constructor.
+     * @param name - String value of animal name.
+     * @param location - Point object of the current location.
+     */
+    public Animal(String name, Point location, int size, int horSpeed, int verSpeed) {
+        this(name,location,size, horSpeed,verSpeed,DEFAULT_COLOR);
+    }
+
+    public abstract String animalShortPathName();
 
     /**
      * abstract method, animals will have to implement their own sounds.
@@ -168,6 +213,57 @@ public abstract class Animal extends Mobile implements IEdible {
         return diet;
     }
 
+    public int getX_dir() {
+        return x_dir;
+    }
+
+    public int getY_dir() {
+        return y_dir;
+    }
+
+    public BufferedImage getImg2() {
+        return img2;
+    }
+
+    public BufferedImage getImg1() {
+        return img1;
+    }
+
+    public ZooPanel getPan(){
+        return pan;
+    }
+
+    public boolean setSize(int size){
+        boolean isSuccess = false;
+        int MIN_RANGE = 50,MAX_RANGE = 300;
+        if (MIN_RANGE <= size && size <= MAX_RANGE){
+            this.size = size;
+            isSuccess = true;
+        }
+        return isSuccess;
+    }
+
+    public boolean setVerSpeed(int verSpeed){
+        boolean isSuccess = false;
+        int MIN_RANGE = 1,MAX_RANGE = 10;
+        if (MIN_RANGE <= verSpeed && verSpeed <= MAX_RANGE){
+            this.verSpeed = verSpeed;
+            isSuccess = true;
+        } else this.verSpeed = 1;
+        return isSuccess;
+    }
+
+    public boolean setHorSpeed(int horSpeed){
+        boolean isSuccess = false;
+        int MIN_RANGE = 1,MAX_RANGE = 10;
+        if (MIN_RANGE <= horSpeed && verSpeed <= MAX_RANGE){
+            this.horSpeed = verSpeed;
+            isSuccess = true;
+        } else this.horSpeed = 1;
+        return isSuccess;
+    }
+
+
     /**
      * location getter.
      * @see com.mobility.Mobile getLocation() for reference.
@@ -185,6 +281,82 @@ public abstract class Animal extends Mobile implements IEdible {
         return EFoodType.MEAT;
     }
 
+    @Override
+    public void drawObject(Graphics g) {
+        if (x_dir == 1) // goes to the right side
+            g.drawImage(img1, getLocation().getX() - size / 2, getLocation().getY() - size / 10,
+                    size / 2, size, pan);
+        else // goes to the left side
+            g.drawImage(img2, getLocation().getX(), getLocation().getY() - size / 10, size / 2, size, pan);
+    }
+
+    @Override
+    public boolean getChanges (){
+        return this.coordChanged;
+    }
+
+    @Override
+    public void setChanges (boolean state){
+        this.coordChanged = state;
+    }
+
+
+    @Override
+    public void loadImages(String shortPathName) {
+        String path;
+        if (getX_dir() == 1) {
+            path = PrivateGraphicUtils.findImagePath(this.getAnimalName(),col, getX_dir());
+            try {
+                img1 = ImageIO.read(new File(String.valueOf(path)));
+            } catch (IOException e) {
+                JOptionPane.showOptionDialog(pan, "Img1 failed to load", "ERROR",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                        null, null, null);
+            }
+        } else {
+            path = PrivateGraphicUtils.findImagePath(this.getAnimalName(),col, getY_dir());
+            try {
+                img2 = ImageIO.read(new File(String.valueOf(path)));
+            } catch (IOException e) {
+                JOptionPane.showOptionDialog(pan, "Img2 failed to load", "ERROR",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                        null, null, null);
+            }
+        }
+    }
+
+    public boolean setColor(String color){
+        boolean isSuccess = true;
+        String upperCaseColor  = color.toUpperCase();
+        switch (upperCaseColor) {
+            case "RED" -> this.col = "RED";
+            case "BLUE" -> this.col = "BLUE";
+            case "NATURAL" -> this.col = "NATURAL";
+            default -> isSuccess = false;
+        }
+        return isSuccess;
+    }
+
+
+    @Override
+    public String getColor() {
+        return this.col;
+    }
+
+    @Override
+    public void eatInc() {
+        this.eatCount++;
+    }
+
+    @Override
+    public int getSize() {
+        return size;
+    }
+
+    @Override
+    public int getEatCount() {
+        return eatCount;
+    }
     /**
      * equals method of animal object.
      * @param o the object to check equality.
