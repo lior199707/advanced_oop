@@ -21,12 +21,12 @@ public class Giraffe extends AnimalChew {
      * constant Point coordinates of the default starting location of a giraffe.
      */
     private static final Point DEFAULT_STARTING_LOCATION = new Point(50, 0);
+
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 2.2);
     /**
      * double value of the neck length of a giraffe.
      */
     private double neckLength;
-
-
 
     /**
      * Giraffe constructor.
@@ -34,13 +34,13 @@ public class Giraffe extends AnimalChew {
      * passing name and location to super.
      * @see com.animals.AnimalChew
      * @param name String representation of giraffe name.
-     * @param location Point coordinates indicating giraffe location.
      */
-    public Giraffe(String name, Point location) {
-        super(name, location);
-        setWeight(DEFAULT_WEIGHT);
+    public Giraffe(String name, int size, int horSpeed, int verSpeed, String col){
+        super(name, DEFAULT_STARTING_LOCATION,size, horSpeed, verSpeed, col);
+        setWeight(getSize() * 2.2);
         setNeckLength(DEFAULT_NECK_LENGTH);
         setDiet(new Herbivore());
+        loadImages(animalShortPathName());
         MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
@@ -49,8 +49,8 @@ public class Giraffe extends AnimalChew {
      * passing name and default starting location to main constructor.
      * @param name String representation of giraffe name.
      */
-    public Giraffe(String name) {
-        this(name, DEFAULT_STARTING_LOCATION);
+    public Giraffe(String name, int horSpeed, int verSpeed) {
+        this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
     /**
@@ -70,6 +70,13 @@ public class Giraffe extends AnimalChew {
         return neckLength;
     }
 
+    public static Point getDefaultStartingLocation() {
+        return DEFAULT_STARTING_LOCATION;
+    }
+
+    public static double getDefaultNeckLength() {
+        return DEFAULT_NECK_LENGTH;
+    }
     /**
      * neck length setter.
      * checks if the neck length is valid (between min/max values).
@@ -113,5 +120,15 @@ public class Giraffe extends AnimalChew {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public String getAnimalName() {
+        return "Giraffe";
+    }
+
+    @Override
+    public String animalShortPathName() {
+        return "grf";
     }
 }

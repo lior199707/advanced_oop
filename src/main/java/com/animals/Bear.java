@@ -17,6 +17,9 @@ public class Bear extends AnimalRoar {
      * constant Point coordinates of the default starting location of a bear.
      */
     private static final Point DEFAULT_STARTING_LOCATION = new Point(100, 5);
+    private static final FurColors DEFAULT_FUR_COLOR = FurColors.GRAY;
+
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 1.5);
     /**
      * FurColors enum indicating the fur color of a bear.
      */
@@ -60,24 +63,23 @@ public class Bear extends AnimalRoar {
      * passing name and location to super.
      * @see com.animals.AnimalRoar
      * @param name String representation of bear name.
-     * @param location Point coordinates indicating bear location.
      */
-    public Bear(String name, Point location) {
-        super(name, location);
-        setWeight(DEFAULT_WEIGHT);
+    public Bear(String name, int size, int horSpeed, int verSpeed, String col){
+        super(name,DEFAULT_STARTING_LOCATION,size,horSpeed,verSpeed,col);
+        setWeight(getSize() * 1.5);
         setFurColor(String.valueOf(FurColors.GRAY));
         setDiet(new Omnivore());
+        loadImages(animalShortPathName());
         MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
-
 
     /**
      * Bear constructor.
      * passing name and default starting location to main constructor.
      * @param name String representation of bear name.
      */
-    public Bear(String name) {
-        this(name, DEFAULT_STARTING_LOCATION);
+    public Bear(String name,int horSpeed, int verSpeed) {
+        this(name, DEFAULT_SIZE, horSpeed,verSpeed, getDefaultColor());
     }
 
     /**
@@ -110,12 +112,29 @@ public class Bear extends AnimalRoar {
         return furColor;
     }
 
+    public static Point getDefaultStartingLocation() {
+        return DEFAULT_STARTING_LOCATION;
+    }
+
+    public static FurColors getDefaultFurColor(){
+        return DEFAULT_FUR_COLOR;
+    }
     /**
      * roar implementation of a bear.
      */
     @Override
     public void roar() {
         MessageUtility.logSound(getName(), "Stands on its hind legs, roars and scratches its belly");
+    }
+
+    @Override
+    public String animalShortPathName() {
+        return "bea";
+    }
+
+    @Override
+    public String getAnimalName() {
+        return "Bear";
     }
 
     /**

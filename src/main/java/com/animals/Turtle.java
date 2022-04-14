@@ -21,6 +21,7 @@ public class Turtle extends AnimalChew {
      * constant Point coordinates of the default starting location of a turtle.
      */
     private static final Point DEFAULT_STARTING_LOCATION = new Point(80, 0);
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 0.5);
     /**
      * integer value of the age of a turtle
      */
@@ -32,11 +33,10 @@ public class Turtle extends AnimalChew {
      * passing name and location to super.
      * @see com.animals.AnimalChew
      * @param name String representation of turtle name.
-     * @param location Point coordinates indicating turtle location.
      */
-    public Turtle(String name, Point location) {
-        super(name, location);
-        setWeight(DEFAULT_WEIGHT);
+    public Turtle(String name, int size, int horSpeed, int verSpeed, String col) {
+        super(name, DEFAULT_STARTING_LOCATION,size,horSpeed,verSpeed,col);
+        setWeight(0.5 * getSize());
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
         MessageUtility.logConstractor(getClass().getSimpleName(), getName());
@@ -47,8 +47,8 @@ public class Turtle extends AnimalChew {
      * passing name and default starting location to main constructor.
      * @param name String representation of turtle name.
      */
-    public Turtle(String name) {
-        this(name, DEFAULT_STARTING_LOCATION);
+    public Turtle(String name, int horSpeed, int verSpeed) {
+        this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
     /**
@@ -68,6 +68,13 @@ public class Turtle extends AnimalChew {
         return age;
     }
 
+    public static Point getDefaultStartingLocation() {
+        return DEFAULT_STARTING_LOCATION;
+    }
+
+    public static int getDefaultAge() {
+        return DEFAULT_AGE;
+    }
     /**
      * age setter.
      * checks if the age is valid (between min/max values).
@@ -111,5 +118,15 @@ public class Turtle extends AnimalChew {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public String getAnimalName() {
+        return "Turtle";
+    }
+
+    @Override
+    public String animalShortPathName() {
+        return "trt";
     }
 }

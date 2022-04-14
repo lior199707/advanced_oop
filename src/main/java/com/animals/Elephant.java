@@ -13,6 +13,8 @@ public class Elephant extends AnimalChew {
      * constant double value of the default weight of an elephant.
      */
     private static final double DEFAULT_WEIGHT = 500.00;
+
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 10);
     /**
      * constant Point coordinates of the default starting location of an elephant.
      */
@@ -32,13 +34,14 @@ public class Elephant extends AnimalChew {
      * passing name and location to super.
      * @see com.animals.AnimalChew
      * @param name String representation of elephant name.
-     * @param location Point coordinates indicating elephant location.
      */
-    public Elephant(String name, Point location) {
-        super(name, location);
-        setWeight(DEFAULT_WEIGHT);
+
+    public Elephant(String name, int size, int horSpeed, int verSpeed, String col) {
+        super(name, DEFAULT_STARTING_LOCATION, size, horSpeed, verSpeed, col);
+        setWeight(getSize() * 10);
         setTrunkLength(DEFAULT_TRUNK_LENGTH);
         setDiet(new Herbivore());
+        loadImages(animalShortPathName());
         MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
@@ -47,8 +50,8 @@ public class Elephant extends AnimalChew {
      * passing name and default starting location to main constructor.
      * @param name String representation of elephant name.
      */
-    public Elephant(String name) {
-        this(name, DEFAULT_STARTING_LOCATION);
+    public Elephant(String name, int horSpeed, int verSpeed) {
+        this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
 
@@ -60,6 +63,9 @@ public class Elephant extends AnimalChew {
         MessageUtility.logSound(this.getName(), "Trumpets with joy while flapping its ears, then chews");
     }
 
+    public static Point getDefaultStartingLocation() {
+        return DEFAULT_STARTING_LOCATION;
+    }
     /**
      * trunk length getter.
      * @return double value of the trunk length.
@@ -69,6 +75,9 @@ public class Elephant extends AnimalChew {
         return trunkLength;
     }
 
+    public static double getDefaultTrunkLength() {
+        return DEFAULT_TRUNK_LENGTH;
+    }
     /**
      * trunk length setter.
      * checks if the trunk length is valid (between min/max values).
@@ -112,5 +121,16 @@ public class Elephant extends AnimalChew {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+
+    @Override
+    public String getAnimalName() {
+        return "Elephant";
+    }
+
+    @Override
+    public String animalShortPathName() {
+        return "elf";
     }
 }

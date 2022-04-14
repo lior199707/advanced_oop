@@ -26,6 +26,7 @@ public class Lion extends AnimalRoar {
      */
     private static final int DEFAULT_SCAR_COUNT = 0;
 
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 0.8);
     /**
      * integer value of the scar count of a lion.
      */
@@ -37,13 +38,14 @@ public class Lion extends AnimalRoar {
      * passing name and location to super.
      * @see com.animals.AnimalRoar
      * @param name String representation of lion name.
-     * @param location Point coordinates indicating lion location.
      */
-    public Lion(String name, Point location) {
-        super(name, location);
-        setWeight(DEFAULT_WEIGHT);
+
+    public Lion(String name, int size, int horSpeed, int verSpeed, String col) {
+        super(name, DEFAULT_STARTING_LOCATION, size, horSpeed, verSpeed, col);
+        setWeight(getSize() * 0.8);
         setDiet(new Carnivore());
         scarCount = DEFAULT_SCAR_COUNT;
+        loadImages(animalShortPathName());
         MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
@@ -52,8 +54,16 @@ public class Lion extends AnimalRoar {
      * passing name and default starting location to main constructor.
      * @param name String representation of lion name.
      */
-    public Lion(String name) {
-        this(name, DEFAULT_STARTING_LOCATION);
+    public Lion(String name, int horSpeed, int verSpeed) {
+        this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
+    }
+
+    public static Point getDefaultStartingLocation() {
+        return DEFAULT_STARTING_LOCATION;
+    }
+
+    public static int getDefaultScarCount() {
+        return DEFAULT_SCAR_COUNT;
     }
 
     /**
@@ -125,4 +135,16 @@ public class Lion extends AnimalRoar {
     public String toString() {
         return super.toString();
     }
+
+    @Override
+    public String animalShortPathName() {
+        return "lio";
+    }
+
+    @Override
+    public String getAnimalName() {
+        return "Lion";
+    }
+
+
 }
