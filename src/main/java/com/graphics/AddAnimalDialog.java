@@ -141,15 +141,30 @@ public class AddAnimalDialog extends JDialog {
     public JPanel createSouthPanel() {
         JPanel buttonPanel = new JPanel();
 
-        JButton addAnimalButton = new JButton("Add Animal");
-        JButton validateButton = new JButton("Validate");
+        addAnimalButton = new JButton("Add Animal");
+        validateButton = new JButton("Validate");
 
         // disabling addAnimalButton. will enable after pressing validate - in action listener.
         addAnimalButton.setEnabled(false);
 
         // adding to action listener.
-        addAnimalButton.addActionListener(listener);
-        validateButton.addActionListener(listener);
+//        addAnimalButton.addActionListener(listener);
+        validateButton.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 boolean validated;
+                 if (color != null && animalType != null){
+
+                     validated = (nameStatus && sizeStatus && vSpeedStatus && hSpeedStatus);
+                     addAnimalButton.setEnabled(validated);
+                 }
+                 else {
+                     // Implement JOptionPane with error message
+                     System.out.println("Invalid animal input!");
+                 }
+             }
+         });
+        validateButton.setActionCommand("Validate");
 
         // adding buttons to button panel.
         buttonPanel.add(validateButton);
@@ -159,6 +174,8 @@ public class AddAnimalDialog extends JDialog {
 
     public JPanel createEastPanel() {
         JPanel imagePanel = new JPanel(new GridBagLayout());
+        imageLabel = new JLabel(createImageIcon(findImagePath(animalTypes[0], animalColors[0],1)));
+
         GridBagConstraints gbcImagePanel = new GridBagConstraints();
         gbcImagePanel.gridx = 5;
         gbcImagePanel.gridy = 5;
@@ -171,6 +188,10 @@ public class AddAnimalDialog extends JDialog {
         imagePanel.add(imageLabel, gbcImagePanel);
 
         return imagePanel;
+    }
+
+    public String getAnimalType() {
+        return animalType;
     }
 
     // creating west panel containing user input & dynamic fields.
@@ -296,9 +317,9 @@ public class AddAnimalDialog extends JDialog {
         });
 
         // create south input panel components
-        locationLabel = new JLabel("Location:");
         weightLabel = new JLabel("Weight:");
-        uniqueLabel = new JLabel("Unique:");
+        uniqueLabel = new JLabel("Scar Count: " + Lion.getDefaultScarCount());
+        locationLabel = new JLabel("Location: " + Lion.getDefaultStartingLocation());
 
 
         // setting layout constraints for north panel.
@@ -354,7 +375,7 @@ public class AddAnimalDialog extends JDialog {
 
         gbcSouthInputPanel.anchor = GridBagConstraints.LINE_START;
         gbcSouthInputPanel.weightx = 1;
-        gbcSouthInputPanel.insets = new Insets(0,5,0,0);
+        gbcSouthInputPanel.insets = new Insets(0, 5, 0, 0);
 
         gbcSouthInputPanel.gridx = 0;
         gbcSouthInputPanel.gridy = 5;
@@ -379,7 +400,6 @@ public class AddAnimalDialog extends JDialog {
         // return the input panel.
         return inputPanel;
     }
-
 
 
     // setting up panels on given frame.
@@ -475,7 +495,6 @@ public class AddAnimalDialog extends JDialog {
                 if (validRangeTextField.getText().isEmpty()) {
                     validRangeTextField.setText(MIN_RANGE + "-" + MAX_RANGE);
                     validRangeTextField.setForeground(Color.GRAY);
-                    validRangeTextField.setText(MIN_RANGE + "-" + MAX_RANGE);
                 }
             }
         });
