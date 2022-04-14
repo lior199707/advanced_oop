@@ -1,5 +1,7 @@
 package com.graphics;
 
+import com.animals.Animal;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -9,8 +11,11 @@ import java.util.ArrayList;
 
 public class ZooPanel extends JPanel implements Runnable, ActionListener {
     private JPanel actionPanel;
+    private JPanel animalPanel;
     private JDialog addAnimalDialog;
+    private JDialog moveAnimalDialog;
     private JFrame tableFrame;
+    private ArrayList<Animal> animals;
 
     public ZooPanel(){
         actionPanel = new JPanel();
@@ -59,7 +64,7 @@ public class ZooPanel extends JPanel implements Runnable, ActionListener {
 //                null,
 //                possibilities,
 //                "ham");
-        Object[] options = {"Lettuce", "Cabbage", "Meat"};
+        String[] options = {"Lettuce", "Cabbage", "Meat"};
         int result = JOptionPane.showOptionDialog(null,//parent container of JOptionPane
                 "What food would you like to add?",
                 "Add Food Dialog",
@@ -87,18 +92,11 @@ public class ZooPanel extends JPanel implements Runnable, ActionListener {
             }
             case "Move Animal" -> {
                 ArrayList<String> names = new ArrayList<>();
-                names.add("name1");
-                names.add("name2");
-                names.add("name3");
-                names.add("name4");
-                names.add("name5");
-                names.add("name6");
-                names.add("name7");
-                names.add("name8");
-                names.add("name9");
-                names.add("name10");
-                JDialog dialog = new MoveAnimalDialog(names);
-                dialog.getContentPane();
+                for (int i = 0; i < 10; i++){
+                    names.add("name"+i);
+                }
+                moveAnimalDialog = new MoveAnimalDialog(names);
+                moveAnimalDialog.getContentPane();
                 System.out.println("Move Animal pressed!");
             }
             case "Clear" -> {
@@ -110,27 +108,7 @@ public class ZooPanel extends JPanel implements Runnable, ActionListener {
             }
             case "Info" -> {
                 //creating animals details list
-                ArrayList<ArrayList<String>> animalsDetails = new ArrayList<>();
-                //creating first animal details
-                ArrayList<String> animalDetails1 = new ArrayList<>();
-                animalDetails1.add("Elephant");
-                animalDetails1.add("NATURAL");
-                animalDetails1.add("2000");
-                animalDetails1.add("5");
-                animalDetails1.add("5");
-                animalDetails1.add("4");
-                //creating second animal details
-                ArrayList<String> animalDetails2 = new ArrayList<>();
-                animalDetails2.add("Lion");
-                animalDetails2.add("NATURAL");
-                animalDetails2.add("380");
-                animalDetails2.add("8");
-                animalDetails2.add("8");
-                animalDetails2.add("5");
-                //adding the details to the main array
-                animalsDetails.add(animalDetails1);
-                animalsDetails.add(animalDetails2);
-                tableFrame = new ZooTable(animalsDetails, 9);
+                InfoTableMVC table = new InfoTableMVC(animals);
 
                 System.out.println("Info pressed!");
             }
@@ -138,5 +116,9 @@ public class ZooPanel extends JPanel implements Runnable, ActionListener {
                 System.exit(1);
             }
         }
+    }
+
+    public ArrayList<Animal> getAnimals() {
+        return animals;
     }
 }
