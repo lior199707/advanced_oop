@@ -15,7 +15,7 @@ public class PrivateGraphicUtils {
         return new Point((screenSize.width / 2) - (FRAME_X / 2), (screenSize.height / 2) - (FRAME_Y / 2));
     }
 
-    public static String findImagePath(String type, String color){
+    public static String findImagePath(String type, String color, int direction){
         StringBuilder path = new StringBuilder();
         path.append(PICTURE_PATH);
         path.append(type.toLowerCase());
@@ -34,7 +34,11 @@ public class PrivateGraphicUtils {
             case "BLUE" ->  path.append("_b_");
         }
 
-        path.append("1.png");
+        if (direction == 1){
+            path.append("1.png");
+        } else {
+            path.append("2.png");
+        }
 
         System.out.println(path);
         return String.valueOf(path);

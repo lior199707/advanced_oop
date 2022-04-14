@@ -140,7 +140,7 @@ public class MoveAnimalDialog extends JDialog {
     private JPanel createCenterPanel(){
         JPanel centerPanel = new JPanel(new GridBagLayout());
         JLabel imageLabel = new JLabel();
-        imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(PrivateGraphicUtils.findImagePath("Lion","Natural")));
+        imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(PrivateGraphicUtils.findImagePath("Lion","Natural",1)));
 
         GridBagConstraints centerPanelGbc = new GridBagConstraints();
         //default
