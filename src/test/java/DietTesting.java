@@ -1,4 +1,3 @@
-import com.animals.Lion;
 import com.diet.Carnivore;
 import com.diet.Herbivore;
 import com.diet.IDiet;
@@ -18,16 +17,4 @@ public class DietTesting {
         assertNotEquals(carni,omni);
         assertNotEquals(herbi,omni);
     }
-
-    @Test
-    public void testToString(){
-        Lion lion = new Lion("Simba");
-        System.out.println(lion);
-    }
-
-
-
-
-
-
 }
