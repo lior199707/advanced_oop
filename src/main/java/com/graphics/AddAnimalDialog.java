@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import static com.privateutil.PrivateGraphicUtils.createImageIcon;
-import static com.privateutil.PrivateGraphicUtils.findImagePath;
+import static com.privateutil.PrivateGraphicUtils.findAnimalImagePath;
 
 public class AddAnimalDialog extends JDialog {
     private final String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
@@ -46,9 +46,12 @@ public class AddAnimalDialog extends JDialog {
     private boolean vSpeedStatus;
     private boolean hSpeedStatus;
 
-    public AddAnimalDialog() {
+    private AnimalModel model;
+
+    public AddAnimalDialog(AnimalModel model) {
         int dialogX = 500, dialogY = 350;
 
+        this.model = model;
         // configurations
         this.setModal(true);
         this.setTitle("Add Animal");
@@ -80,9 +83,9 @@ public class AddAnimalDialog extends JDialog {
 
     public JPanel createNorthPanel() {
         JPanel animalTypePanel = new JPanel();
-        animalTypesCmb = new JComboBox<>(animalTypes);
         locationLabel = new JLabel("Location: ");
-        animalTypesCmb.setSelectedItem(-1);
+        animalTypesCmb = new JComboBox<>(animalTypes);
+        animalTypesCmb.getModel().setSelectedItem("Lion");
 
         // setting border
         TitledBorder animalChoiceBorder = BorderFactory.createTitledBorder("Choose Animal: ");
@@ -125,7 +128,7 @@ public class AddAnimalDialog extends JDialog {
                     if (color == null) {
                         color = animalColors[0];
                     }
-                    imageLabel.setIcon(createImageIcon(findImagePath(animalType, color,1)));
+                    imageLabel.setIcon(createImageIcon(findAnimalImagePath(animalType, color,1)));
                     imageLabel.repaint();
                 }
             }
@@ -154,7 +157,6 @@ public class AddAnimalDialog extends JDialog {
              public void actionPerformed(ActionEvent e) {
                  boolean validated;
                  if (color != null && animalType != null){
-
                      validated = (nameStatus && sizeStatus && vSpeedStatus && hSpeedStatus);
                      addAnimalButton.setEnabled(validated);
                  }
@@ -164,7 +166,40 @@ public class AddAnimalDialog extends JDialog {
                  }
              }
          });
-        validateButton.setActionCommand("Validate");
+
+        addAnimalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String animalName = nameTextField.getText();
+                String animalColor = String.valueOf(animalColorsCmb.getSelectedItem());
+                int animalSize = Integer.parseInt(sizeTextField.getText());
+                int animalVSpeed = Integer.parseInt(vSpeedTextField.getText());
+                int animalHSpeed = Integer.parseInt(hSpeedTextField.getText());
+                System.out.println(animalHSpeed);
+
+                if (model.getModelSize() < AnimalModel.getModelMaxSize()) {
+                    Animal animal = null;
+                    switch (animalType) {
+                        case "Lion" -> animal = new Lion(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
+                        case "Bear" -> animal = new Bear(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
+                        case "Giraffe" -> animal = new Giraffe(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
+                        case "Elephant" -> animal = new Elephant(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
+                        case "Turtle" -> animal = new Turtle(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
+                    }
+                    animal.setChanges(true);
+                    model.addAnimal(animal);
+                    nameTextField.setText("");
+                    sizeTextField.setText("");
+                    vSpeedTextField.setText("");
+                    hSpeedTextField.setText("");
+                    animalColorsCmb.setSelectedIndex(0);
+                    animalTypesCmb.requestFocusInWindow();
+                } else {
+                    String message = "You cannot add more than 10 animals";
+                    JOptionPane.showMessageDialog(getContentPane().getParent(), message, "Message", JOptionPane.ERROR_MESSAGE, null);
+                }
+            }
+        });
 
         // adding buttons to button panel.
         buttonPanel.add(validateButton);
@@ -174,7 +209,7 @@ public class AddAnimalDialog extends JDialog {
 
     public JPanel createEastPanel() {
         JPanel imagePanel = new JPanel(new GridBagLayout());
-        imageLabel = new JLabel(createImageIcon(findImagePath(animalTypes[0], animalColors[0],1)));
+        imageLabel = new JLabel(createImageIcon(findAnimalImagePath(animalTypes[0], animalColors[0],1)));
 
         GridBagConstraints gbcImagePanel = new GridBagConstraints();
         gbcImagePanel.gridx = 5;
@@ -217,7 +252,7 @@ public class AddAnimalDialog extends JDialog {
         vSpeedTextField = new JTextField("1-10", 10);
         hSpeedTextField = new JTextField("1-10", 10);
         animalColorsCmb = new JComboBox<>(animalColors);
-        animalColorsCmb.setSelectedItem(-1);
+        animalColorsCmb.getModel().setSelectedItem("Natural");
 
         animalColorsCmb.addItemListener(new ItemListener() {
             @Override
@@ -227,7 +262,7 @@ public class AddAnimalDialog extends JDialog {
                     if (animalType == null) {
                         animalType = animalTypes[0];
                     }
-                    imageLabel.setIcon(createImageIcon(findImagePath(animalType, color,1)));
+                    imageLabel.setIcon(createImageIcon(findAnimalImagePath(animalType, color,1)));
                     imageLabel.repaint();
                 }
             }

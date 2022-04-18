@@ -2,17 +2,26 @@ package com.plants;
 
 import com.food.EFoodType;
 import com.food.IEdible;
+import com.graphics.IDrawable;
+import com.graphics.ZooPanel;
 import com.mobility.Ilocatable;
 import com.mobility.Point;
+import com.privateutil.PrivateGraphicUtils;
 import com.utilities.MessageUtility;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 /**
  * @author baroh
  *
  */
-public abstract class Plant implements IEdible, Ilocatable {
+public abstract class Plant implements IEdible, Ilocatable, IDrawable {
 	/**
 	 * 
 	 */
@@ -26,6 +35,9 @@ public abstract class Plant implements IEdible, Ilocatable {
 	 */
 	private double weight;
 
+	private ZooPanel pan;
+
+	private BufferedImage img;
 	/**
 	 * 
 	 */
@@ -36,9 +48,11 @@ public abstract class Plant implements IEdible, Ilocatable {
 		this.location = new Point(x, y);
 		this.height = rand.nextInt(30);
 		this.weight = rand.nextInt(12);
+		loadImages(foodShortPathName());
 		MessageUtility.logConstractor("Plant", "Plant");
 	}
 
+	public abstract String foodShortPathName();
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -122,6 +136,35 @@ public abstract class Plant implements IEdible, Ilocatable {
 		MessageUtility.logSetter(this.getClass().getSimpleName(), "setWeight", weight, isSuccess);
 
 		return isSuccess;
+	}
+
+	@Override
+	public void drawObject(Graphics g) {
+		// need to draw the object at the center of the screen.
+		int centerX = pan.getWidth() / 2;
+		int centerY = pan.getHeight() / 2;
+		g.drawImage(img, centerX, centerY, null);
+	}
+
+	@Override
+	public void loadImages(String shortPathName) {
+		String path = PrivateGraphicUtils.findFoodImagePath(shortPathName);
+		try {
+			img = ImageIO.read(new File(path));
+		} catch (IOException e) {
+			JOptionPane.showOptionDialog(pan, "Food image failed to load", "ERROR",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+					null, null, null);
+		}
+	}
+
+	public BufferedImage getImg() {
+		return img;
+	}
+
+	@Override
+	public String getColor() {
+		return null;
 	}
 
 	/*

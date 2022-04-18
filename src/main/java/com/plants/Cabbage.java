@@ -14,4 +14,9 @@ public class Cabbage extends Plant {
         MessageUtility.logConstractor("Cabbage", "Cabbage");
     }
 
+    @Override
+    public String foodShortPathName() {
+        return "Cabbage";
+    }
+
 }

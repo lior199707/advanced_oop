@@ -13,4 +13,9 @@ public class Lettuce extends Plant {
 	public Lettuce() {
 		MessageUtility.logConstractor("Lettuce", "Lettuce");
 	}
+
+	@Override
+	public String foodShortPathName() {
+		return "Lettuce";
+	}
 }

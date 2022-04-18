@@ -1,5 +1,7 @@
 package com.privateutil;
 
+import com.animals.Animal;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +17,7 @@ public class PrivateGraphicUtils {
         return new Point((screenSize.width / 2) - (FRAME_X / 2), (screenSize.height / 2) - (FRAME_Y / 2));
     }
 
-    public static String findImagePath(String type, String color, int direction){
+    public static String findAnimalImagePath(String type, String color, int direction){
         StringBuilder path = new StringBuilder();
         path.append(PICTURE_PATH);
         path.append(type.toLowerCase());
@@ -44,6 +46,22 @@ public class PrivateGraphicUtils {
         return String.valueOf(path);
     }
 
+    public static String findFoodImagePath(String type){
+        StringBuilder path = new StringBuilder();
+        String lowerCaseType = type.toLowerCase();
+        path.append(PICTURE_PATH);
+        path.append("food_images/");
+        path.append(lowerCaseType);
+        if (lowerCaseType.equals("meat")){
+            path.append(".gif");
+        } else {
+            path.append(".png");
+        }
+
+        return String.valueOf(path);
+    }
+
+    // TODO: Consider naming for both methods including local variables.
     // change to path name.
     public static ImageIcon createImageIcon(String path){
         BufferedImage picture = null;
@@ -59,6 +77,18 @@ public class PrivateGraphicUtils {
         }
 
         assert picture != null;
+        return new ImageIcon(modifiedImage);
+    }
+
+    // TODO: Consider naming for both methods including local variables.
+    public static ImageIcon createImageIcon(Animal animal){
+        BufferedImage picture = animal.getImg1();
+        Image modifiedImage;
+
+        ImageIcon image = new ImageIcon(picture);
+        Image toSizeImage = image.getImage();
+        modifiedImage = toSizeImage.getScaledInstance(220, 180, Image.SCALE_SMOOTH);
+
         return new ImageIcon(modifiedImage);
     }
 }

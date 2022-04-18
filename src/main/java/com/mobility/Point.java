@@ -117,6 +117,18 @@ public class Point {
         return isSuccess;
     }
 
+    public static int getMaxX() {
+        return MAX_X;
+    }
+
+    public static int getMaxY() {
+        return MAX_Y;
+    }
+
+    public static int getMinXY() {
+        return MIN_XY;
+    }
+
     /**
      * checks if this object and the other object 'o' are identical.
      *

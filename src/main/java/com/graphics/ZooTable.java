@@ -2,11 +2,9 @@ package com.graphics;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ZooTable extends JFrame {
     //private static ZooTable instance = null;
@@ -53,11 +51,3 @@ public class ZooTable extends JFrame {
         }
     }
 }
-
-//    public static ZooTable getInstance(ArrayList<ArrayList<String>> animalsInfo, int totalEatCounter) {
-//        if (instance == null) {
-//            instance = new ZooTable(animalsInfo, totalEatCounter);
-//        }
-//        return instance;
-//    }
-

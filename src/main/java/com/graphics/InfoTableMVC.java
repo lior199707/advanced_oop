@@ -3,56 +3,69 @@ package com.graphics;
 import com.animals.Animal;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class InfoTableMVC extends JFrame {
-    private TableRowSorter<AnimalModel> sorter;
-    private JTextField tbFilterText;
+public class InfoTableMVC extends JDialog {
+    private TableRowSorter<ZooModel> sorter;
+    private static boolean isOpen = false;
+    JTable table;
 
-    public InfoTableMVC(ArrayList<Animal> animal){
-        super("Info");
+    public static boolean getIsOpen(){
+        return isOpen;
+    }
+    public InfoTableMVC(AnimalModel model){
+        ZooModel tableModel = new ZooModel(model);
 
-        AnimalModel model = new AnimalModel(animal);
-        JTable table = new JTable(model);
-        table.setRowSorter(sorter = new TableRowSorter<AnimalModel>(model));
+        table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setPreferredScrollableViewportSize(table.getPreferredSize());
         table.setFillsViewportHeight(true);
+        table.setRowSorter(sorter = new TableRowSorter<>(tableModel));
+        table.setOpaque(false);
+        table.getTableHeader().setFont(new Font("Default", Font.BOLD,12));
+        table.getTableHeader().setBackground(Color.LIGHT_GRAY);
+        table.getTableHeader().setForeground(Color.BLACK);
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-        this.add(new JScrollPane(table));
-        this.add(tbFilterText = new JTextField());
-        tbFilterText.setToolTipText("Filter Name Column");
-        tbFilterText.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { newFilter(); }
-            public void removeUpdate(DocumentEvent e) { newFilter(); }
-            public void changedUpdate(DocumentEvent e) { newFilter(); }
-        });
+//        Object[] lastRow = {"Total", "", "", "", "", "", "0"};
+//        DefaultTableModel m1 = new DefaultTableModel(lastRow, 0);
+//        JTable kaka = new JTable(m1);
+
+        this.add(new JScrollPane(table), BorderLayout.NORTH);
+//        this.add(new JScrollPane(kaka), BorderLayout.SOUTH);
+
+        this.setModalityType(ModalityType.DOCUMENT_MODAL);
+        this.setSize(500,500);
+        this.setLocationRelativeTo(this);
         this.pack();
-        this.setVisible(true);
+        isOpen = true;
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose();
+                setVisible(false);
+                isOpen = false;
+            }
+        });
     }
 
-    private void newFilter() {
-        try {
-            sorter.setRowFilter(RowFilter.regexFilter(tbFilterText.getText(), 1));
-        } catch (java.util.regex.PatternSyntaxException e) {
-            // If current expression doesn't parse, don't update.
-        }
-    }
 
-    private class AnimalModel extends AbstractTableModel {
+    public class ZooModel extends AbstractTableModel {
         private ArrayList<Animal> data;
-        private final String[] columnNames = {"Animal", "Color", "Weight", "Hor.speed", "Var.speed", "Eat Counter"};
+        private final String[] columnNames = {"Animal", "Name", "Color", "Weight", "Hor.speed", "Var.speed", "Eat Counter"};
 
-        public AnimalModel(ArrayList<Animal> data) { this.data = data; }
+        public ZooModel(AnimalModel model) { this.data = model.getModel();}
+
         @Override
         public int getRowCount() { return data.size(); }
+
         @Override
-        public int getColumnCount() { return 5; }
+        public int getColumnCount() { return 7; }
 
         @Override
         public String getColumnName(int column) {
@@ -62,20 +75,31 @@ public class InfoTableMVC extends JFrame {
         @Override
         public Class getColumnClass(int column) { return Objects.requireNonNull(getValueAt(0, column)).getClass(); }
 
-
-
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             Animal animal = data.get(rowIndex);
             switch (columnIndex) {
-                case 0:
+                case 0 -> {
+                    return animal.getAnimalName();
+                }
+                case 1 -> {
                     return animal.getName();
-                case 1:
+                }
+                case 2 -> {
+                    return animal.getColor();
+                }
+                case 3 -> {
                     return animal.getWeight();
-                case 2:
-                    return animal.getDiet();
-                case 3:
-                    return animal.getTotalDistance();
+                }
+                case 4 -> {
+                    return animal.getHorSpeed();
+                }
+                case 5 -> {
+                    return animal.getVerSpeed();
+                }
+                case 6 -> {
+                    return animal.getEatCount();
+                }
             }
             return null;
         }

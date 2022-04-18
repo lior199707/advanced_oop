@@ -126,8 +126,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public double move(Point nextLocation) {
         final double CONST = 0.00025;
         double distance = super.move(nextLocation);
-        if (distance > 0)
+        if (distance > 0) {
             this.setWeight(this.weight - (distance * this.weight * CONST));
+            this.coordChanged = true;
+        }
         return distance;
     }
 
@@ -221,6 +223,14 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return y_dir;
     }
 
+    public int getVerSpeed() {
+        return verSpeed;
+    }
+
+    public int getHorSpeed() {
+        return horSpeed;
+    }
+
     public BufferedImage getImg2() {
         return img2;
     }
@@ -256,8 +266,8 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public boolean setHorSpeed(int horSpeed){
         boolean isSuccess = false;
         int MIN_RANGE = 1,MAX_RANGE = 10;
-        if (MIN_RANGE <= horSpeed && verSpeed <= MAX_RANGE){
-            this.horSpeed = verSpeed;
+        if (MIN_RANGE <= horSpeed && horSpeed <= MAX_RANGE){
+            this.horSpeed = horSpeed;
             isSuccess = true;
         } else this.horSpeed = 1;
         return isSuccess;
@@ -305,18 +315,18 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public void loadImages(String shortPathName) {
         String path;
         if (getX_dir() == 1) {
-            path = PrivateGraphicUtils.findImagePath(this.getAnimalName(),col, getX_dir());
+            path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(),col, getX_dir());
             try {
-                img1 = ImageIO.read(new File(String.valueOf(path)));
+                img1 = ImageIO.read(new File(path));
             } catch (IOException e) {
                 JOptionPane.showOptionDialog(pan, "Img1 failed to load", "ERROR",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                         null, null, null);
             }
         } else {
-            path = PrivateGraphicUtils.findImagePath(this.getAnimalName(),col, getY_dir());
+            path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(),col, getY_dir());
             try {
-                img2 = ImageIO.read(new File(String.valueOf(path)));
+                img2 = ImageIO.read(new File(path));
             } catch (IOException e) {
                 JOptionPane.showOptionDialog(pan, "Img2 failed to load", "ERROR",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
@@ -332,7 +342,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             case "RED" -> this.col = "RED";
             case "BLUE" -> this.col = "BLUE";
             case "NATURAL" -> this.col = "NATURAL";
-            default -> isSuccess = false;
+            default -> {
+                this.col = "NATURAL";
+                isSuccess = false;
+            }
         }
         return isSuccess;
     }

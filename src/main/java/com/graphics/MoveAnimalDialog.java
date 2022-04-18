@@ -1,34 +1,34 @@
 package com.graphics;
 
+import com.mobility.Point;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.awt.event.*;
 
 public class MoveAnimalDialog extends JDialog {
-    //name string will be given in the constructor
-    //private final MoveAnimalDialogListener listener;
-    private JComboBox<String> animalsNames;
     // choose coordinates panel
     private JComboBox<String> animalNames;
     private JLabel xLabel;
     private JLabel yLabel;
-    private JLabel currAnimalXLocationLabel;
-    private  JLabel currAnimalYocationLable;
+    private JLabel imageLabel;
     private JTextField xTextField;
     private JTextField yTextField;
     private JButton validateButton;
     private JButton moveAnimalButton;
-    private BufferedImage picture;
+    private JLabel currLocationLabel;
+    private AnimalModel model;
+    private boolean xStatus;
+    private boolean yStatus;
 
-    public MoveAnimalDialog(final ArrayList<String> zooAnimalsNames) {
-        int dialogX = 310, dialogY = 420;
+
+    public MoveAnimalDialog(AnimalModel model) {
+        int dialogX = 350, dialogY = 400;
+        this.model = model;
 
         // configurations
         this.setModal(true);
@@ -36,7 +36,7 @@ public class MoveAnimalDialog extends JDialog {
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         this.setLocation(PrivateGraphicUtils.centerWindow(dialogX, dialogY));
         this.setSize(new Dimension(dialogX, dialogY));
-        this.setResizable(false);
+        this.setResizable(true);
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -53,117 +53,154 @@ public class MoveAnimalDialog extends JDialog {
             }
         });
 
-        this.createDialog(this, zooAnimalsNames);
+        this.createDialog(this);
         this.setVisible(true);
         this.pack();
-
-        //listener = new AddAnimalDialogListener();
-
     }
 
-    private JPanel createSouthPanel() {
-        GridBagConstraints southPanelGbl = new GridBagConstraints();
-        xLabel = new JLabel("X: ");
-        xLabel.setFont(new Font("Default", Font.PLAIN, 20));
-        yLabel = new JLabel("   Y: ");
-        yLabel.setFont(new Font("Default", Font.PLAIN, 20));
-        xTextField = new JTextField(10);
-        yTextField = new JTextField(10);
-        validateButton = new JButton("Validate");
-        //validateButton.addActionListener(listener);
-        moveAnimalButton = new JButton("Move Animals");
-        //moveAnimalButton.addActionListener(listener);
-        JPanel southPanel = new JPanel(new GridBagLayout());
-        //southPanelGbl.weightx = 0;
-        //southPanelGbl.weighty = 0;
-        southPanelGbl.fill = GridBagConstraints.HORIZONTAL;
-        //adding x label
-        southPanelGbl.gridy = 0;
-        southPanelGbl.gridx = 0;
-        southPanelGbl.insets = new Insets(0, 0, 5, 0);
-        southPanel.add(xLabel, southPanelGbl);
-        //adding x text field
-        southPanelGbl.gridx = 1;
-        southPanelGbl.gridy = 0;
-        southPanelGbl.gridwidth = 4;
-        southPanelGbl.insets = new Insets(0, 0, 0, 0);
-        southPanel.add(xTextField, southPanelGbl);
-        //adding y label
-        southPanelGbl.insets = new Insets(0, 0, 5, 0);
-        southPanelGbl.gridx = 5;
-        southPanelGbl.gridy = 0;
-        southPanelGbl.gridwidth = 1;
-        southPanel.add(yLabel, southPanelGbl);
-        //adding y text field
-        southPanelGbl.insets = new Insets(0, 0, 0, 0);
-        southPanelGbl.gridx = 6;
-        southPanelGbl.gridy = 0;
-        southPanelGbl.gridwidth = 4;
-        southPanel.add(yTextField, southPanelGbl);
-        //adding buttons panel
-        JPanel buttonsPanel = createButtonsPanel();
-        southPanelGbl.gridx = 0;
-        southPanelGbl.gridy = 1;
-        southPanelGbl.gridwidth = 10;
-        //10
-        southPanel.add(buttonsPanel, southPanelGbl);
-        //title for coordinates panel
-        Border bor = BorderFactory.createLineBorder(Color.BLACK);
-        TitledBorder title = BorderFactory.createTitledBorder(bor, "New Location");
-        title.setTitleJustification(TitledBorder.CENTER);
-        title.setTitleFont(new Font("Default", Font.PLAIN, 10));
-        southPanel.setBorder(title);
-        return southPanel;
-    }
-
-    private JPanel createButtonsPanel() {
-        JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, 20, 0));
-        JLabel vlaidateButtonText = new JLabel("Validate");
-        vlaidateButtonText.setFont(new Font("Default", Font.PLAIN, 10));
-        validateButton = new JButton(vlaidateButtonText.getText());
-        JLabel moveButtonText = new JLabel("Move Animals");
-        moveButtonText.setFont(new Font("Default", Font.PLAIN, 10));
-        JButton moveButton = new JButton(moveButtonText.getText());
-        buttonsPanel.add(validateButton);
-        buttonsPanel.add(moveAnimalButton);
-        return buttonsPanel;
-
-    }
-
-    private JPanel createNorthPanel(final ArrayList<String> zooAnimalsNames) {
+    private JPanel createNorthPanel() {
         JPanel northPanel = new JPanel(new GridLayout());
-        animalNames = new JComboBox<String>(zooAnimalsNames.toArray(new String[0]));
+        animalNames = new JComboBox<>(model.getAnimalNames());
+        animalNames.setSelectedItem(0);
+        animalNames.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED){
+                    int index = animalNames.getSelectedIndex();
+                    imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(model.getModel().get(index)));
+                }
+            }
+        });
+
         northPanel.add(animalNames);
         return northPanel;
     }
 
+    private JPanel createSouthPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JPanel northPanel = new JPanel();
+
+        xLabel = new JLabel("X: ");
+        yLabel = new JLabel("Y: ");
+        xTextField = new JTextField("0-800",10);
+        yTextField = new JTextField("0-600",10);
+
+        addValidRangeFocusListener(xTextField, Point.getMinXY(), Point.getMaxX());
+        addValidRangeFocusListener(yTextField, Point.getMinXY(), Point.getMaxY());
+
+        addCoordinatesInputDocumentListener(xTextField);
+        addCoordinatesInputDocumentListener(yTextField);
+
+        xTextField.setForeground(Color.GRAY);
+        yTextField.setForeground(Color.GRAY);
+
+        northPanel.add(xLabel);
+        northPanel.add(xTextField);
+        northPanel.add(yLabel);
+        northPanel.add(yTextField);
+
+        JPanel southPanel = new JPanel();
+
+        validateButton = new JButton("Validate");
+        moveAnimalButton = new JButton("Move Animal");
+        moveAnimalButton.setEnabled(false);
+        moveAnimalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int x = Integer.parseInt(xTextField.getText());
+                int y = Integer.parseInt(yTextField.getText());
+                model.getModel().get(animalNames.getSelectedIndex()).move(new Point(x,y));
+                currLocationLabel.setText("current location: " + model.getModel().get(animalNames.getSelectedIndex()).getLocation());
+            }
+        });
+
+        validateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean validated;
+                validated = (xStatus && yStatus);
+                moveAnimalButton.setEnabled(validated);
+            }
+        });
+
+        southPanel.add(validateButton);
+        southPanel.add(moveAnimalButton);
+
+        //title for coordinates panel
+        panel.add(northPanel, BorderLayout.NORTH);
+        panel.add(southPanel, BorderLayout.SOUTH);
+
+//        Border bor = BorderFactory.createLineBorder(Color.BLACK);
+        TitledBorder title = BorderFactory.createTitledBorder("New Location");
+        title.setTitleJustification(TitledBorder.CENTER);
+        panel.setBorder(title);
+        return panel;
+    }
+
+
+    private void addCoordinatesInputDocumentListener(JTextField coordinatesTextField){
+        coordinatesTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkValidInput();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkValidInput();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkValidInput();
+            }
+
+            public void checkValidInput() {
+                try {
+                    String currentText = coordinatesTextField.getText();
+                    moveAnimalButton.setEnabled(false);
+                    coordinatesTextField.setForeground(Color.BLACK);
+
+                    int coordinate = Integer.parseInt(currentText);
+                    if (coordinatesTextField == xTextField) {
+                        xStatus = true;
+                        if (coordinate < Point.getMinXY() || coordinate > Point.getMaxX()) {
+                            xStatus = false;
+                            throw new NumberFormatException();
+                        }
+                    } else {
+                        yStatus = true;
+                        if (coordinate < Point.getMinXY() || coordinate > Point.getMaxY()) {
+                            yStatus = false;
+                            throw new NumberFormatException();
+                        }
+                    }
+                } catch (NumberFormatException ignored){
+                    coordinatesTextField.setForeground(Color.RED);
+                }
+            }
+        });
+    }
+
     private JPanel createCenterPanel(){
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        JLabel imageLabel = new JLabel();
-        imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(PrivateGraphicUtils.findImagePath("Lion","Natural",1)));
+        imageLabel = new JLabel();
+        imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(model.getModel().get(0)));
 
         GridBagConstraints centerPanelGbc = new GridBagConstraints();
-        //default
-        centerPanelGbc.weightx = 0;
-        centerPanelGbc.weighty = 0;
-        centerPanelGbc.fill = GridBagConstraints.HORIZONTAL;
+
         //adding the picture label
         centerPanelGbc.gridx = 0;
         centerPanelGbc.gridy = 0;
         centerPanel.add(imageLabel, centerPanelGbc);
-        //adding current location for x coordinate
-        currAnimalXLocationLabel = new JLabel("current X:");
-        currAnimalXLocationLabel.setFont(new Font("Default", Font.BOLD, 10));
+
         centerPanelGbc.gridx = 0;
         centerPanelGbc.gridy = 1;
         centerPanelGbc.anchor = GridBagConstraints.LINE_START;
-        centerPanel.add(currAnimalXLocationLabel, centerPanelGbc);
-        //adding current location for y coordinate
-        currAnimalYocationLable = new JLabel("current Y:");
-        currAnimalYocationLable.setFont(new Font("Default", Font.BOLD, 10));
-        centerPanelGbc.gridx = 0;
-        centerPanelGbc.gridy = 2;
-        centerPanel.add(currAnimalYocationLable, centerPanelGbc);
+        currLocationLabel = new JLabel("current location: " + model.getModel().get(animalNames.getSelectedIndex()).getLocation());
+
+        centerPanel.add(currLocationLabel, centerPanelGbc);
 
         TitledBorder border = BorderFactory.createTitledBorder("Picture");
         border.setTitlePosition(TitledBorder.BELOW_TOP);
@@ -172,33 +209,30 @@ public class MoveAnimalDialog extends JDialog {
         return centerPanel;
     }
 
-//    private static MoveAnimalDialog instance = null;
-//    JFrame frame;
-//    JPanel panel;
-//
-//    private MoveAnimalDialog(){
-//        frame = new JFrame("Move Animal");
-//        panel = new JPanel();
-//        JLabel label = new JLabel("wejjkwejr");
-//        frame.add(panel);
-//        frame.add(label);
-//
-//
-//        frame.setSize(100,100);
-//        frame.setVisible(true);
 
 
-    public void createDialog(JDialog dialog, final ArrayList<String> zooAnimalsNames) {
-        dialog.getContentPane().add(createSouthPanel(), BorderLayout.SOUTH);
-        dialog.getContentPane().add(createNorthPanel(zooAnimalsNames), BorderLayout.NORTH);
+    public void createDialog(JDialog dialog){
+        dialog.getContentPane().add(createNorthPanel(), BorderLayout.NORTH);
         dialog.getContentPane().add(createCenterPanel(), BorderLayout.CENTER);
+        dialog.getContentPane().add(createSouthPanel(), BorderLayout.SOUTH);
+    }
+    
+    private void addValidRangeFocusListener(JTextField validRangeTextField,int MIN_RANGE, int MAX_RANGE) {
+        validRangeTextField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (validRangeTextField.getText().equals(MIN_RANGE + "-" + MAX_RANGE)) {
+                    validRangeTextField.setText("");
+                    validRangeTextField.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (validRangeTextField.getText().isEmpty()) {
+                    validRangeTextField.setText(MIN_RANGE + "-" + MAX_RANGE);
+                    validRangeTextField.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 }
-
-//    public static MoveAnimalDialog getInstance(){
-//        if (instance == null) {
-//            instance = new MoveAnimalDialog();
-//        }
-//        return instance;
-//    }
-

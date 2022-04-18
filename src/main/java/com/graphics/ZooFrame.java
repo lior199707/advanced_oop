@@ -15,15 +15,16 @@ public class ZooFrame extends JFrame{
         menuBar = constructJMenuBar();
         zooPanel = new ZooPanel();
 
-        this.add(zooPanel, BorderLayout.SOUTH);
+        this.add(zooPanel);
         this.setJMenuBar(menuBar);
 
         int frameX = 1000, frameY = 1000;
         this.setSize(frameX,frameY);
 
         this.setLocation(PrivateGraphicUtils.centerWindow(frameX,frameY));
-        this.setTitle("Zooshit");
+        this.setTitle("Zoo");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.setContentPane(zooPanel);
     }
 
     private JMenuBar constructJMenuBar( ){
