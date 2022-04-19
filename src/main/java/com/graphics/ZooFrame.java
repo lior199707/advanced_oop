@@ -3,13 +3,12 @@ package com.graphics;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ZooFrame extends JFrame{
-    private final JMenuBar menuBar;
-    private final JPanel zooPanel;
+    private JMenuBar menuBar;
+    private ZooPanel zooPanel;
 
     ZooFrame(){
         menuBar = constructJMenuBar();
@@ -18,13 +17,13 @@ public class ZooFrame extends JFrame{
         this.add(zooPanel);
         this.setJMenuBar(menuBar);
 
-        int frameX = 1000, frameY = 1000;
+        int frameX = 1000, frameY = 850;
         this.setSize(frameX,frameY);
-
         this.setLocation(PrivateGraphicUtils.centerWindow(frameX,frameY));
+        this.setResizable(false);
         this.setTitle("Zoo");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        this.setContentPane(zooPanel);
+        this.setVisible(true);
     }
 
     private JMenuBar constructJMenuBar( ){
@@ -79,15 +78,16 @@ public class ZooFrame extends JFrame{
                     System.exit(1);
                 }
                 case "Image" -> {
+                    zooPanel.setImageBackground();
                     System.out.println("Background -> Image pressed.");
                 }
                 case "Green" -> {
+                    zooPanel.setGreenBackground();
                     System.out.println("Background -> Green pressed.");
-                    zooPanel.setBackground(Color.green);
                 }
                 case "None" -> {
                     System.out.println("Background -> None pressed!");
-                    zooPanel.setBackground(null);
+                    zooPanel.setNoBackground();
                 }
                 case "Help" -> {
                     JOptionPane.showMessageDialog(null,"Home Work 2\nGUI", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -96,9 +96,15 @@ public class ZooFrame extends JFrame{
             }
         }
     }
+
+
     public static void main(String[] args) {
-        JFrame frame = new ZooFrame();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ZooFrame();
+            }
+        });
 //        frame.setLayout(new BorderLayout(100,100));
-        frame.setVisible(true);
     }
 }
