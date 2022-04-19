@@ -131,7 +131,8 @@ public class AddAnimalDialog extends JDialog {
                     if (color == null) {
                         color = animalColors[0];
                     }
-                    imageLabel.setIcon(PrivateGraphicUtils.resizeImage(findAnimalImagePath(animalType, color,DEFAULT_DIRECTION)));
+                    String path = findAnimalImagePath(animalType, color,DEFAULT_DIRECTION);
+                    imageLabel.setIcon(PrivateGraphicUtils.resizeImage(path, 220,180));
                     imageLabel.repaint();
                 }
             }
@@ -213,7 +214,8 @@ public class AddAnimalDialog extends JDialog {
 
     public JPanel createEastPanel() {
         JPanel imagePanel = new JPanel(new GridBagLayout());
-        imageLabel = new JLabel(PrivateGraphicUtils.resizeImage(findAnimalImagePath(animalTypes[0], animalColors[0],DEFAULT_DIRECTION)));
+        String path = findAnimalImagePath(animalTypes[0], animalColors[0],DEFAULT_DIRECTION);
+        imageLabel = new JLabel(PrivateGraphicUtils.resizeImage(path,220,180));
 
         GridBagConstraints gbcImagePanel = new GridBagConstraints();
         gbcImagePanel.gridx = 5;
@@ -266,7 +268,8 @@ public class AddAnimalDialog extends JDialog {
                     if (animalType == null) {
                         animalType = animalTypes[0];
                     }
-                    imageLabel.setIcon(PrivateGraphicUtils.resizeImage(findAnimalImagePath(animalType, color,DEFAULT_DIRECTION)));
+                    String path = findAnimalImagePath(animalType, color,DEFAULT_DIRECTION);
+                    imageLabel.setIcon(PrivateGraphicUtils.resizeImage(path, 220,180));
                     imageLabel.repaint();
                 }
             }

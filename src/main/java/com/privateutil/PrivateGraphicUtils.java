@@ -63,7 +63,7 @@ public class PrivateGraphicUtils {
 
     // TODO: Consider naming for both methods including local variables.
     // change to path name.
-    public static ImageIcon createImageIcon(String path){
+    public static ImageIcon resizeImage(String path, int width, int height){
         BufferedImage picture = null;
         Image modifiedImage = null;
 
@@ -71,7 +71,8 @@ public class PrivateGraphicUtils {
             picture = ImageIO.read(new File(path));
             ImageIcon image = new ImageIcon(picture);
             Image toSizeImage = image.getImage();
-            modifiedImage = toSizeImage.getScaledInstance(220, 180, Image.SCALE_SMOOTH);
+            // 220 180
+            modifiedImage = toSizeImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         } catch (IOException e) {
             System.err.println(path + "Not found");
         }
@@ -81,7 +82,7 @@ public class PrivateGraphicUtils {
     }
 
     // TODO: Consider naming for both methods including local variables.
-    public static ImageIcon createImageIcon(Animal animal){
+    public static ImageIcon resizeImage(Animal animal){
         BufferedImage picture = animal.getImg1();
         Image modifiedImage;
 
