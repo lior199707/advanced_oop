@@ -1,4 +1,4 @@
-package com.plants;
+package com.food.plants;
 
 import com.utilities.MessageUtility;
 
