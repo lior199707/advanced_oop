@@ -24,11 +24,13 @@ public class MoveAnimalDialog extends JDialog {
     private AnimalModel model;
     private boolean xStatus;
     private boolean yStatus;
+    private ZooPanel zooPanel;
 
 
-    public MoveAnimalDialog(AnimalModel model) {
+    public MoveAnimalDialog(AnimalModel model, ZooPanel zooPanel) {
         int dialogX = 350, dialogY = 400;
         this.model = model;
+        this.zooPanel = zooPanel;
 
         // configurations
         this.setModal(true);
@@ -67,7 +69,8 @@ public class MoveAnimalDialog extends JDialog {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED){
                     int index = animalNames.getSelectedIndex();
-                    imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(model.getModel().get(index)));
+                    imageLabel.setIcon(PrivateGraphicUtils.resizeImage(model.getModel().get(index)));
+                    currLocationLabel.setText("current location: " + model.getModel().get(animalNames.getSelectedIndex()).getLocation());
                 }
             }
         });
@@ -112,6 +115,7 @@ public class MoveAnimalDialog extends JDialog {
                 int y = Integer.parseInt(yTextField.getText());
                 model.getModel().get(animalNames.getSelectedIndex()).move(new Point(x,y));
                 currLocationLabel.setText("current location: " + model.getModel().get(animalNames.getSelectedIndex()).getLocation());
+                zooPanel.manageZoo();
             }
         });
 
@@ -186,7 +190,7 @@ public class MoveAnimalDialog extends JDialog {
     private JPanel createCenterPanel(){
         JPanel centerPanel = new JPanel(new GridBagLayout());
         imageLabel = new JLabel();
-        imageLabel.setIcon(PrivateGraphicUtils.createImageIcon(model.getModel().get(0)));
+        imageLabel.setIcon(PrivateGraphicUtils.resizeImage(model.getModel().get(0)));
 
         GridBagConstraints centerPanelGbc = new GridBagConstraints();
 
