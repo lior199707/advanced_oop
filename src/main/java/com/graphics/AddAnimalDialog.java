@@ -10,10 +10,11 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 
-import static com.privateutil.PrivateGraphicUtils.createImageIcon;
 import static com.privateutil.PrivateGraphicUtils.findAnimalImagePath;
 
 public class AddAnimalDialog extends JDialog {
+    private static final int DEFAULT_DIRECTION = 1;
+
     private final String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
     private final String[] animalColors = {"Natural", "Red", "Blue"};
     private JComboBox<String> animalTypesCmb;
@@ -47,11 +48,13 @@ public class AddAnimalDialog extends JDialog {
     private boolean hSpeedStatus;
 
     private AnimalModel model;
+    private ZooPanel zooPanel;
 
-    public AddAnimalDialog(AnimalModel model) {
+    public AddAnimalDialog(AnimalModel model, ZooPanel zooPanel) {
         int dialogX = 500, dialogY = 350;
 
         this.model = model;
+        this.zooPanel = zooPanel;
         // configurations
         this.setModal(true);
         this.setTitle("Add Animal");
@@ -128,7 +131,7 @@ public class AddAnimalDialog extends JDialog {
                     if (color == null) {
                         color = animalColors[0];
                     }
-                    imageLabel.setIcon(createImageIcon(findAnimalImagePath(animalType, color,1)));
+                    imageLabel.setIcon(PrivateGraphicUtils.resizeImage(findAnimalImagePath(animalType, color,DEFAULT_DIRECTION)));
                     imageLabel.repaint();
                 }
             }
@@ -175,7 +178,6 @@ public class AddAnimalDialog extends JDialog {
                 int animalSize = Integer.parseInt(sizeTextField.getText());
                 int animalVSpeed = Integer.parseInt(vSpeedTextField.getText());
                 int animalHSpeed = Integer.parseInt(hSpeedTextField.getText());
-                System.out.println(animalHSpeed);
 
                 if (model.getModelSize() < AnimalModel.getModelMaxSize()) {
                     Animal animal = null;
@@ -187,6 +189,7 @@ public class AddAnimalDialog extends JDialog {
                         case "Turtle" -> animal = new Turtle(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
                     }
                     animal.setChanges(true);
+                    animal.setPan(zooPanel);
                     model.addAnimal(animal);
                     nameTextField.setText("");
                     sizeTextField.setText("");
@@ -194,6 +197,7 @@ public class AddAnimalDialog extends JDialog {
                     hSpeedTextField.setText("");
                     animalColorsCmb.setSelectedIndex(0);
                     animalTypesCmb.requestFocusInWindow();
+                    zooPanel.manageZoo();
                 } else {
                     String message = "You cannot add more than 10 animals";
                     JOptionPane.showMessageDialog(getContentPane().getParent(), message, "Message", JOptionPane.ERROR_MESSAGE, null);
@@ -209,7 +213,7 @@ public class AddAnimalDialog extends JDialog {
 
     public JPanel createEastPanel() {
         JPanel imagePanel = new JPanel(new GridBagLayout());
-        imageLabel = new JLabel(createImageIcon(findAnimalImagePath(animalTypes[0], animalColors[0],1)));
+        imageLabel = new JLabel(PrivateGraphicUtils.resizeImage(findAnimalImagePath(animalTypes[0], animalColors[0],DEFAULT_DIRECTION)));
 
         GridBagConstraints gbcImagePanel = new GridBagConstraints();
         gbcImagePanel.gridx = 5;
@@ -262,7 +266,7 @@ public class AddAnimalDialog extends JDialog {
                     if (animalType == null) {
                         animalType = animalTypes[0];
                     }
-                    imageLabel.setIcon(createImageIcon(findAnimalImagePath(animalType, color,1)));
+                    imageLabel.setIcon(PrivateGraphicUtils.resizeImage(findAnimalImagePath(animalType, color,DEFAULT_DIRECTION)));
                     imageLabel.repaint();
                 }
             }
