@@ -1,5 +1,6 @@
 package com.graphics;
 
+import com.animals.Animal;
 import com.mobility.Point;
 import com.privateutil.PrivateGraphicUtils;
 
@@ -113,9 +114,15 @@ public class MoveAnimalDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 int x = Integer.parseInt(xTextField.getText());
                 int y = Integer.parseInt(yTextField.getText());
-                model.getModel().get(animalNames.getSelectedIndex()).move(new Point(x,y));
-                currLocationLabel.setText("current location: " + model.getModel().get(animalNames.getSelectedIndex()).getLocation());
-                zooPanel.manageZoo();
+                Animal animal = model.getModel().get(animalNames.getSelectedIndex());
+                if (animal.move(new Point(x,y)) != 0){
+                    currLocationLabel.setText("current location: " + animal.getLocation());
+                    animal.setChanges(true);
+                    zooPanel.checkEatFood(animal);
+                    zooPanel.manageZoo();
+                }
+//                model.getModel().get(animalNames.getSelectedIndex()).move(new Point(x,y));
+//                currLocationLabel.setText("current location: " + model.getModel().get(animalNames.getSelectedIndex()).getLocation());
             }
         });
 
