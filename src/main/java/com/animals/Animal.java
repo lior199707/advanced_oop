@@ -70,7 +70,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         setHorSpeed(horSpeed);
         setVerSpeed(verSpeed);
         setColor(col);
-        loadImages(animalShortPathName());
+        loadImages(getAnimalName());
 
         this.eatCount = 0;
         this.coordChanged = false;
@@ -293,9 +293,15 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 
     @Override
     public void drawObject(Graphics g) {
-        if (x_dir == 1) // goes to the right side
-            g.drawImage(img1, getLocation().getX() - size / 2, getLocation().getY() - size / 10,
-                    size / 2, size, pan);
+        if (x_dir == 1) { // goes to the right side
+//            ImageIcon image = new ImageIcon(img1);
+//            Image toSizeImage = image.getImage();
+//            Image modifiedImage = toSizeImage.getScaledInstance((int) (size * 8), size, Image.SCALE_SMOOTH);
+//            g.drawImage(img1, (getLocation().getX() - size / 2) + 35, (getLocation().getY() - size / 10) + 18,
+//                    (int) (size * 1.2), size, pan);
+            g.drawImage(img1, (getLocation().getX() - size / 2) + (35 * (50 / size)), (getLocation().getY() - size / 10) + (18 * (50 / size)),
+                    (int) (size * 1.2), size, pan);
+        }
         else // goes to the left side
             g.drawImage(img2, getLocation().getX(), getLocation().getY() - size / 10, size / 2, size, pan);
     }
@@ -350,6 +356,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return isSuccess;
     }
 
+
+    public void setPan(ZooPanel pan) {
+        this.pan = pan;
+    }
 
     @Override
     public String getColor() {
