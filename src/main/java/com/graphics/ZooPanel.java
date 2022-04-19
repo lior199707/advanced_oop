@@ -1,29 +1,32 @@
 package com.graphics;
 
+import com.animals.Animal;
 import com.plants.Cabbage;
 import com.plants.Lettuce;
 import com.plants.Plant;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class ZooPanel extends JPanel implements ActionListener {
     private JPanel actionPanel;
-    private JPanel animalPanel;
     private JDialog addAnimalDialog;
     private JDialog moveAnimalDialog;
     private JFrame tableFrame;
     private AnimalModel model;
     private Plant plant = null;
-    private boolean isInfoOpen;
+    private BufferedImage savana;
 
-    public ZooPanel(){
+    public ZooPanel() {
         model = new AnimalModel();
         actionPanel = new JPanel();
-        animalPanel = new AnimalPanel(model, plant);
 
         // instantiating buttons
         JButton addAnimal = new JButton("Add Animal");
@@ -49,24 +52,36 @@ public class ZooPanel extends JPanel implements ActionListener {
         actionPanel.add(info);
         actionPanel.add(exit);
 
-        // setting up animalPanel
-        animalPanel.setLocation(500,500);
-        animalPanel.setSize(new Dimension(800,600));
-        animalPanel.setBackground(Color.BLACK);
-
         // setting properties
         Font courier = new Font("Courier", Font.PLAIN, 14);
         TitledBorder actionBorder = BorderFactory.createTitledBorder("Select Option:");
+
         actionBorder.setTitleFont(courier);
         actionBorder.setTitleColor(Color.blue);
 
         actionPanel.setBorder(actionBorder);
+
         this.setLayout(new BorderLayout());
-        this.add(animalPanel, BorderLayout.CENTER);
         this.add(actionPanel, BorderLayout.SOUTH);
     }
 
-    private void createFoodDialog(){
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        if (savana != null) {
+            g.drawImage(savana, 0, 0,null);
+        }
+
+        if (plant != null)
+            plant.drawObject(g);
+
+        for (Animal animal : model.getModel()) {
+            animal.drawObject(g);
+        }
+    }
+
+    //    private void setPanelBackground()
+    private void createFoodDialog() {
         String[] options = {"Lettuce", "Cabbage", "Meat"};
         int result = JOptionPane.showOptionDialog(null,//parent container of JOptionPane
                 "What food would you like to add?",
@@ -76,23 +91,39 @@ public class ZooPanel extends JPanel implements ActionListener {
                 null,//do not use a custom Icon
                 options,//the titles of buttons
                 null);
-        if (result == JOptionPane.YES_OPTION){
+        if (result == JOptionPane.YES_OPTION) {
             plant = new Lettuce();
-        }
-        else if (result == JOptionPane.NO_OPTION){
+            plant.setPan(this);
+        } else if (result == JOptionPane.NO_OPTION) {
             plant = new Cabbage();
+            plant.setPan(this);
+        } else if (result == JOptionPane.CANCEL_OPTION) {
+            System.out.println("Meat");
         }
-        else if (result == JOptionPane.CANCEL_OPTION){System.out.println("Meat");}
     }
-
 
     public void manageZoo() {
+        repaint();
     }
-//
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        System.out.println("Hello from ZooPanel");
+
+    public void setImageBackground(){
+        try {
+            savana = ImageIO.read(new File("src/main/resources/assignment2_pictures/background_images/savanna.png"));
+            manageZoo();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setGreenBackground(){
+        savana = null;
+        manageZoo();
+        this.setBackground(Color.green);
+    }
+
+    public void setNoBackground(){
+        savana = null;
+        this.setBackground(null);
     }
 
     @Override
@@ -100,12 +131,11 @@ public class ZooPanel extends JPanel implements ActionListener {
         String actionCommand = e.getActionCommand();
         switch (actionCommand) {
             case "Add Animal" -> {
-                addAnimalDialog = new AddAnimalDialog(model);
+                addAnimalDialog = new AddAnimalDialog(model,this);
             }
             case "Move Animal" -> {
                 if (model.getModelSize() > 0) {
-                    moveAnimalDialog = new MoveAnimalDialog(model);
-                    moveAnimalDialog.getContentPane();
+                    moveAnimalDialog = new MoveAnimalDialog(model, this);
                 } else {
                     String message = "Zoo is currently empty!";
                     JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.ERROR_MESSAGE, null);
@@ -113,9 +143,11 @@ public class ZooPanel extends JPanel implements ActionListener {
             }
             case "Clear" -> {
                 model.removeAllAnimals();
+                manageZoo();
             }
             case "Food" -> {
                 createFoodDialog();
+                manageZoo();
                 System.out.println("Food pressed!");
             }
             case "Info" -> {
@@ -134,10 +166,5 @@ public class ZooPanel extends JPanel implements ActionListener {
                 System.exit(1);
             }
         }
-//        manageZoo();
-    }
-
-    public JPanel getAnimalPanel() {
-        return animalPanel;
     }
 }
