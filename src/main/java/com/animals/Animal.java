@@ -59,6 +59,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public static String getDefaultColor(){
         return DEFAULT_COLOR;
     }
+    public static int getEatDistance() {
+        return EAT_DISTANCE;
+    }
 
     public Animal(String name, Point location, int size, int horSpeed, int verSpeed, String col){
         super(location);
