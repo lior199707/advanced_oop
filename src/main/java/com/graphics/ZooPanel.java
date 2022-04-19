@@ -1,9 +1,10 @@
 package com.graphics;
 
 import com.animals.Animal;
-import com.plants.Cabbage;
-import com.plants.Lettuce;
-import com.plants.Plant;
+import com.food.Food;
+import com.food.Meat;
+import com.food.plants.Cabbage;
+import com.food.plants.Lettuce;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,8 +22,9 @@ public class ZooPanel extends JPanel implements ActionListener {
     private JDialog moveAnimalDialog;
     private JFrame tableFrame;
     private AnimalModel model;
-    private Plant plant = null;
+    private Food food = null;
     private BufferedImage savana;
+    private static int totalEatCount = 0;
 
     public ZooPanel() {
         model = new AnimalModel();
@@ -68,12 +70,10 @@ public class ZooPanel extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        if (savana != null) {
-            g.drawImage(savana, 0, 0,null);
-        }
+        g.drawImage(savana, 0, 0,this);
 
-        if (plant != null)
-            plant.drawObject(g);
+        if (food != null)
+            food.drawObject(g);
 
         for (Animal animal : model.getModel()) {
             animal.drawObject(g);
@@ -92,24 +92,79 @@ public class ZooPanel extends JPanel implements ActionListener {
                 options,//the titles of buttons
                 null);
         if (result == JOptionPane.YES_OPTION) {
-            plant = new Lettuce();
-            plant.setPan(this);
+            food = new Lettuce();
         } else if (result == JOptionPane.NO_OPTION) {
-            plant = new Cabbage();
-            plant.setPan(this);
+            food = new Cabbage();
         } else if (result == JOptionPane.CANCEL_OPTION) {
-            System.out.println("Meat");
+            food = new Meat();
+        }
+        food.setPan(this);
+    }
+
+
+    public boolean isChange(){
+        for (Animal animal : model.getModel()){
+            if (animal.getChanges()){
+                checkEatAnimal();
+                animal.setChanges(false);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void checkEatAnimal(){
+        for (Animal predator : model.getModel()){
+            for (Animal prey : model.getModel()){
+                if (predator != prey && predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()) {
+                    if (predator.eat(prey)) {
+                        setTotalEatCount(getTotalEatCount() - prey.getEatCount());
+                        model.getModel().remove(prey);
+
+                        updateEatCount(predator);
+                        break;
+                    }
+                }
+            }
         }
     }
 
+    public void checkEatFood(Animal animal) {
+        if (food != null && animal.calcDistance(food.getLocation()) <= Animal.getEatDistance())
+            if (animal.eat(food)){
+                food = null;
+                updateEatCount(animal);
+            }
+    }
+
+    public void updateEatCount(Animal animal){
+        animal.eatInc();
+        totalEatCountInc();
+    }
+
+    // TODO; Need to add checkEatAnimal to manageZoo.
     public void manageZoo() {
-        repaint();
+        if (isChange()) {
+            repaint();
+        }
+    }
+
+    public static void totalEatCountInc(){
+        totalEatCount++;
+    }
+
+    public static void setTotalEatCount(int count){
+        totalEatCount = count;
+    }
+
+    public static int getTotalEatCount() {
+        return totalEatCount;
     }
 
     public void setImageBackground(){
         try {
             savana = ImageIO.read(new File("src/main/resources/assignment2_pictures/background_images/savanna.png"));
-            manageZoo();
+            repaint();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,13 +172,14 @@ public class ZooPanel extends JPanel implements ActionListener {
 
     public void setGreenBackground(){
         savana = null;
-        manageZoo();
         this.setBackground(Color.green);
+        repaint();
     }
 
     public void setNoBackground(){
         savana = null;
         this.setBackground(null);
+        repaint();
     }
 
     @Override
@@ -143,11 +199,11 @@ public class ZooPanel extends JPanel implements ActionListener {
             }
             case "Clear" -> {
                 model.removeAllAnimals();
-                manageZoo();
+                repaint();
             }
             case "Food" -> {
                 createFoodDialog();
-                manageZoo();
+                repaint();
                 System.out.println("Food pressed!");
             }
             case "Info" -> {
