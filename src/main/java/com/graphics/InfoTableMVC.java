@@ -8,8 +8,9 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
+import javax.swing.table.*;
 
 public class InfoTableMVC extends JDialog {
     private TableRowSorter<ZooModel> sorter;
@@ -31,11 +32,6 @@ public class InfoTableMVC extends JDialog {
         table.getTableHeader().setBackground(Color.LIGHT_GRAY);
         table.getTableHeader().setForeground(Color.BLACK);
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
-
-//        Object[] lastRow = {"Total", "", "", "", "", "", "0"};
-//        DefaultTableModel m1 = new DefaultTableModel(lastRow, 0);
-//        JTable kaka = new JTable(m1);
-
         this.add(new JScrollPane(table), BorderLayout.NORTH);
 //        this.add(new JScrollPane(kaka), BorderLayout.SOUTH);
 
@@ -62,7 +58,7 @@ public class InfoTableMVC extends JDialog {
         public ZooModel(AnimalModel model) { this.data = model.getModel();}
 
         @Override
-        public int getRowCount() { return data.size(); }
+        public int getRowCount() { return data.size() + 1 ; }
 
         @Override
         public int getColumnCount() { return 7; }
