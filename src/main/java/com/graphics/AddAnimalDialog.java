@@ -99,6 +99,7 @@ public class AddAnimalDialog extends JDialog {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
+                    addAnimalButton.setEnabled(false);
                     String item = (String) e.getItem();
                     switch (item) {
                         case "Lion" -> {
