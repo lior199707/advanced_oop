@@ -75,30 +75,46 @@ public class InfoTableMVC extends JDialog {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Animal animal = data.get(rowIndex);
-            switch (columnIndex) {
-                case 0 -> {
-                    return animal.getAnimalName();
-                }
-                case 1 -> {
-                    return animal.getName();
-                }
-                case 2 -> {
-                    return animal.getColor();
-                }
-                case 3 -> {
-                    return animal.getWeight();
-                }
-                case 4 -> {
-                    return animal.getHorSpeed();
-                }
-                case 5 -> {
-                    return animal.getVerSpeed();
-                }
-                case 6 -> {
-                    return animal.getEatCount();
+            if (rowIndex < data.size()){
+                Animal animal = data.get(rowIndex);
+                switch (columnIndex) {
+                    case 0 -> {
+                        return animal.getAnimalName();
+                    }
+                    case 1 -> {
+                        return animal.getName();
+                    }
+                    case 2 -> {
+                        return animal.getColor();
+                    }
+                    case 3 -> {
+                        return animal.getWeight();
+                    }
+                    case 4 -> {
+                        return animal.getHorSpeed();
+                    }
+                    case 5 -> {
+                        return animal.getVerSpeed();
+                    }
+                    case 6 -> {
+                        return animal.getEatCount();
+                    }
                 }
             }
+            else {
+                switch (columnIndex) {
+                    case 0 -> {
+                        return "Total";
+                    }
+                    case 1,2,3,4,5 -> {
+                        return "";
+                    }
+                    case 6 ->{
+                        return  String.valueOf(ZooPanel.getTotalEatCount());
+                    }
+                }
+            }
+
             return null;
         }
     }
