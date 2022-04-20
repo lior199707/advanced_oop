@@ -198,6 +198,8 @@ public class AddAnimalDialog extends JDialog {
                     hSpeedTextField.setText("");
                     animalColorsCmb.setSelectedIndex(0);
                     animalTypesCmb.requestFocusInWindow();
+                    if (InfoTableDialog.getIsOpen())
+                        zooPanel.getInfoTable().updateTable();
                     zooPanel.manageZoo();
                 } else {
                     String message = "You cannot add more than 10 animals";

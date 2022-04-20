@@ -360,10 +360,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return isSuccess;
     }
 
-    public void checkEatFood(final Food food) {
+    public void checkEatFood(Food food) {
         if (food != null && this.calcDistance(food.getLocation()) <= Animal.getEatDistance())
             if (this.eat(food)){
-                pan.setFoodNull();
+                pan.setPanelFood(null);
                 pan.updateEatCount(this);
             }
     }

@@ -8,20 +8,26 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.*;
-import java.util.List;
-import javax.swing.table.*;
+import java.util.ArrayList;
 
-public class InfoTableMVC extends JDialog {
+public class InfoTableDialog extends JDialog {
     private TableRowSorter<ZooModel> sorter;
-    private static boolean isOpen = false;
-    JTable table;
+    private static boolean isOpen;
+    private JTable table;
+    private ZooModel tableModel;
 
     public static boolean getIsOpen(){
         return isOpen;
     }
-    public InfoTableMVC(AnimalModel model){
-        ZooModel tableModel = new ZooModel(model);
+
+    public void setIsOpen(boolean state){
+        isOpen = state;
+        setVisible(state);
+    }
+
+
+    public InfoTableDialog(AnimalModel model){
+        tableModel = new ZooModel(model);
 
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -32,22 +38,25 @@ public class InfoTableMVC extends JDialog {
         table.getTableHeader().setBackground(Color.LIGHT_GRAY);
         table.getTableHeader().setForeground(Color.BLACK);
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
-        this.add(new JScrollPane(table), BorderLayout.NORTH);
-//        this.add(new JScrollPane(kaka), BorderLayout.SOUTH);
+
+        this.setSize(600,250);
+        this.add(new JScrollPane(table));
 
         this.setModalityType(ModalityType.DOCUMENT_MODAL);
-        this.setSize(500,500);
         this.setLocationRelativeTo(this);
-        this.pack();
-        isOpen = true;
+//        this.pack();
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                setIsOpen(false);
                 dispose();
-                setVisible(false);
-                isOpen = false;
             }
         });
+    }
+
+    public void updateTable(){
+        tableModel.fireTableDataChanged();
     }
 
 
@@ -55,7 +64,8 @@ public class InfoTableMVC extends JDialog {
         private ArrayList<Animal> data;
         private final String[] columnNames = {"Animal", "Name", "Color", "Weight", "Hor.speed", "Var.speed", "Eat Counter"};
 
-        public ZooModel(AnimalModel model) { this.data = model.getModel();}
+        public ZooModel(AnimalModel model) { this.data = model.getModel(); }
+
 
         @Override
         public int getRowCount() { return data.size() + 1 ; }
@@ -106,11 +116,8 @@ public class InfoTableMVC extends JDialog {
                     case 0 -> {
                         return "Total";
                     }
-                    case 1,2,3,4,5 -> {
-                        return "";
-                    }
-                    case 6 ->{
-                        return  String.valueOf(ZooPanel.getTotalEatCount());
+                    case 6 -> {
+                        return String.valueOf(ZooPanel.getTotalEatCount());
                     }
                 }
             }
