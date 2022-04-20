@@ -198,6 +198,7 @@ public class ZooPanel extends JPanel implements ActionListener {
         if (isChange()) {
             repaint();
         }
+        checkEatAnimal();
     }
 
     public static void totalEatCountInc(){
