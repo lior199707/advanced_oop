@@ -86,22 +86,30 @@ public class ZooPanel extends JPanel implements ActionListener {
         int result = JOptionPane.showOptionDialog(null,//parent container of JOptionPane
                 "What food would you like to add?",
                 "Add Food Dialog",
-                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.DEFAULT_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,//do not use a custom Icon
                 options,//the titles of buttons
                 null);
-        if (result == JOptionPane.YES_OPTION) {
-            food = new Lettuce();
-        } else if (result == JOptionPane.NO_OPTION) {
-            food = new Cabbage();
-        } else if (result == JOptionPane.CANCEL_OPTION) {
-            food = new Meat();
+
+        switch (result) {
+            case 0 -> setPanelFood(new Lettuce());
+            case 1 -> setPanelFood(new Cabbage());
+            case 2 -> setPanelFood(new Meat());
         }
-        if (food != null)
-            food.setPan(this);
     }
 
+    public boolean setPanelFood(Food food) {
+        boolean isSuccess = false;
+        if (food != null){
+            this.food = food;
+            this.food.setPan(this);
+            isSuccess = true;
+        } else {
+            this.food = null;
+        }
+        return isSuccess;
+    }
 
     public boolean isChange(){
         for (Animal animal : model.getModel()){
@@ -134,61 +142,10 @@ public class ZooPanel extends JPanel implements ActionListener {
                         updateEatCount(prey);
                         infoTable.updateTable();
                     }
-
                 }
             }
         }
     }
-
-//    public void checkEatAnimal(){
-//        boolean animalWasEaten = false;
-//        Iterator<Animal> predators = model.getModel().iterator();
-//        while(predators.hasNext()){
-//            Animal predator = predators.next();
-//            Iterator<Animal> preys = model.getModel().iterator();
-//            while (preys.hasNext()){
-//                Animal prey = preys.next();
-//                if (predator != prey && predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()) {
-//                    if (predator.eat(prey)) {
-//                        System.out.println("yea-------------------------------------------");
-//                        setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-//                        preys.remove();
-//                        //model.getModel().remove(prey);
-//                        updateEatCount(predator);
-////                        animalWasEaten = true;
-////                        break;
-//                    }
-//                }
-//
-//            }
-//        }
-//        for (Animal predator : predators){
-//            for (Animal prey : predators){
-//                if (predator != prey && predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()) {
-//                    if (predator.eat(prey)) {
-//                        System.out.println("yea-------------------------------------------");
-//                        setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-//                        model.getModel().remove(prey);
-//                        predators.remove(prey);
-//                        updateEatCount(predator);
-////                        animalWasEaten = true;
-////                        break;
-//                    }
-//                }
-//            }
-////            if (animalWasEaten){
-////                break;
-////            }
-//        }
-//    }
-
-//    public void checkEatFood(Animal animal) {
-//        if (food != null && animal.calcDistance(food.getLocation()) <= Animal.getEatDistance())
-//            if (animal.eat(food)){
-//                food = null;
-//                updateEatCount(animal);
-//            }
-//    }
 
     public void updateEatCount(Animal animal){
         animal.eatInc();
@@ -214,13 +171,6 @@ public class ZooPanel extends JPanel implements ActionListener {
     public static int getTotalEatCount() {
         return totalEatCount;
     }
-
-
-    public boolean setFoodNull(){
-        food = null;
-        return true;
-    }
-
 
     public Food getFood(){
         return food;
