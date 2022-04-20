@@ -98,7 +98,8 @@ public class ZooPanel extends JPanel implements ActionListener {
         } else if (result == JOptionPane.CANCEL_OPTION) {
             food = new Meat();
         }
-        food.setPan(this);
+        if (food != null)
+            food.setPan(this);
     }
 
 
