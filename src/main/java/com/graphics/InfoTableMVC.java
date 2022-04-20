@@ -69,7 +69,9 @@ public class InfoTableMVC extends JDialog {
         }
 
         @Override
-        public Class getColumnClass(int column) { return Objects.requireNonNull(getValueAt(0, column)).getClass(); }
+        public Class getColumnClass(int column){return String.class;}
+//        public Class getColumnClass(int column) { return Objects.requireNonNull(getValueAt(0, column)).getClass(); }
+
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
