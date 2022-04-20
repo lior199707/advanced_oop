@@ -106,7 +106,7 @@ public class ZooPanel extends JPanel implements ActionListener {
     public boolean isChange(){
         for (Animal animal : model.getModel()){
             if (animal.getChanges()){
-                checkEatAnimal();
+                //checkEatAnimal();
                 animal.setChanges(false);
                 return true;
             }
@@ -114,29 +114,79 @@ public class ZooPanel extends JPanel implements ActionListener {
         return false;
     }
 
-    public void checkEatAnimal(){
-        for (Animal predator : model.getModel()){
-            for (Animal prey : model.getModel()){
-                if (predator != prey && predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()) {
+    public  void checkEatAnimal(){
+        for (int i = 0; i < model.getModelSize(); i++){
+            Animal predator = model.getModel().get(i);
+            for (int j = i + 1; j < model.getModelSize(); j++){
+                Animal prey = model.getModel().get(j);
+                if (predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()){
                     if (predator.eat(prey)) {
                         setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-                        model.getModel().remove(prey);
-
+                        model.getModel().remove(j);
+                        j--;
                         updateEatCount(predator);
-                        break;
                     }
+                    else if (prey.eat(predator)){
+                        setTotalEatCount(getTotalEatCount() - predator.getEatCount());
+                        model.getModel().remove(i);
+                        i--;
+                        updateEatCount(prey);
+                    }
+
                 }
             }
         }
     }
 
-    public void checkEatFood(Animal animal) {
-        if (food != null && animal.calcDistance(food.getLocation()) <= Animal.getEatDistance())
-            if (animal.eat(food)){
-                food = null;
-                updateEatCount(animal);
-            }
-    }
+//    public void checkEatAnimal(){
+//        boolean animalWasEaten = false;
+//        Iterator<Animal> predators = model.getModel().iterator();
+//        while(predators.hasNext()){
+//            Animal predator = predators.next();
+//            Iterator<Animal> preys = model.getModel().iterator();
+//            while (preys.hasNext()){
+//                Animal prey = preys.next();
+//                if (predator != prey && predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()) {
+//                    if (predator.eat(prey)) {
+//                        System.out.println("yea-------------------------------------------");
+//                        setTotalEatCount(getTotalEatCount() - prey.getEatCount());
+//                        preys.remove();
+//                        //model.getModel().remove(prey);
+//                        updateEatCount(predator);
+////                        animalWasEaten = true;
+////                        break;
+//                    }
+//                }
+//
+//            }
+//        }
+//        for (Animal predator : predators){
+//            for (Animal prey : predators){
+//                if (predator != prey && predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()) {
+//                    if (predator.eat(prey)) {
+//                        System.out.println("yea-------------------------------------------");
+//                        setTotalEatCount(getTotalEatCount() - prey.getEatCount());
+//                        model.getModel().remove(prey);
+//                        predators.remove(prey);
+//                        updateEatCount(predator);
+////                        animalWasEaten = true;
+////                        break;
+//                    }
+//                }
+//            }
+////            if (animalWasEaten){
+////                break;
+////            }
+//        }
+//    }
+
+//    public void checkEatFood(Animal animal) {
+//        if (food != null && animal.calcDistance(food.getLocation()) <= Animal.getEatDistance())
+//            if (animal.eat(food)){
+//                food = null;
+//                updateEatCount(animal);
+//            }
+//    }
 
     public void updateEatCount(Animal animal){
         animal.eatInc();
