@@ -213,6 +213,18 @@ public class ZooPanel extends JPanel implements ActionListener {
         return totalEatCount;
     }
 
+
+    public boolean setFoodNull(){
+        food = null;
+        return true;
+    }
+
+
+    public Food getFood(){
+        return food;
+    }
+
+
     public void setImageBackground(){
         try {
             savana = ImageIO.read(new File("src/main/resources/assignment2_pictures/background_images/savanna.png"));
