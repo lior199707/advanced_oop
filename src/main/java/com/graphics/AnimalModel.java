@@ -52,6 +52,15 @@ public class AnimalModel {
         return names;
     }
 
+
+    public boolean NameExistInModel(String name){
+        for (Animal animal: animals){
+            if (animal.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
     public static int getModelMaxSize() {
         return MAX_SIZE;
     }

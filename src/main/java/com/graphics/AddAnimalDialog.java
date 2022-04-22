@@ -99,6 +99,7 @@ public class AddAnimalDialog extends JDialog {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
+                    addAnimalButton.setEnabled(false);
                     String item = (String) e.getItem();
                     switch (item) {
                         case "Lion" -> {
@@ -160,13 +161,21 @@ public class AddAnimalDialog extends JDialog {
              @Override
              public void actionPerformed(ActionEvent e) {
                  boolean validated;
-                 if (color != null && animalType != null){
+                 if (model.NameExistInModel(nameTextField.getText())){
+                     JOptionPane.showMessageDialog(null, "Name already used, please choose another name",
+                             "Error", JOptionPane.ERROR_MESSAGE);
+                 }
+                 else{
+                     if (color == null)
+                         color = animalColors[0];
+                     if (animalType == null)
+                         animalType = animalTypes[0];
                      validated = (nameStatus && sizeStatus && vSpeedStatus && hSpeedStatus);
                      addAnimalButton.setEnabled(validated);
-                 }
-                 else {
-                     // Implement JOptionPane with error message
-                     System.out.println("Invalid animal input!");
+//                     else{
+//                         JOptionPane.showMessageDialog(null, "Please choose animal and color",
+//                                 "Error", JOptionPane.ERROR_MESSAGE);
+//                     }
                  }
              }
          });

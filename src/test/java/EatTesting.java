@@ -1,5 +1,5 @@
-import com.plants.Cabbage;
-import com.plants.Lettuce;
+import com.food.plants.Cabbage;
+import com.food.plants.Lettuce;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
