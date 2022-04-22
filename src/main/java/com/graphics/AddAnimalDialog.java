@@ -129,9 +129,9 @@ public class AddAnimalDialog extends JDialog {
                         }
                     }
 
-//                    if (color == null) {
-//                        color = animalColors[0];
-//                    }
+                    if (color == null) {
+                        color = animalColors[0];
+                    }
                     String path = findAnimalImagePath(animalType, color,DEFAULT_DIRECTION);
                     imageLabel.setIcon(PrivateGraphicUtils.resizeImage(path, 220,180));
                     imageLabel.repaint();
