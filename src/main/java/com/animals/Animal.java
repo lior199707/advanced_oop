@@ -2,6 +2,7 @@ package com.animals;
 
 import com.diet.IDiet;
 import com.food.EFoodType;
+import com.food.Food;
 import com.food.IEdible;
 import com.graphics.IAnimalBehavior;
 import com.graphics.IDrawable;
@@ -357,6 +358,14 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             }
         }
         return isSuccess;
+    }
+
+    public void checkEatFood(Food food) {
+        if (food != null && this.calcDistance(food.getLocation()) <= Animal.getEatDistance())
+            if (this.eat(food)){
+                pan.setPanelFood(null);
+                pan.updateEatCount(this);
+            }
     }
 
 

@@ -20,7 +20,7 @@ public class ZooPanel extends JPanel implements ActionListener {
     private JPanel actionPanel;
     private JDialog addAnimalDialog;
     private JDialog moveAnimalDialog;
-    private JFrame tableFrame;
+    private InfoTableDialog infoTable;
     private AnimalModel model;
     private Food food = null;
     private BufferedImage savana;
@@ -86,26 +86,35 @@ public class ZooPanel extends JPanel implements ActionListener {
         int result = JOptionPane.showOptionDialog(null,//parent container of JOptionPane
                 "What food would you like to add?",
                 "Add Food Dialog",
-                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.DEFAULT_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,//do not use a custom Icon
                 options,//the titles of buttons
                 null);
-        if (result == JOptionPane.YES_OPTION) {
-            food = new Lettuce();
-        } else if (result == JOptionPane.NO_OPTION) {
-            food = new Cabbage();
-        } else if (result == JOptionPane.CANCEL_OPTION) {
-            food = new Meat();
+
+        switch (result) {
+            case 0 -> setPanelFood(new Lettuce());
+            case 1 -> setPanelFood(new Cabbage());
+            case 2 -> setPanelFood(new Meat());
         }
-        food.setPan(this);
     }
 
+    public boolean setPanelFood(Food food) {
+        boolean isSuccess = false;
+        if (food != null){
+            this.food = food;
+            this.food.setPan(this);
+            isSuccess = true;
+        } else {
+            this.food = null;
+        }
+        return isSuccess;
+    }
 
     public boolean isChange(){
         for (Animal animal : model.getModel()){
             if (animal.getChanges()){
-                checkEatAnimal();
+                //checkEatAnimal();
                 animal.setChanges(false);
                 return true;
             }
@@ -113,28 +122,29 @@ public class ZooPanel extends JPanel implements ActionListener {
         return false;
     }
 
-    public void checkEatAnimal(){
-        for (Animal predator : model.getModel()){
-            for (Animal prey : model.getModel()){
-                if (predator != prey && predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()) {
+    public  void checkEatAnimal(){
+        for (int i = 0; i < model.getModelSize(); i++){
+            Animal predator = model.getModel().get(i);
+            for (int j = i + 1; j < model.getModelSize(); j++) {
+                Animal prey = model.getModel().get(j);
+                if (predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()){
                     if (predator.eat(prey)) {
                         setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-                        model.getModel().remove(prey);
-
+                        model.getModel().remove(j);
+                        j--;
                         updateEatCount(predator);
-                        break;
+                        infoTable.updateTable();
+                    }
+                    else if (prey.eat(predator)){
+                        setTotalEatCount(getTotalEatCount() - predator.getEatCount());
+                        model.getModel().remove(i);
+                        i--;
+                        updateEatCount(prey);
+                        infoTable.updateTable();
                     }
                 }
             }
         }
-    }
-
-    public void checkEatFood(Animal animal) {
-        if (food != null && animal.calcDistance(food.getLocation()) <= Animal.getEatDistance())
-            if (animal.eat(food)){
-                food = null;
-                updateEatCount(animal);
-            }
     }
 
     public void updateEatCount(Animal animal){
@@ -147,6 +157,7 @@ public class ZooPanel extends JPanel implements ActionListener {
         if (isChange()) {
             repaint();
         }
+        checkEatAnimal();
     }
 
     public static void totalEatCountInc(){
@@ -160,6 +171,11 @@ public class ZooPanel extends JPanel implements ActionListener {
     public static int getTotalEatCount() {
         return totalEatCount;
     }
+
+    public Food getFood(){
+        return food;
+    }
+
 
     public void setImageBackground(){
         try {
@@ -182,6 +198,10 @@ public class ZooPanel extends JPanel implements ActionListener {
         repaint();
     }
 
+    public InfoTableDialog getInfoTable() {
+        return infoTable;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
@@ -199,6 +219,8 @@ public class ZooPanel extends JPanel implements ActionListener {
             }
             case "Clear" -> {
                 model.removeAllAnimals();
+                setTotalEatCount(0);
+                infoTable.setIsOpen(false);
                 repaint();
             }
             case "Food" -> {
@@ -209,9 +231,9 @@ public class ZooPanel extends JPanel implements ActionListener {
             case "Info" -> {
                 //creating animals details list
                 if (model.getModelSize() > 0) {
-                    if (!InfoTableMVC.getIsOpen()) {
-                        InfoTableMVC table = new InfoTableMVC(model);
-                        table.setVisible(true);
+                    if (!InfoTableDialog.getIsOpen()){
+                        infoTable = new InfoTableDialog(model);
+                        infoTable.setIsOpen(true);
                     }
                 } else {
                     String message = "Zoo is currently empty!";

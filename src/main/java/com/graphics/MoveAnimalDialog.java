@@ -118,7 +118,8 @@ public class MoveAnimalDialog extends JDialog {
                 if (animal.move(new Point(x,y)) != 0){
                     currLocationLabel.setText("current location: " + animal.getLocation());
                     animal.setChanges(true);
-                    zooPanel.checkEatFood(animal);
+                    //zooPanel.checkEatFood(animal);
+                    animal.checkEatFood(zooPanel.getFood());
                     zooPanel.manageZoo();
                 }
 //                model.getModel().get(animalNames.getSelectedIndex()).move(new Point(x,y));
