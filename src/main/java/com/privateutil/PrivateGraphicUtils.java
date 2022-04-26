@@ -77,27 +77,24 @@ public class PrivateGraphicUtils {
     // TODO: Consider naming for both methods including local variables.
     // change to path name.
     public static ImageIcon resizeImage(String path, int width, int height){
-        BufferedImage picture = null;
-        Image modifiedImage = null;
-
         try {
-            picture = ImageIO.read(new File(path));
-            ImageIcon image = new ImageIcon(picture);
-            Image toSizeImage = image.getImage();
-            // 220 180
-            modifiedImage = toSizeImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            BufferedImage bufferedImage = ImageIO.read(new File(path));
+            ImageIcon image = new ImageIcon(bufferedImage);
+            Image resizedImage = image.getImage().getScaledInstance(width,height, Image.SCALE_SMOOTH);
+            return new ImageIcon(resizedImage);
         } catch (IOException e) {
-            System.err.println(path + "Not found");
+            System.err.println(path + " Not found!");
         }
-
-        assert picture != null;
-        return new ImageIcon(modifiedImage);
+        return null;
     }
 
     // TODO: Consider naming for both methods including local variables.
-    public static ImageIcon resizeImage(Animal animal){
-        BufferedImage picture = animal.getImg1();
-        Image modifiedImage;
+    public static ImageIcon setAnimalImageIcon(Animal animal){
+        BufferedImage bufferedImage = animal.getImg1();
+        ImageIcon image = new ImageIcon(bufferedImage);
+        Image resizedImage = image.getImage().getScaledInstance(220, 180, Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
+    }
 
     public static TitledBorder createTitledBorder(String title, int titlePosition, int titleJustification){
         TitledBorder border = BorderFactory.createTitledBorder(title);
