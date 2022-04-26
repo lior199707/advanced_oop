@@ -4,6 +4,7 @@ import com.animals.Animal;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -61,6 +62,18 @@ public class PrivateGraphicUtils {
         return String.valueOf(path);
     }
 
+    public static String findBackgroundImagePath(String format){
+        StringBuilder path = new StringBuilder();
+        path.append(PICTURE_PATH);
+        path.append("background_images/");
+        path.append("savanna");
+        if (format.equals("png")){
+            path.append(".png");
+        } else {
+            path.append(".jpg");
+        }
+        return String.valueOf(path);
+    }
     // TODO: Consider naming for both methods including local variables.
     // change to path name.
     public static ImageIcon resizeImage(String path, int width, int height){
@@ -86,10 +99,25 @@ public class PrivateGraphicUtils {
         BufferedImage picture = animal.getImg1();
         Image modifiedImage;
 
-        ImageIcon image = new ImageIcon(picture);
-        Image toSizeImage = image.getImage();
-        modifiedImage = toSizeImage.getScaledInstance(220, 180, Image.SCALE_SMOOTH);
+    public static TitledBorder createTitledBorder(String title, int titlePosition, int titleJustification){
+        TitledBorder border = BorderFactory.createTitledBorder(title);
+        border.setTitlePosition(titlePosition);
+        border.setTitleJustification(titleJustification);
+        return border;
+    }
 
-        return new ImageIcon(modifiedImage);
+    public static class ErrorDialogException extends Exception {
+        public ErrorDialogException(Container container, String message, String title){
+            JOptionPane.showMessageDialog(container, message,title,JOptionPane.ERROR_MESSAGE);
+        }
+        public ErrorDialogException(Container container, String message){
+            JOptionPane.showMessageDialog(container, message,"Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static class InformationDialogException extends Exception {
+        public InformationDialogException(Container container, String message){
+            JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }
