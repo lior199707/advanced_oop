@@ -26,7 +26,8 @@ public class Lion extends AnimalRoar {
      */
     private static final int DEFAULT_SCAR_COUNT = 0;
 
-    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 0.8);
+    private static final double SIZE_COEFFICIENT = 0.8;
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
      * integer value of the scar count of a lion.
      */
@@ -146,5 +147,7 @@ public class Lion extends AnimalRoar {
         return "Lion";
     }
 
-
+    public static double getSizeCoefficient() {
+        return SIZE_COEFFICIENT;
+    }
 }

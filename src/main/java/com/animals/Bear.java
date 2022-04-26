@@ -19,7 +19,8 @@ public class Bear extends AnimalRoar {
     private static final Point DEFAULT_STARTING_LOCATION = new Point(100, 5);
     private static final FurColors DEFAULT_FUR_COLOR = FurColors.GRAY;
 
-    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 1.5);
+    private static final double SIZE_COEFFICIENT = 1.5;
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
      * FurColors enum indicating the fur color of a bear.
      */
@@ -160,5 +161,9 @@ public class Bear extends AnimalRoar {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public static double getSizeCoefficient() {
+        return SIZE_COEFFICIENT;
     }
 }

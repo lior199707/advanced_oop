@@ -14,7 +14,8 @@ public class Elephant extends AnimalChew {
      */
     private static final double DEFAULT_WEIGHT = 500.00;
 
-    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 10);
+    private static final double SIZE_COEFFICIENT = 10;
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
      * constant Point coordinates of the default starting location of an elephant.
      */
@@ -132,5 +133,9 @@ public class Elephant extends AnimalChew {
     @Override
     public String animalShortPathName() {
         return "elf";
+    }
+
+    public static double getSizeCoefficient() {
+        return SIZE_COEFFICIENT;
     }
 }

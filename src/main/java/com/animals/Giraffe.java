@@ -17,12 +17,13 @@ public class Giraffe extends AnimalChew {
      * constant double value of the default neck length of a giraffe.
      */
     private static final double DEFAULT_NECK_LENGTH = 1.5;
+    private static final double SIZE_COEFFICIENT = 2.2;
     /**
      * constant Point coordinates of the default starting location of a giraffe.
      */
     private static final Point DEFAULT_STARTING_LOCATION = new Point(50, 0);
 
-    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 2.2);
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
      * double value of the neck length of a giraffe.
      */
@@ -130,5 +131,9 @@ public class Giraffe extends AnimalChew {
     @Override
     public String animalShortPathName() {
         return "grf";
+    }
+
+    public static double getSizeCoefficient() {
+        return SIZE_COEFFICIENT;
     }
 }

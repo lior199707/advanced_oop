@@ -21,7 +21,8 @@ public class Turtle extends AnimalChew {
      * constant Point coordinates of the default starting location of a turtle.
      */
     private static final Point DEFAULT_STARTING_LOCATION = new Point(80, 0);
-    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / 0.5);
+    private static final double SIZE_COEFFICIENT = 0.5;
+    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
      * integer value of the age of a turtle
      */
@@ -128,5 +129,9 @@ public class Turtle extends AnimalChew {
     @Override
     public String animalShortPathName() {
         return "trt";
+    }
+
+    public static double getSizeCoefficient() {
+        return SIZE_COEFFICIENT;
     }
 }
