@@ -128,9 +128,10 @@ public class ZooPanel extends JPanel implements ActionListener {
     private boolean conditionalEating(Animal predator, Animal prey){
         boolean weightIsDouble = predator.getWeight() >= prey.getWeight() * 2;
         boolean distanceIsLowerThanSize = predator.calcDistance(prey.getLocation()) < prey.getSize();
-        boolean isEdible = predator.eat(prey);
-
-        return weightIsDouble && distanceIsLowerThanSize && isEdible;
+        if (weightIsDouble && distanceIsLowerThanSize){
+            return predator.eat(prey);
+        }
+        return false;
     }
 
 
