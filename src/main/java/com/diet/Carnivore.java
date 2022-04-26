@@ -24,13 +24,8 @@ public class Carnivore implements IDiet {
      */
     @Override
     public double eat(Animal animal, IEdible food) {
-        if (canEat(food.getFoodtype()) && !(animal == food)) {
-            // trying to eat an animal
-            if (food instanceof Animal prey){
-                if (animal.getWeight() >= prey.getWeight() * 2 && animal.calcDistance(prey.getLocation()) < prey.getSize()){
-                    return (animal.getWeight() * 0.1);
-                }
-            } else return (animal.getWeight() * 0.1);  // eating meat (food).
+        if (canEat(food.getFoodType()) && !(animal == food)) {
+            return (animal.getWeight() * 0.1);
         }
         return 0;
     }

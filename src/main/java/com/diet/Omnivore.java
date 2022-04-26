@@ -37,7 +37,7 @@ public class Omnivore implements IDiet {
      */
     @Override
     public double eat(Animal animal, IEdible food) {
-        EFoodType foodType = food.getFoodtype();
+        EFoodType foodType = food.getFoodType();
         if (canEat(foodType) && !(animal == food)) {
             if (foodType == EFoodType.MEAT) {
                 return carnivore.eat(animal, food);

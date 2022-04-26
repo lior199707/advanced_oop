@@ -99,7 +99,7 @@ public class Lion extends AnimalRoar {
      * @return EFoodType.NOTFOOD
      */
     @Override
-    public EFoodType getFoodtype() {
+    public EFoodType getFoodType() {
         return EFoodType.NOTFOOD;
     }
 

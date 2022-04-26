@@ -290,8 +290,8 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     }
 
     @Override
-    public EFoodType getFoodtype() {
-        MessageUtility.logGetter(this.name, "getFoodtype", EFoodType.MEAT);
+    public EFoodType getFoodType() {
+        MessageUtility.logGetter(this.name, "getFoodType", EFoodType.MEAT);
         return EFoodType.MEAT;
     }
 

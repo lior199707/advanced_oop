@@ -11,7 +11,7 @@ public class Meat extends Food{
      * @see food.IFood#getFoodtype()
      */
     @Override
-    public EFoodType getFoodtype() {
+    public EFoodType getFoodType() {
         MessageUtility.logGetter(this.getClass().getSimpleName(), "getFoodType", EFoodType.VEGETABLE);
         return EFoodType.MEAT;
     }
