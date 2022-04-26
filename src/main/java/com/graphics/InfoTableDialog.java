@@ -9,12 +9,15 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class InfoTableDialog extends JDialog {
     private TableRowSorter<ZooModel> sorter;
     private static boolean isOpen;
-    private JTable table;
+    private JTable animalTable;
+    private JTable totalRow;
     private ZooModel tableModel;
+    private TotalModel totalModel;
 
     public static boolean getIsOpen(){
         return isOpen;
@@ -28,23 +31,28 @@ public class InfoTableDialog extends JDialog {
 
     public InfoTableDialog(AnimalModel model){
         tableModel = new ZooModel(model);
+        totalModel = new TotalModel();
 
-        table = new JTable(tableModel);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setFillsViewportHeight(true);
-        table.setRowSorter(sorter = new TableRowSorter<>(tableModel));
-        table.setOpaque(false);
-        table.getTableHeader().setFont(new Font("Default", Font.BOLD,12));
-        table.getTableHeader().setBackground(Color.LIGHT_GRAY);
-        table.getTableHeader().setForeground(Color.BLACK);
-        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+        animalTable = new JTable(tableModel);
+        animalTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        animalTable.setFillsViewportHeight(true);
+        animalTable.setRowSorter(sorter = new TableRowSorter<>(tableModel));
+        animalTable.setOpaque(false);
+        animalTable.setPreferredScrollableViewportSize(animalTable.getPreferredSize());
+        animalTable.getTableHeader().setReorderingAllowed(false);
 
-        this.setSize(600,250);
-        this.add(new JScrollPane(table));
+        totalRow = new JTable(new TotalModel());
+        totalRow.setTableHeader(null);
+        totalRow.setFocusable(false);
+        totalRow.setRowSelectionAllowed(false);
+        totalRow.setOpaque(false);
+
+        this.add(new JScrollPane(animalTable), BorderLayout.CENTER);
+        this.add(totalRow, BorderLayout.SOUTH);
 
         this.setModalityType(ModalityType.DOCUMENT_MODAL);
         this.setLocationRelativeTo(this);
-//        this.pack();
+        this.setResizable(false);
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -53,22 +61,50 @@ public class InfoTableDialog extends JDialog {
                 dispose();
             }
         });
+
+        this.pack();
     }
 
     public void updateTable(){
         tableModel.fireTableDataChanged();
+        totalModel.fireTableDataChanged();
+        animalTable.setPreferredScrollableViewportSize(animalTable.getPreferredSize());
+        pack();
     }
 
-
-    public class ZooModel extends AbstractTableModel {
-        private ArrayList<Animal> data;
-        private final String[] columnNames = {"Animal", "Name", "Color", "Weight", "Hor.speed", "Var.speed", "Eat Counter"};
-
-        public ZooModel(AnimalModel model) { this.data = model.getModel(); }
-
+    private class TotalModel extends AbstractTableModel {
+        @Override
+        public int getRowCount() {
+            return 1;
+        }
 
         @Override
-        public int getRowCount() { return data.size() + 1 ; }
+        public int getColumnCount() {
+            return 7;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+                switch (columnIndex) {
+                    case 0 -> {
+                        return "Total";
+                    }
+                    case 6 -> {
+                        return String.valueOf(ZooPanel.getTotalEatCount());
+                    }
+                }
+                return null;
+        }
+    }
+
+    private class ZooModel extends AbstractTableModel {
+        private final ArrayList<Animal> animalArray;
+        private final String[] columnNames = {"Animal", "Name", "Color", "Weight", "Hor.speed", "Var.speed", "Eat Counter"};
+
+        public ZooModel(AnimalModel model) { this.animalArray = model.getAnimalModel(); };
+
+        @Override
+        public int getRowCount() { return animalArray.size(); }
 
         @Override
         public int getColumnCount() { return 7; }
@@ -79,14 +115,13 @@ public class InfoTableDialog extends JDialog {
         }
 
         @Override
-        public Class getColumnClass(int column){return String.class;}
-//        public Class getColumnClass(int column) { return Objects.requireNonNull(getValueAt(0, column)).getClass(); }
+        public Class getColumnClass(int column) { return Objects.requireNonNull(getValueAt(0, column)).getClass(); }
 
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            if (rowIndex < data.size()){
-                Animal animal = data.get(rowIndex);
+            if (rowIndex < animalArray.size()){
+                Animal animal = animalArray.get(rowIndex);
                 switch (columnIndex) {
                     case 0 -> {
                         return animal.getAnimalName();
@@ -111,17 +146,6 @@ public class InfoTableDialog extends JDialog {
                     }
                 }
             }
-            else {
-                switch (columnIndex) {
-                    case 0 -> {
-                        return "Total";
-                    }
-                    case 6 -> {
-                        return String.valueOf(ZooPanel.getTotalEatCount());
-                    }
-                }
-            }
-
             return null;
         }
     }
