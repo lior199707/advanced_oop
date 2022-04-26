@@ -25,6 +25,11 @@ replay_pid*
 
 # intelliJ idea
 .idea
+.settings
+
+# static files
+out/*
+target/*
 
 # maven 
 *.iml
