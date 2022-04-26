@@ -5,6 +5,7 @@ import com.food.Food;
 import com.food.Meat;
 import com.food.plants.Cabbage;
 import com.food.plants.Lettuce;
+import com.privateutil.PrivateGraphicUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,22 +19,24 @@ import java.io.IOException;
 
 public class ZooPanel extends JPanel implements ActionListener {
     private JPanel actionPanel;
-    private JDialog addAnimalDialog;
-    private JDialog moveAnimalDialog;
+    private AddAnimalDialog addAnimalDialog;
+    private MoveAnimalDialog moveAnimalDialog;
     private InfoTableDialog infoTable;
     private AnimalModel model;
-    private Food food = null;
+    private Food food;
     private BufferedImage savana;
     private static int totalEatCount = 0;
 
     public ZooPanel() {
         model = new AnimalModel();
         actionPanel = new JPanel();
+        infoTable = new InfoTableDialog(model);
+        food = null;
 
         // instantiating buttons
         JButton addAnimal = new JButton("Add Animal");
         JButton moveAnimal = new JButton("Move Animal");
-        JButton clear = new JButton("Clear");
+        JButton clear = new JButton("Clear All");
         JButton food = new JButton("Food");
         JButton info = new JButton("Info");
         JButton exit = new JButton("Exit");
@@ -75,7 +78,7 @@ public class ZooPanel extends JPanel implements ActionListener {
         if (food != null)
             food.drawObject(g);
 
-        for (Animal animal : model.getModel()) {
+        for (Animal animal : model.getAnimalModel()) {
             animal.drawObject(g);
         }
     }
@@ -112,7 +115,7 @@ public class ZooPanel extends JPanel implements ActionListener {
     }
 
     public boolean isChange(){
-        for (Animal animal : model.getModel()){
+        for (Animal animal : model.getAnimalModel()){
             if (animal.getChanges()){
                 //checkEatAnimal();
                 animal.setChanges(false);
@@ -122,25 +125,25 @@ public class ZooPanel extends JPanel implements ActionListener {
         return false;
     }
 
-    public  void checkEatAnimal(){
-        for (int i = 0; i < model.getModelSize(); i++){
-            Animal predator = model.getModel().get(i);
-            for (int j = i + 1; j < model.getModelSize(); j++) {
-                Animal prey = model.getModel().get(j);
+    public void checkEatAnimal(){
+        for (int i = 0; i < model.getAnimalModelSize(); i++){
+            Animal predator = model.getAnimalModel().get(i);
+            for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
+                Animal prey = model.getAnimalModel().get(j);
                 if (predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()){
                     if (predator.eat(prey)) {
                         setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-                        model.getModel().remove(j);
+                        model.getAnimalModel().remove(j);
                         j--;
                         updateEatCount(predator);
-                        infoTable.updateTable();
+                        model.setChangesState(true);
                     }
                     else if (prey.eat(predator)){
                         setTotalEatCount(getTotalEatCount() - predator.getEatCount());
-                        model.getModel().remove(i);
+                        model.getAnimalModel().remove(i);
                         i--;
                         updateEatCount(prey);
-                        infoTable.updateTable();
+                        model.setChangesState(true);
                     }
                 }
             }
@@ -158,6 +161,8 @@ public class ZooPanel extends JPanel implements ActionListener {
             repaint();
         }
         checkEatAnimal();
+        if (InfoTableDialog.getIsOpen())
+            infoTable.updateTable();
     }
 
     public static void totalEatCountInc(){
@@ -176,10 +181,9 @@ public class ZooPanel extends JPanel implements ActionListener {
         return food;
     }
 
-
     public void setImageBackground(){
         try {
-            savana = ImageIO.read(new File("src/main/resources/assignment2_pictures/background_images/savanna.png"));
+            savana = ImageIO.read(new File(PrivateGraphicUtils.findBackgroundImagePath("png")));
             repaint();
         } catch (IOException e) {
             e.printStackTrace();
@@ -210,14 +214,16 @@ public class ZooPanel extends JPanel implements ActionListener {
                 addAnimalDialog = new AddAnimalDialog(model,this);
             }
             case "Move Animal" -> {
-                if (model.getModelSize() > 0) {
+                if (model.getAnimalModelSize() > 0) {
                     moveAnimalDialog = new MoveAnimalDialog(model, this);
                 } else {
                     String message = "Zoo is currently empty!";
-                    JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.ERROR_MESSAGE, null);
+                    try {
+                        throw new PrivateGraphicUtils.ErrorDialogException(null, message);
+                    } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
                 }
             }
-            case "Clear" -> {
+            case "Clear All" -> {
                 model.removeAllAnimals();
                 setTotalEatCount(0);
                 infoTable.setIsOpen(false);
@@ -226,18 +232,19 @@ public class ZooPanel extends JPanel implements ActionListener {
             case "Food" -> {
                 createFoodDialog();
                 repaint();
-                System.out.println("Food pressed!");
             }
             case "Info" -> {
                 //creating animals details list
-                if (model.getModelSize() > 0) {
+                if (model.getAnimalModelSize() > 0) {
                     if (!InfoTableDialog.getIsOpen()){
                         infoTable = new InfoTableDialog(model);
                         infoTable.setIsOpen(true);
                     }
                 } else {
                     String message = "Zoo is currently empty!";
-                    JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.ERROR_MESSAGE, null);
+                    try {
+                        throw new PrivateGraphicUtils.ErrorDialogException(null, message);
+                    } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
                 }
             }
             case "Exit" -> {
