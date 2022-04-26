@@ -111,10 +111,7 @@ public class MoveAnimalDialog extends AnimalDialog {
         panel.add(northPanel, BorderLayout.NORTH);
         panel.add(southPanel, BorderLayout.SOUTH);
 
-//        Border bor = BorderFactory.createLineBorder(Color.BLACK);
-        TitledBorder title = BorderFactory.createTitledBorder("New Location");
-        title.setTitleJustification(TitledBorder.CENTER);
-        panel.setBorder(title);
+        panel.setBorder(PrivateGraphicUtils.createTitledBorder("New Location", TitledBorder.TOP, TitledBorder.CENTER));
         return panel;
     }
 
@@ -142,44 +139,28 @@ public class MoveAnimalDialog extends AnimalDialog {
     }
 
     private void addCoordinatesInputDocumentListener(JTextField coordinatesTextField){
-        coordinatesTextField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                checkValidInput();
-            }
+        coordinatesTextField.getDocument().addDocumentListener((IChangeDocument) e -> {
+            try {
+                String currentText = coordinatesTextField.getText();
+                moveAnimalButton.setEnabled(false);
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                checkValidInput();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                checkValidInput();
-            }
-
-            public void checkValidInput() {
-                try {
-                    String currentText = coordinatesTextField.getText();
-                    moveAnimalButton.setEnabled(false);
-                    coordinatesTextField.setForeground(Color.BLACK);
-
-                    int coordinate = Integer.parseInt(currentText);
-                    if (coordinatesTextField == xTextField) {
-                        xStatus = true;
-                        if (coordinate < Point.getMinXY() || coordinate > Point.getMaxX()) {
-                            xStatus = false;
-                            throw new NumberFormatException();
-                        }
-                    } else {
-                        yStatus = true;
-                        if (coordinate < Point.getMinXY() || coordinate > Point.getMaxY()) {
-                            yStatus = false;
-                            throw new NumberFormatException();
-                        }
+                int coordinate = Integer.parseInt(currentText);
+                if (coordinatesTextField == xTextField) {
+                    setValidTextField(coordinatesTextField, xStatus = true);
+                    if (coordinate < Point.getMinXY() || coordinate > Point.getMaxX()) {
+                        throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ignored){
-                    coordinatesTextField.setForeground(Color.RED);
+                } else {
+                    setValidTextField(coordinatesTextField, yStatus = true);
+                    if (coordinate < Point.getMinXY() || coordinate > Point.getMaxY()) {
+                        throw new NumberFormatException();
+                    }
+                }
+            } catch (NumberFormatException ignored){
+                if (coordinatesTextField == xTextField){
+                    setValidTextField(coordinatesTextField, xStatus = false);
+                } else {
+                    setValidTextField(coordinatesTextField, yStatus = false);
                 }
             }
         });
@@ -208,7 +189,6 @@ public class MoveAnimalDialog extends AnimalDialog {
                 animal.setChanges(true);
                 animal.checkEatFood(getZooPanel().getFood());
                 getZooPanel().manageZoo();
-                // TODO: add conditions to the code below, revisit checkEatAnimal.
                 if (getModel().getChangesState()){
                     getModel().setChangesState(false);
                     refreshUI();
