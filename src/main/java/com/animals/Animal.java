@@ -57,19 +57,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     private BufferedImage img1, img2;
 
 
-    public static String getDefaultColor(){
-        return DEFAULT_COLOR;
-    }
-    public static int getEatDistance() {
-        return EAT_DISTANCE;
-    }
-
     public Animal(String name, Point location, int size, int horSpeed, int verSpeed, String col){
         super(location);
         setName(name);
-        if (location != null) {
-            getLocation();
-        }
         setSize(size);
         setHorSpeed(horSpeed);
         setVerSpeed(verSpeed);
@@ -78,7 +68,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 
         this.eatCount = 0;
         this.coordChanged = false;
-        MessageUtility.logConstractor("Animal", getName());
     }
 
     /**
@@ -112,7 +101,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             setWeight(this.weight + updatedWeight);
             isSuccess = true;
         }
-        MessageUtility.logBooleanFunction(this.name, "eat", food, isSuccess);
+        MessageUtility.logBooleanFunction(getName(), "eat", food, isSuccess);
         return isSuccess;
     }
 
@@ -131,7 +120,8 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         final double CONST = 0.00025;
         double distance = super.move(nextLocation);
         if (distance > 0) {
-            this.setWeight(this.weight - (distance * this.weight * CONST));
+            double currentWeight = getWeight();
+            this.setWeight(currentWeight - (distance * currentWeight * CONST));
             this.coordChanged = true;
         }
         return distance;
@@ -160,7 +150,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
                 this.name = "NaN";
             }
         }
-        MessageUtility.logSetter(this.name, "setName", name, isSuccess);
         return isSuccess;
     }
 
@@ -169,8 +158,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * @return String value representing animal name.
      */
     public String getName() {
-        MessageUtility.logGetter(name, "getName", name);
-        return name;
+        return this.name;
     }
 
     /**
@@ -178,8 +166,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * @return double value representing animal weight.
      */
     public double getWeight() {
-        MessageUtility.logGetter(this.name, "getWeight", weight);
-        return weight;
+        return this.weight;
     }
 
     /**
@@ -195,7 +182,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         if (isSuccess) {
             this.weight = weight;
         }
-        MessageUtility.logSetter(this.name, "setWeight", weight, isSuccess);
         return isSuccess;
     }
 
@@ -206,7 +192,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     public boolean setDiet(IDiet diet) {
         this.diet = diet;
-        MessageUtility.logSetter(this.name, "setDiet", diet, true);
         return true;
     }
 
@@ -215,32 +200,31 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * @return IDiet reference.
      */
     public IDiet getDiet() {
-        MessageUtility.logGetter(this.name, "getDiet", this.diet);
-        return diet;
+        return this.diet;
     }
 
     public int getX_dir() {
-        return x_dir;
+        return this.x_dir;
     }
 
     public int getY_dir() {
-        return y_dir;
+        return this.y_dir;
     }
 
     public int getVerSpeed() {
-        return verSpeed;
+        return this.verSpeed;
     }
 
     public int getHorSpeed() {
-        return horSpeed;
+        return this.horSpeed;
     }
 
     public BufferedImage getImg2() {
-        return img2;
+        return this.img2;
     }
 
     public BufferedImage getImg1() {
-        return img1;
+        return this.img1;
     }
 
     public ZooPanel getPan(){
@@ -285,7 +269,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     @Override
     public Point getLocation() {
-        MessageUtility.logGetter(this.name, "getLocation", super.getLocation());
         return super.getLocation();
     }
 
@@ -297,17 +280,15 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 
     @Override
     public void drawObject(Graphics g) {
+        int size = getSize();
+        int coordinateX = getLocation().getX();
+        int coordinateY = getLocation().getY();
+
         if (x_dir == 1) { // goes to the right side
-//            ImageIcon image = new ImageIcon(img1);
-//            Image toSizeImage = image.getImage();
-//            Image modifiedImage = toSizeImage.getScaledInstance((int) (size * 8), size, Image.SCALE_SMOOTH);
-//            g.drawImage(img1, (getLocation().getX() - size / 2) + 35, (getLocation().getY() - size / 10) + 18,
-//                    (int) (size * 1.2), size, pan);
-            g.drawImage(img1, (getLocation().getX() - size / 2) + (35 * (50 / size)), (getLocation().getY() - size / 10) + (18 * (50 / size)),
-                    (int) (size * 1.2), size, pan);
+            g.drawImage(getImg1(),coordinateX - (size/3),coordinateY- (size/8), (int) (size * 1.2),size, getPan());
         }
         else // goes to the left side
-            g.drawImage(img2, getLocation().getX(), getLocation().getY() - size / 10, size / 2, size, pan);
+            g.drawImage(getImg2(), coordinateX, coordinateY - (size / 10), (int) (size * 1.2), size, getPan());
     }
 
     @Override
@@ -344,6 +325,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             }
         }
     }
+    public static String getDefaultColor() {
+        return DEFAULT_COLOR;
+    }
 
     public boolean setColor(String color){
         boolean isSuccess = true;
@@ -360,12 +344,20 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return isSuccess;
     }
 
-    public void checkEatFood(Food food) {
-        if (food != null && this.calcDistance(food.getLocation()) <= Animal.getEatDistance())
+    public boolean checkEatFood(Food food) {
+        if (food == null) return false;
+
+        int distanceX = Math.abs(this.getLocation().getX() - food.getLocation().getX());
+        int distanceY = Math.abs(this.getLocation().getY() - food.getLocation().getY());
+
+        if (distanceX <= EAT_DISTANCE && distanceY <= EAT_DISTANCE)
             if (this.eat(food)){
                 pan.setPanelFood(null);
                 pan.updateEatCount(this);
+                pan.getInfoTable().updateTable();
+                return true;
             }
+        return false;
     }
 
 
@@ -385,12 +377,12 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 
     @Override
     public int getSize() {
-        return size;
+        return this.size;
     }
 
     @Override
     public int getEatCount() {
-        return eatCount;
+        return this.eatCount;
     }
     /**
      * equals method of animal object.
