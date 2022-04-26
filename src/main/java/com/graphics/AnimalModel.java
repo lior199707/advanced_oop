@@ -7,9 +7,11 @@ import java.util.ArrayList;
 public class AnimalModel {
     private ArrayList<Animal> animals;
     private static final int MAX_SIZE = 10;
+    private boolean isChanged;
 
     AnimalModel(){
         animals = new ArrayList<>();
+        isChanged = false;
     }
 
     public boolean addAnimal(Animal animal){
@@ -34,18 +36,18 @@ public class AnimalModel {
         animals = new ArrayList<>();
     }
 
-    public ArrayList<Animal> getModel(){
+    public ArrayList<Animal> getAnimalModel(){
         return animals;
     }
 
-    public int getModelSize() {
+    public int getAnimalModelSize() {
         return animals.size();
     }
 
     public String[] getAnimalNames() {
         String[] names = new String[animals.size()];
 
-        for (int i=0; i < getModelSize(); i++){
+        for (int i = 0; i < getAnimalModelSize(); i++){
             names[i] = animals.get(i).toString();
         }
 
@@ -53,7 +55,7 @@ public class AnimalModel {
     }
 
 
-    public boolean NameExistInModel(String name){
+    public boolean containsAnimalName(String name){
         for (Animal animal: animals){
             if (animal.getName().equals(name))
                 return true;
@@ -63,6 +65,14 @@ public class AnimalModel {
 
     public static int getModelMaxSize() {
         return MAX_SIZE;
+    }
+
+    public boolean getChangesState(){
+        return isChanged;
+    }
+
+    public void setChangesState(boolean state){
+        isChanged = state;
     }
 
 }
