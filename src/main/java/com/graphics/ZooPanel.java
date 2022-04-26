@@ -125,26 +125,33 @@ public class ZooPanel extends JPanel implements ActionListener {
         return false;
     }
 
+    private boolean conditionalEating(Animal predator, Animal prey){
+        boolean weightIsDouble = predator.getWeight() >= prey.getWeight() * 2;
+        boolean distanceIsLowerThanSize = predator.calcDistance(prey.getLocation()) < prey.getSize();
+        boolean isEdible = predator.eat(prey);
+
+        return weightIsDouble && distanceIsLowerThanSize && isEdible;
+    }
+
+
     public void checkEatAnimal(){
-        for (int i = 0; i < model.getAnimalModelSize(); i++){
+        for (int i = 0; i < model.getAnimalModelSize(); i++) {
             Animal predator = model.getAnimalModel().get(i);
             for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
                 Animal prey = model.getAnimalModel().get(j);
-                if (predator.calcDistance(prey.getLocation()) <= Animal.getEatDistance()){
-                    if (predator.eat(prey)) {
-                        setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-                        model.getAnimalModel().remove(j);
-                        j--;
-                        updateEatCount(predator);
-                        model.setChangesState(true);
-                    }
-                    else if (prey.eat(predator)){
-                        setTotalEatCount(getTotalEatCount() - predator.getEatCount());
-                        model.getAnimalModel().remove(i);
-                        i--;
-                        updateEatCount(prey);
-                        model.setChangesState(true);
-                    }
+                if (conditionalEating(predator, prey)){
+                    // eat calls canEat to determine if prey is edible.
+                    setTotalEatCount(getTotalEatCount() - prey.getEatCount());
+                    model.getAnimalModel().remove(j);
+                    j--;
+                    updateEatCount(predator);
+                    model.setChangesState(true);
+                } else if (conditionalEating(prey, predator)) {
+                    setTotalEatCount(getTotalEatCount() - predator.getEatCount());
+                    model.getAnimalModel().remove(i);
+                    i--;
+                    updateEatCount(prey);
+                    model.setChangesState(true);
                 }
             }
         }
