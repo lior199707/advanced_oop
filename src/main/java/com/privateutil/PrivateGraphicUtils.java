@@ -18,18 +18,19 @@ public class PrivateGraphicUtils {
         return new Point((screenSize.width / 2) - (FRAME_X / 2), (screenSize.height / 2) - (FRAME_Y / 2));
     }
 
-    public static String findAnimalImagePath(String type, String color, int direction){
+    public static String findAnimalImagePath(String type, String shortPath, String color, int direction){
         StringBuilder path = new StringBuilder();
         path.append(PICTURE_PATH);
         path.append(type.toLowerCase());
         path.append("_images/");
-        switch (type) {
-            case "Lion" -> path.append("lio");
-            case "Bear" -> path.append("bea");
-            case "Giraffe" -> path.append("grf");
-            case "Turtle" -> path.append("trt");
-            case "Elephant" -> path.append("elf");
-        }
+//        switch (type) {
+//            case "Lion" -> path.append("lio");
+//            case "Bear" -> path.append("bea");
+//            case "Giraffe" -> path.append("grf");
+//            case "Turtle" -> path.append("trt");
+//            case "Elephant" -> path.append("elf");
+//        }
+        path.append(shortPath);
 
         switch (color.toUpperCase()) {
             case "NATURAL" -> path.append("_n_");
