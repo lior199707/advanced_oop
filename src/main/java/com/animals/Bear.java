@@ -1,4 +1,6 @@
+
 package com.animals;
+
 
 import com.diet.Omnivore;
 import com.mobility.Point;
@@ -10,6 +12,10 @@ import com.utilities.MessageUtility;
  */
 public class Bear extends AnimalRoar {
     /**
+     * FurColors enum indicating the fur color of a bear.
+     */
+    private FurColors furColor;
+    /**
      * constant double value of the default weight of a bear.
      */
     private static final double DEFAULT_WEIGHT = 308.2;
@@ -17,14 +23,18 @@ public class Bear extends AnimalRoar {
      * constant Point coordinates of the default starting location of a bear.
      */
     private static final Point DEFAULT_STARTING_LOCATION = new Point(100, 5);
-    private static final FurColors DEFAULT_FUR_COLOR = FurColors.GRAY;
-
-    private static final double SIZE_COEFFICIENT = 1.5;
-    private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
-     * FurColors enum indicating the fur color of a bear.
+     * constant double value of the coefficient used for weight calculation.
      */
-    private FurColors furColor;
+    private static final double SIZE_COEFFICIENT = 1.5;
+    /**
+     * constant int value of the default weight of a bear.
+     */
+    private static final int DEFAULT_SIZE =  (int)(DEFAULT_WEIGHT / SIZE_COEFFICIENT);
+    /**
+     * constant Enum FurColors value of the default fur color for a bear.
+     */
+    private static final FurColors DEFAULT_FUR_COLOR = FurColors.GRAY;
 
     /**
      * private enum class to hold different fur colors
@@ -58,12 +68,18 @@ public class Bear extends AnimalRoar {
         }
     }
 
+    //ctor
+
     /**
      * Bear constructor.
-     * setting default weight, fur color and diet!
-     * passing name and location to super.
+     * setting default location and diet!
+     * passing name, location, size, horizontal speed, vertical speed and color to super.
      * @see com.animals.AnimalRoar
-     * @param name String representation of bear name.
+     * @param name , String value of the animal's name, should contain only letters.
+     * @param size , Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed , Int value indicates animal's horizontal speed.
+     * @param verSpeed , Int value indicates animal's vertical speed.
+     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
      */
     public Bear(String name, int size, int horSpeed, int verSpeed, String col){
         super(name,DEFAULT_STARTING_LOCATION,size,horSpeed,verSpeed,col);
@@ -76,12 +92,58 @@ public class Bear extends AnimalRoar {
 
     /**
      * Bear constructor.
-     * passing name and default starting location to main constructor.
-     * @param name String representation of bear name.
+     * setting default size.
+     * passing name, default starting location, horizontal speed and vertical speed to main constructor.
+     * @param name , String value of the animal's name, should contain only letters.
+     * @param horSpeed , Int value indicates animal's horizontal speed.
+     * @param verSpeed , Int value indicates animal's vertical speed.
      */
     public Bear(String name,int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed,verSpeed, getDefaultColor());
     }
+
+    //end ctor
+
+
+    //getters
+
+    /**
+     * class Bear static method.
+     * @return Point object of the default starting location of a bear
+     */
+    public static Point getDefaultStartingLocation() {
+        return DEFAULT_STARTING_LOCATION;
+    }
+
+    /**
+     * furColor getter.
+     * @return furColor value of bear.
+     */
+    public FurColors getFurColor() {
+        MessageUtility.logGetter(getName(), "getFurColor", furColor);
+        return furColor;
+    }
+
+    /**
+     * class Bear static method.
+     * @return Enum FurColors value of the default fur color of a bear(Grey).
+     */
+    public static FurColors getDefaultFurColor(){
+        return DEFAULT_FUR_COLOR;
+    }
+
+    /**
+     * class Bear static method
+     * @return constant double value of the coefficient used for weight calculation.
+     */
+    public static double getSizeCoefficient() {
+        return SIZE_COEFFICIENT;
+    }
+
+    //end getter
+
+
+    //setters
 
     /**
      * furColor  setter.
@@ -104,38 +166,16 @@ public class Bear extends AnimalRoar {
         return isSuccess;
     }
 
-    /**
-     * furColor getter.
-     * @return furColor value of bear.
-     */
-    public FurColors getFurColor() {
-        MessageUtility.logGetter(getName(), "getFurColor", furColor);
-        return furColor;
-    }
+    //end setters
 
-    public static Point getDefaultStartingLocation() {
-        return DEFAULT_STARTING_LOCATION;
-    }
 
-    public static FurColors getDefaultFurColor(){
-        return DEFAULT_FUR_COLOR;
-    }
+    //override class AnimalRoar
     /**
      * roar implementation of a bear.
      */
     @Override
     public void roar() {
         MessageUtility.logSound(getName(), "Stands on its hind legs, roars and scratches its belly");
-    }
-
-    @Override
-    public String animalShortPathName() {
-        return "bea";
-    }
-
-    @Override
-    public String getAnimalName() {
-        return "Bear";
     }
 
     /**
@@ -147,11 +187,7 @@ public class Bear extends AnimalRoar {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        Bear bear = (Bear) o;
-
-        return getFurColor() == bear.getFurColor();
+        return super.equals(o);
     }
 
     /**
@@ -163,7 +199,36 @@ public class Bear extends AnimalRoar {
         return super.toString();
     }
 
-    public static double getSizeCoefficient() {
-        return SIZE_COEFFICIENT;
+
+    //end override class AnimalRoar
+
+
+    //override class Animal
+
+    /**
+     * override abstract class Animal animalShortPathName().
+     * @return String representation of the short path name for loading bear images.
+     */
+    @Override
+    public String animalShortPathName() {
+        return "bea";
     }
+
+    //end override class animal
+
+
+    //override interface IAnimalBehavior
+
+    /**
+     * override interface IAnimalBehavior getAnimalName().
+     * @return String representation of the animal natural name.
+     */
+    @Override
+    public String getAnimalName() {
+        return "Bear";
+    }
+
+    //end override interface IAnimalBehavior
+
+
 }
