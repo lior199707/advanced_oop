@@ -22,3 +22,4 @@ public interface IDiet {
      */
     public double eat(Animal animal, IEdible food);
 }
+//end interface IDiet

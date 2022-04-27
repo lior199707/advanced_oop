@@ -10,10 +10,40 @@ import com.utilities.MessageUtility;
  */
 public class Carnivore implements IDiet {
 
+    //Ctor
+
     /**
      * Carnivore constructor
      */
     public Carnivore(){}
+
+    //end Ctor
+
+
+    //override class Object
+
+    /**
+     * check if this carnivore object is the same reference as obj
+     * @param obj , the second object
+     * @return true if the same reference, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {return super.equals(obj);
+    }
+
+    /**
+     * toString method of Carnivore.
+     * @return a string representation of the object
+     */
+    @Override
+    public String toString() {
+        return "[Carnivore]";
+    }
+
+    //end override class Object
+
+
+    //override interface IDiet
 
     /**
      * if the animal can eat the food, and the food and the animal aren't pointing to the same animal
@@ -42,21 +72,6 @@ public class Carnivore implements IDiet {
         return isSuccess;
     }
 
-    /**
-     * check if this carnivore object is the same reference as obj
-     * @param obj , the second object
-     * @return true if the same reference, false otherwise
-     */
-    @Override
-    public boolean equals(Object obj) {return super.equals(obj);
-    }
-
-    /**
-     * toString method of Carnivore.
-     * @return a string representation of the object
-     */
-    @Override
-    public String toString() {
-        return "[Carnivore]";
-    }
+    //end override interface IDiet
 }
+//end class Carnivore
