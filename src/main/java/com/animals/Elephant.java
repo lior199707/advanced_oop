@@ -13,28 +13,39 @@ public class Elephant extends AnimalChew {
      * constant double value of the default weight of an elephant.
      */
     private static final double DEFAULT_WEIGHT = 500.00;
-
+    /**
+     * constant double value of the coefficient used for weight calculation.
+     */
     private static final double SIZE_COEFFICIENT = 10;
+    /**
+     * constant int value of the default size of an Elephant.
+     */
     private static final int DEFAULT_SIZE = (int) (DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
-     * constant Point coordinates of the default starting location of an elephant.
+     * constant Point coordinates of the default starting location of an Elephant.
      */
     private static final Point DEFAULT_STARTING_LOCATION = new Point(50, 90);
     /**
-     * constant double value of the default trunk length of an elephant.
+     * constant double value of the default trunk length of an Elephant.
      */
     private static final double DEFAULT_TRUNK_LENGTH = 1.0;
     /**
-     * double value of the trunk length of an elephant.
+     * double value of the trunk length of an Elephant.
      */
     private double trunkLength;
 
+    //Ctor
     /**
      * Elephant constructor.
-     * setting default weight, default trunk length and diet!
-     * passing name and location to super.
+     * setting default location, default trunk length and diet!
+     * passing name, location, size, horizontal speed, vertical speed and color to super.
+     *
      * @see com.animals.AnimalChew
-     * @param name String representation of elephant name.
+     * @param name , String value of the animal's name, should contain only letters.
+     * @param size , Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed , Int value indicates animal's horizontal speed.
+     * @param verSpeed , Int value indicates animal's vertical speed.
+     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
      */
 
     public Elephant(String name, int size, int horSpeed, int verSpeed, String col) {
@@ -48,25 +59,29 @@ public class Elephant extends AnimalChew {
 
     /**
      * Elephant constructor.
-     * passing name and default starting location to main constructor.
-     * @param name String representation of elephant name.
+     * setting default size.
+     * passing name, horizontal speed and vertical speed to main constructor.
+     * @param name , String value of the animal's name, should contain only letters.
+     * @param horSpeed , Int value indicates animal's horizontal speed.
+     * @param verSpeed , Int value indicates animal's vertical speed.
      */
     public Elephant(String name, int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    //end Ctor
+
+
+    //getters
 
     /**
-     * chew implementation of an elephant.
+     * class Elephant static method.
+     * @return Point object of the default starting location of an Elephant.
      */
-    @Override
-    public void chew() {
-        MessageUtility.logSound(this.getName(), "Trumpets with joy while flapping its ears, then chews");
-    }
-
     public static Point getDefaultStartingLocation() {
         return DEFAULT_STARTING_LOCATION;
     }
+
     /**
      * trunk length getter.
      * @return double value of the trunk length.
@@ -76,9 +91,27 @@ public class Elephant extends AnimalChew {
         return trunkLength;
     }
 
+    /**
+     * class Elephant static method.
+     * @return double value of the default trunk length for an elephant.
+     */
     public static double getDefaultTrunkLength() {
         return DEFAULT_TRUNK_LENGTH;
     }
+
+    /**
+     * class Elephant static method
+     * @return constant double value of the coefficient used for weight calculation.
+     */
+    public static double getSizeCoefficient() {
+        return SIZE_COEFFICIENT;
+    }
+
+    //end getters
+
+
+    //setters
+
     /**
      * trunk length setter.
      * checks if the trunk length is valid (between min/max values).
@@ -97,6 +130,19 @@ public class Elephant extends AnimalChew {
         }
         MessageUtility.logSetter(getName(), "setTrunkLength", trunkLength, isSuccess);
         return isSuccess;
+    }
+
+    //end setters
+
+
+    //override class AnimalChew
+
+    /**
+     * chew implementation of an elephant.
+     */
+    @Override
+    public void chew() {
+        MessageUtility.logSound(this.getName(), "Trumpets with joy while flapping its ears, then chews");
     }
 
     /**
@@ -124,18 +170,34 @@ public class Elephant extends AnimalChew {
         return super.toString();
     }
 
+    //end override class AnimalChew
 
-    @Override
-    public String getAnimalName() {
-        return "Elephant";
-    }
 
+    //override class Animal
+
+    /**
+     * override abstract class Animal animalShortPathName().
+     * @return String representation of the short path name for loading Elephant images.
+     */
     @Override
     public String animalShortPathName() {
         return "elf";
     }
 
-    public static double getSizeCoefficient() {
-        return SIZE_COEFFICIENT;
+    //end override class Animal
+
+
+    //override interface IAnimalBehavior
+
+    /**
+     * override interface IAnimalBehavior getAnimalName().
+     * @return String representation of the animal natural name.
+     */
+    @Override
+    public String getAnimalName() {
+        return "Elephant";
     }
+
+    //end override interface IAnimalBehavior
 }
+//end class Elephant

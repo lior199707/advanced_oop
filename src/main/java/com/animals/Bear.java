@@ -28,11 +28,11 @@ public class Bear extends AnimalRoar {
      */
     private static final double SIZE_COEFFICIENT = 1.5;
     /**
-     * constant int value of the default weight of a bear.
+     * constant int value of the default size of a Bear.
      */
     private static final int DEFAULT_SIZE =  (int)(DEFAULT_WEIGHT / SIZE_COEFFICIENT);
     /**
-     * constant Enum FurColors value of the default fur color for a bear.
+     * constant Enum FurColors value of the default fur color for a Bear.
      */
     private static final FurColors DEFAULT_FUR_COLOR = FurColors.GRAY;
 
@@ -72,7 +72,7 @@ public class Bear extends AnimalRoar {
 
     /**
      * Bear constructor.
-     * setting default location and diet!
+     * setting default location, default fur color and diet!
      * passing name, location, size, horizontal speed, vertical speed and color to super.
      * @see com.animals.AnimalRoar
      * @param name , String value of the animal's name, should contain only letters.
@@ -93,7 +93,7 @@ public class Bear extends AnimalRoar {
     /**
      * Bear constructor.
      * setting default size.
-     * passing name, default starting location, horizontal speed and vertical speed to main constructor.
+     * passing name, horizontal speed and vertical speed to main constructor.
      * @param name , String value of the animal's name, should contain only letters.
      * @param horSpeed , Int value indicates animal's horizontal speed.
      * @param verSpeed , Int value indicates animal's vertical speed.
@@ -109,7 +109,7 @@ public class Bear extends AnimalRoar {
 
     /**
      * class Bear static method.
-     * @return Point object of the default starting location of a bear
+     * @return Point object of the default starting location of a Bear.
      */
     public static Point getDefaultStartingLocation() {
         return DEFAULT_STARTING_LOCATION;
@@ -187,7 +187,11 @@ public class Bear extends AnimalRoar {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        return super.equals(o);
+        if (!super.equals(o)) return false;
+
+        Bear bear = (Bear) o;
+
+        return getFurColor() == bear.getFurColor();
     }
 
     /**
@@ -207,7 +211,7 @@ public class Bear extends AnimalRoar {
 
     /**
      * override abstract class Animal animalShortPathName().
-     * @return String representation of the short path name for loading bear images.
+     * @return String representation of the short path name for loading Bear images.
      */
     @Override
     public String animalShortPathName() {
@@ -229,6 +233,5 @@ public class Bear extends AnimalRoar {
     }
 
     //end override interface IAnimalBehavior
-
-
 }
+//end class Bear
