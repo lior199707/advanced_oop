@@ -12,12 +12,32 @@ import java.io.IOException;
 
 import static com.graphics.IDrawable.PICTURE_PATH;
 
+/**
+ * PrivateGraphicUtils class holds utility methods used within the UI parts of the project.
+ */
 public class PrivateGraphicUtils {
+
+    /**
+     *
+     * @param FRAME_X , integer value of the frame width in pixels.
+     * @param FRAME_Y , integer value of the frame height in pixels.
+     * @return Point reference for creating a UI, so it will be in the middle of the screen.
+     */
     public static Point centerWindow(int FRAME_X, int FRAME_Y){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return new Point((screenSize.width / 2) - (FRAME_X / 2), (screenSize.height / 2) - (FRAME_Y / 2));
     }
 
+    /**
+     * @param type - String representing of the animal's type.
+     * @param shortPath -   String used for loading animal picture.
+     * @param color - String representing the animal's color.
+     * @param direction - int representing animal's walking direction.
+     *                  1 - right
+     *                  -1 - left
+     * @return String value of the path for loading the corresponding animal's picture based on animal's type,
+     * shortPath, color and direction.
+     */
     public static String findAnimalImagePath(String type, String shortPath, String color, int direction){
         StringBuilder path = new StringBuilder();
         path.append(PICTURE_PATH);
@@ -48,6 +68,10 @@ public class PrivateGraphicUtils {
         return String.valueOf(path);
     }
 
+    /**
+     * @param type - String representing of the food's type.
+     * @return String value of the path for loading the corresponding food's picture based on the food's type.
+     */
     public static String findFoodImagePath(String type){
         StringBuilder path = new StringBuilder();
         String lowerCaseType = type.toLowerCase();
