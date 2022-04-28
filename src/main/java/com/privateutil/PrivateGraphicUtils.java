@@ -87,6 +87,11 @@ public class PrivateGraphicUtils {
         return String.valueOf(path);
     }
 
+    /**
+     * loads jpg and png images, right now used only for savanna background image.
+     * @param format - The format of the image(jpg, png).
+     * @return String value, the path of the image to load.
+     */
     public static String findBackgroundImagePath(String format){
         StringBuilder path = new StringBuilder();
         path.append(PICTURE_PATH);
@@ -99,6 +104,16 @@ public class PrivateGraphicUtils {
         }
         return String.valueOf(path);
     }
+
+    /**
+     * resizes an image by its path, wanted width and wanted height.
+     * used in order to present the image in the AddAnimalDialog.
+     *
+     * @param path - the path of the image to resize
+     * @param width - the new width of the image
+     * @param height - the new height of the image
+     * @return ImageIcon reference, SCALE_SMOOTH image with new width and height, if image failed to load return null.
+     */
     // TODO: Consider naming for both methods including local variables.
     // change to path name.
     public static ImageIcon resizeImage(String path, int width, int height){
@@ -113,6 +128,13 @@ public class PrivateGraphicUtils {
         return null;
     }
 
+    /**
+     * resizes animal's image to constant width(220) and height(180).
+     * used in order to present the image in the MoveAnimalDialog.
+     *
+     * @param animal - the animal to resize its image.
+     * @return ImageIcon reference, SCALE_SMOOTH image with new width(200) and height(180).
+     */
     // TODO: Consider naming for both methods including local variables.
     public static ImageIcon setAnimalImageIcon(Animal animal){
         BufferedImage bufferedImage = animal.getImg1();
@@ -121,6 +143,13 @@ public class PrivateGraphicUtils {
         return new ImageIcon(resizedImage);
     }
 
+    /**
+     * creates a new border with the wanted title, title position and title justification.
+     * @param title - String, the title of the border.
+     * @param titlePosition - Integer, the position of the title.
+     * @param titleJustification - Integer, title justification of the border.
+     * @return TitleBorder reference of the wanted border.
+     */
     public static TitledBorder createTitledBorder(String title, int titlePosition, int titleJustification){
         TitledBorder border = BorderFactory.createTitledBorder(title);
         border.setTitlePosition(titlePosition);
@@ -128,10 +157,20 @@ public class PrivateGraphicUtils {
         return border;
     }
 
+    /**
+     * class ErrorDialogException extends class Exception.
+     * handles invalid input in Dialogs (AddAnimalDialog and MoveAnimalDialog).
+     */
     public static class ErrorDialogException extends Exception {
-        public ErrorDialogException(Container container, String message, String title){
-            JOptionPane.showMessageDialog(container, message,title,JOptionPane.ERROR_MESSAGE);
-        }
+//        public ErrorDialogException(Container container, String message, String title){
+//            JOptionPane.showMessageDialog(container, message,title,JOptionPane.ERROR_MESSAGE);
+//        }
+
+        /**
+         * Pops up an Error Dialog window with the wanted container and message.
+         * @param container - the container of the error dialog window.
+         * @param message - the message to be presented in the error dialog window.
+         */
         public ErrorDialogException(Container container, String message){
             JOptionPane.showMessageDialog(container, message,"Error",JOptionPane.ERROR_MESSAGE);
         }
@@ -152,3 +191,4 @@ public class PrivateGraphicUtils {
         JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
     }
 }
+//end class PrivateGraphicsUtils
