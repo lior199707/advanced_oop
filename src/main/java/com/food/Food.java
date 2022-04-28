@@ -15,26 +15,39 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * abstract class Food, handles foods of types meat and plants, food is edible has a location and drawable.
+ */
 public abstract class Food implements IEdible, Ilocatable, IDrawable {
 
     /**
-     *
+     *double value representing the height of the food.
      */
     private double height;
     /**
-     *
+     *Point object representing the location of the food.
      */
     private Point location;
     /**
-     *
+     *double value representing the weight of the food.
      */
     private double weight;
-
-    private ZooPanel pan;
-
-    private BufferedImage img;
     /**
-     *
+     * ZooPanel reference to the main panel the food is drawn upon.
+     */
+    private ZooPanel pan;
+    /**
+     * image reference, the image of the food.
+     */
+    private BufferedImage img;
+
+    //Ctor
+
+    /**
+     *Food constructor
+     * sets the height and weight of the food to random values, and sets food's location to the middle of the
+     * ZooPanel.
+     * sets food's image to the matching food type image.
      */
     public Food() {
         Random rand = new Random();
@@ -45,11 +58,18 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         MessageUtility.logConstractor("Food", "Food");
     }
 
-    public void setPan(ZooPanel pan) {
-        this.pan = pan;
-    }
+    //end Ctor
 
-    public abstract String foodShortPathName();
+
+    //getters
+
+    /**
+     * @return double value representing plant weight.
+     */
+    public double getWeight() {
+        MessageUtility.logGetter(this.getClass().getSimpleName(), "getWeight", this.weight);
+        return weight;
+    }
 
     /**
      * @return double value representing plant height.
@@ -59,23 +79,16 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         return this.height;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see mobility.ILocatable#getLocation()
-     */
-    @Override
-    public Point getLocation() {
-        MessageUtility.logGetter(this.getClass().getSimpleName(), "getLocation", this.location);
-        return this.location;
-    }
+    //end getters
+
+
+    //setters
 
     /**
-     * @return double value representing plant weight.
+     * @param pan , the panel main panel the food is drawn upon.
      */
-    public double getWeight() {
-        MessageUtility.logGetter(this.getClass().getSimpleName(), "getWeight", this.weight);
-        return weight;
+    public void setPan(ZooPanel pan) {
+        this.pan = pan;
     }
 
     /**
@@ -91,21 +104,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
             this.height = 0;
         }
         MessageUtility.logSetter(this.getClass().getSimpleName(), "setHeight", height, isSuccess);
-        return isSuccess;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see mobility.ILocatable#setLocation(mobility.Point)
-     */
-    @Override
-    public boolean setLocation(Point newLocation) {
-        boolean isSuccess = Point.checkBoundaries(newLocation);
-        if (isSuccess) {
-            this.location = newLocation;
-        }
-        MessageUtility.logSetter(this.getClass().getSimpleName(), "setLocation", newLocation, isSuccess);
         return isSuccess;
     }
 
@@ -125,12 +123,92 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         return isSuccess;
     }
 
+    //end setters
+
+
+    //abstract methods
+
+    /**
+     * @return String representation of the short path name for loading food image.
+     * will be overridden by classes that extend from abstract class Food.
+     */
+    public abstract String foodShortPathName();
+
+    //end abstract methods
+
+
+    //override class Object
+
+    /**
+     *
+     * @return String representation of the food object.
+     */
+    @Override
+    public String toString() {
+        return "[" + this.getClass().getSimpleName() + "] ";
+    }
+
+    //end override class Object
+
+
+    //override interface ILocatable
+
+    /**
+     * @see com.mobility.Ilocatable#getLocation()
+     *
+     * @return Point reference of the food's location, always:(400,300).
+     */
+    @Override
+    public Point getLocation() {
+        MessageUtility.logGetter(this.getClass().getSimpleName(), "getLocation", this.location);
+        return this.location;
+    }
+
+    /**
+     * checks if the point given is a valid point(boundaries (0-800,0-600)), if valid sets food location to the
+     * new location and returns true, otherwise returns false.
+     * @see com.mobility.Ilocatable#setLocation(Point).
+     *
+     * @param newLocation, Point reference for the new location of the food.
+     * @return Boolean value representing success or failure.
+     */
+    @Override
+    public boolean setLocation(Point newLocation) {
+        boolean isSuccess = Point.checkBoundaries(newLocation);
+        if (isSuccess) {
+            this.location = newLocation;
+        }
+        MessageUtility.logSetter(this.getClass().getSimpleName(), "setLocation", newLocation, isSuccess);
+        return isSuccess;
+    }
+
+    //end override interface ILocatable
+
+
+    //override interface IDrawable
+
+    /**
+     * @return null, food doesn't have color.
+     */
+    @Override
+    public String getColor() {
+        return null;
+    }
+
+    /**
+     * Draws the image of the food in the middle of the ZooPanel.
+     * @param g , the graphics object to protect
+     */
     @Override
     public void drawObject(Graphics g) {
         // need to draw the object at the center of the screen.
         g.drawImage(img, location.getX() + 80, location.getY() + 60, 50,50,pan);
     }
 
+    /**
+     * loads the image of the food by its short path name.
+     * @param shortPathName, String representation of the short path name for loading corresponding food image.
+     */
     @Override
     public void loadImages(String shortPathName) {
         String path = PrivateGraphicUtils.findFoodImagePath(shortPathName);
@@ -143,19 +221,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         }
     }
 
-    @Override
-    public String getColor() {
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "[" + this.getClass().getSimpleName() + "] ";
-    }
-
+    //end override interface IDrawable
 }
+//end abstract class Food
