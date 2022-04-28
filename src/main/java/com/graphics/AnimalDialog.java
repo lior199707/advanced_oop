@@ -9,10 +9,33 @@ import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+
+/**
+ * AnimalDialog is an abstract JDialog class, instantiating default behaviors for different
+ * interactive dialogs.
+ * @see com.graphics.AddAnimalDialog
+ * @see com.graphics.MoveAnimalDialog
+ */
 public abstract class AnimalDialog extends JDialog {
+    /**
+     * Composed ZooPanel object which is the parent panel of the dialog window.
+     */
     private final ZooPanel zooPanel;
+    /**
+     * Composed AnimalModel object which holds the animal ArrayList and a set of methods within it.
+     */
     private final AnimalModel model;
 
+    /**
+     * AnimalDialog constructor.
+     * It sets default modality, close operation, centers the location of the dialog, size and resizability
+     * to descendant classes.
+     *
+     * Both params are set here for separation of concerns purposes.
+     * @param model AnimalModel object representing the animal model.
+     * @param zooPanel ZooPanel object representing the parent panel.
+     * @param dimension Dimension object representing the default dimension to set for each descendant class.
+     */
     public AnimalDialog(AnimalModel model, ZooPanel zooPanel, Dimension dimension){
         this.setModal(true);
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -25,12 +48,43 @@ public abstract class AnimalDialog extends JDialog {
         this.zooPanel = zooPanel;
     }
 
+    /**
+     * abstract method to create the north side of the panel.
+     * @return JPanel containing different items each descendant can implement.
+     */
     protected abstract JPanel createNorthPanel();
+    /**
+     * abstract method to create the west side of the panel.
+     * @return JPanel containing different items each descendant can implement.
+     */
     protected abstract JPanel createWestPanel();
+    /**
+     * abstract method to create the east side of the panel.
+     * @return JPanel containing different items each descendant can implement.
+     */
     protected abstract JPanel createEastPanel();
+    /**
+     * abstract method to create the south side of the panel.
+     * @return JPanel containing different items each descendant can implement.
+     */
     protected abstract JPanel createSouthPanel();
+
+    /**
+     * createDialog will call the directional panel methods and add them to dialog.
+     */
     protected abstract void createDialog();
 
+    /**
+     * passing a JTextField and range of values to set placeholders indicating the value range.
+     * when focus is gained the listener will confirm the input is not changed from the placeholder,
+     * if so, it will empty the text field and set the foreground to black.
+     * when focus is lost, if the text field is empty it will set the text to the placeholder value,
+     * and set foreground to gray.
+     *
+     * @param validRangeTextField JTextField object to add a focus listener to.
+     * @param MIN_RANGE int value representing the minimum value acceptable in the text field.
+     * @param MAX_RANGE int value representing the maximum value acceptable in the text field.
+     */
     protected void addValidRangeFocusListener(JTextField validRangeTextField,int MIN_RANGE, int MAX_RANGE) {
         validRangeTextField.addFocusListener(new FocusListener() {
             @Override
@@ -50,6 +104,11 @@ public abstract class AnimalDialog extends JDialog {
         });
     }
 
+    /**
+     * AnimalDialogWindowAdapter is a private inner class, extending WindowAdapter.
+     * once the user attempts to close the window a confirm dialog window will appear.
+     * if the user presses OK it shall dispose of the parent dialog window i.e. the Animal Dialog.
+     */
     private class AnimalDialogWindowAdapter extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
@@ -65,11 +124,23 @@ public abstract class AnimalDialog extends JDialog {
         }
     }
 
+    /**
+     * setGridBackConstraints attempts to simplify and reduce the amount code necessary to set
+     * the position constraints of an element.
+     * @param gbc GridBackConstraints object to modify.
+     * @param gridx the grid x value.
+     * @param gridy the grid y value.
+     */
     protected void setGridBagConstraintPosition(GridBagConstraints gbc, int gridx, int gridy){
         gbc.gridx = gridx;
         gbc.gridy = gridy;
     }
 
+    /**
+     * setValidTextField shifts the text field foreground based on state.
+     * @param textField JTextField object to modify.
+     * @param state boolean value representing if the current state is valid or invalid.
+     */
     public void setValidTextField(JTextField textField, boolean state){
         if (state)
             textField.setForeground(Color.BLACK);
@@ -77,10 +148,18 @@ public abstract class AnimalDialog extends JDialog {
             textField.setForeground(Color.RED);
     }
 
+    /**
+     * animalModel getter.
+     * @return AnimalModel object of the AnimalDialog.
+     */
     public AnimalModel getModel() {
         return model;
     }
 
+    /**
+     * zooPanel getter.
+     * @return ZooPanel object of the AnimalDialog.
+     */
     public ZooPanel getZooPanel() {
         return zooPanel;
     }
