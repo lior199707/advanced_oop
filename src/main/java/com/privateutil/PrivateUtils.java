@@ -391,3 +391,4 @@ public class PrivateUtils {
         throw new NullPointerException("Given object to animalType method is not an animal!");
     }
 }
+//end class PrivateUtils

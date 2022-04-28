@@ -16,3 +16,4 @@ public interface Ilocatable {
      */
     public boolean setLocation(Point point);
 }
+//end interface Ilocatable

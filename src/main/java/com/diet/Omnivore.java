@@ -19,6 +19,8 @@ public class Omnivore implements IDiet {
      */
     private final IDiet herbivore;
 
+    //ctor
+
     /**
      * Omnivore constructor
      */
@@ -26,6 +28,40 @@ public class Omnivore implements IDiet {
         this.carnivore = new Carnivore();
         this.herbivore = new Herbivore();
     }
+
+    //end ctor
+
+
+    //override class Object
+
+    /**
+     * check if this carnivore object is the same reference as o
+     * @param o , the second object
+     * @return true if the same reference, false otherwise
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Omnivore omnivore = (Omnivore) o;
+
+        return carnivore.equals(omnivore.carnivore) || herbivore.equals(omnivore.herbivore);
+    }
+
+    /**
+     * toString method of Herbivore.
+     * @return a string representation of the object
+     */
+    @Override
+    public String toString() {
+        return "[Omnivore]";
+    }
+
+    //end override class Object
+
+
+    //override interface IDiet
 
     /**
      * if the animal can eat the food, and the food and the animal aren't pointing to the same animal
@@ -61,28 +97,6 @@ public class Omnivore implements IDiet {
         return isSuccess;
     }
 
-    /**
-     * check if this carnivore object is the same reference as o
-     * @param o , the second object
-     * @return true if the same reference, false otherwise
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Omnivore omnivore = (Omnivore) o;
-
-        return carnivore.equals(omnivore.carnivore) || herbivore.equals(omnivore.herbivore);
-    }
-
-    /**
-     * toString method of Herbivore.
-     * @return a string representation of the object
-     */
-    @Override
-    public String toString() {
-        return "[Omnivore]";
-    }
-
+    //end override interface IDiet
 }
+//end class Omnivore

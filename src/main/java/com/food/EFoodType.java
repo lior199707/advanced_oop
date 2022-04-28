@@ -17,3 +17,4 @@ public enum EFoodType {
      */
     VEGETABLE
 }
+//end enum EFoodType

@@ -19,6 +19,7 @@ public class AddAnimalDialog extends AnimalDialog {
     private static final Dimension DEFAULT_DIMENSION = new Dimension(500, 350);
     private final static String INIT_ANIMAL_TYPE = "Lion";
     private final static String INIT_ANIMAL_COLOR = "Natural";
+    private final static String INIT_ANIMAL_SHORT_PATH = "lio";
     private final static double[] coefficientArr = {
             Lion.getSizeCoefficient(),
             Bear.getSizeCoefficient(),
@@ -27,6 +28,7 @@ public class AddAnimalDialog extends AnimalDialog {
             Turtle.getSizeCoefficient()
     };
     private final String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
+    private final String[] animalShortPaths = {"lio", "bea", "grf", "elf", "trt"};
     private final String[] animalColors = {"Natural", "Red", "Blue"};
 
     private final JComboBox<String> animalTypesCmb;
@@ -53,6 +55,7 @@ public class AddAnimalDialog extends AnimalDialog {
 
     private String animalColor;
     private String animalType;
+    private String animalShortPathName;
 
     private boolean nameStatus;
     private boolean sizeStatus;
@@ -67,6 +70,7 @@ public class AddAnimalDialog extends AnimalDialog {
         animalColorsCmb = new JComboBox<>(animalColors);
         animalType = INIT_ANIMAL_TYPE;
         animalColor = INIT_ANIMAL_COLOR;
+        animalShortPathName = INIT_ANIMAL_SHORT_PATH;
 
         this.setTitle("Add Animal");
         this.createDialog();
@@ -252,7 +256,7 @@ public class AddAnimalDialog extends AnimalDialog {
     @Override
     protected JPanel createEastPanel() {
         JPanel imagePanel = new JPanel(new GridBagLayout());
-        String path = findAnimalImagePath(INIT_ANIMAL_TYPE, INIT_ANIMAL_COLOR, DEFAULT_DIRECTION);
+        String path = findAnimalImagePath(INIT_ANIMAL_TYPE,INIT_ANIMAL_SHORT_PATH, INIT_ANIMAL_COLOR, DEFAULT_DIRECTION);
         imageLabel = new JLabel(PrivateGraphicUtils.resizeImage(path, 220, 180));
 
         GridBagConstraints gbcImagePanel = new GridBagConstraints();
@@ -339,31 +343,35 @@ public class AddAnimalDialog extends AnimalDialog {
                     case "Lion" -> {
                         uniqueLabel.setText("Scar Count: " + Lion.getDefaultScarCount());
                         locationLabel.setText("Location: " + Lion.getDefaultStartingLocation());
-                        animalType = "Lion";
+                        animalType = animalTypes[0];
+                        animalShortPathName = animalShortPaths[0];
                     }
                     case "Bear" -> {
                         uniqueLabel.setText("Fur Color: " + Bear.getDefaultFurColor());
                         locationLabel.setText("Location: " + Bear.getDefaultStartingLocation());
-                        animalType = "Bear";
+                        animalType = animalTypes[1];
+                        animalShortPathName = animalShortPaths[1];
                     }
                     case "Giraffe" -> {
                         uniqueLabel.setText("Neck Length: " + Giraffe.getDefaultNeckLength());
                         locationLabel.setText("Location: " + Giraffe.getDefaultStartingLocation());
-                        animalType = "Giraffe";
+                        animalType = animalTypes[2];
+                        animalShortPathName = animalShortPaths[2];
                     }
                     case "Turtle" -> {
                         uniqueLabel.setText("Age: " + Turtle.getDefaultAge());
                         locationLabel.setText("Location: " + Turtle.getDefaultStartingLocation());
-                        animalType = "Turtle";
+                        animalType = animalTypes[4];
+                        animalShortPathName = animalShortPaths[4];
                     }
                     case "Elephant" -> {
                         uniqueLabel.setText("Trunk Length: " + Elephant.getDefaultTrunkLength());
                         locationLabel.setText("Location: " + Elephant.getDefaultStartingLocation());
-                        animalType = "Elephant";
+                        animalType = animalTypes[3];
+                        animalShortPathName = animalShortPaths[3];
                     }
                 }
-
-                String path = findAnimalImagePath(animalType, animalColor, DEFAULT_DIRECTION);
+                String path = findAnimalImagePath(animalType, animalShortPathName, animalColor, DEFAULT_DIRECTION);
                 imageLabel.setIcon(PrivateGraphicUtils.resizeImage(path, 220, 180));
                 imageLabel.repaint();
             }
@@ -421,7 +429,7 @@ public class AddAnimalDialog extends AnimalDialog {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 animalColor = (String) e.getItem();
-                String path = findAnimalImagePath(animalType, animalColor, DEFAULT_DIRECTION);
+                String path = findAnimalImagePath(animalType, animalShortPathName, animalColor, DEFAULT_DIRECTION);
                 imageLabel.setIcon(PrivateGraphicUtils.resizeImage(path, 220, 180));
                 imageLabel.repaint();
             }

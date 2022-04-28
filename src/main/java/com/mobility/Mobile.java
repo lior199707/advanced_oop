@@ -17,6 +17,8 @@ public abstract class Mobile implements Ilocatable {
      */
     private double totalDistance;
 
+    //Ctor
+
     /**
      * Mobile constructor.
      * @param location - Point object (x,y) representing the location on the two-dimensional space
@@ -25,6 +27,64 @@ public abstract class Mobile implements Ilocatable {
         setLocation(location);
         totalDistance = 0;
     }
+
+    //end Ctor
+
+
+    //getters
+
+    /**
+     * totalDistance getter.
+     *
+     * @return totalDistance - double value of the total distance made by the animal.
+     */
+    public double getTotalDistance() {
+        return totalDistance;
+    }
+
+    /**
+     * implementation of Ilocatable interface setLocation.
+     * @see com.mobility.Ilocatable
+     *
+     * location getter.
+     * @return location - Point object representing the location of the object
+     */
+    @Override
+    public Point getLocation() {return location;
+    }
+
+    //end getters
+
+
+    //setters
+
+    /**
+     * implementation of Ilocatable interface setLocation.
+     * @see com.mobility.Ilocatable
+     *
+     * @param point - Point object to set the location to
+     * @return boolean value if the set was successful or not.
+     */
+    @Override
+    public boolean setLocation(Point point) {
+        boolean isSuccess = Point.checkBoundaries(point);
+        if (isSuccess) {
+            this.location = new Point(point);
+        } else {
+            this.location = new Point();
+        }
+        return isSuccess;
+    }
+
+    //ends setters
+
+
+    //abstract methods
+
+    //end abstract methods
+
+
+    //class methods
 
     /**
      * adding double value of parameter distance to total distance.
@@ -38,7 +98,7 @@ public abstract class Mobile implements Ilocatable {
     /**
      * calculating the distance between the current location to the next location
      * using Pythagoras.
-     * 
+     *
      * @param nextLocation - Point object to measure its distance with.
      * @return the distance between two point objects.
      */
@@ -69,44 +129,10 @@ public abstract class Mobile implements Ilocatable {
         return 0;
     }
 
-    /**
-     * totalDistance getter.
-     * 
-     * @return totalDistance - double value of the total distance made by the animal.
-     */
-    public double getTotalDistance() {
-        return totalDistance;
-    }
-
-    /**
-     * implementation of Ilocatable interface setLocation.
-     * @see com.mobility.Ilocatable
-     *
-     * @param point - Point object to set the location to
-     * @return boolean value if the set was successful or not.
-     */
-    @Override
-    public boolean setLocation(Point point) {
-        boolean isSuccess = Point.checkBoundaries(point);
-        if (isSuccess) {
-            this.location = new Point(point);
-        } else {
-            this.location = new Point();
-        }
-        return isSuccess;
-    }
+    //end class methods
 
 
-    /**
-     * implementation of Ilocatable interface setLocation.
-     * @see com.mobility.Ilocatable
-     *
-     * location getter.
-     * @return location - Point object representing the location of the object
-     */
-    @Override
-    public Point getLocation() {return location;
-    }
+    //override class Object
 
     /**
      * checks if this object and the other object 'o' are identical.
@@ -125,4 +151,7 @@ public abstract class Mobile implements Ilocatable {
         if (Double.compare(mobile.getTotalDistance(), getTotalDistance()) != 0) return false;
         return getLocation() != null ? getLocation().equals(mobile.getLocation()) : mobile.getLocation() == null;
     }
+
+    //end override class Object
 }
+//end abstract class Mobile
