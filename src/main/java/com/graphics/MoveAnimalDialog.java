@@ -187,7 +187,7 @@ public class MoveAnimalDialog extends AnimalDialog {
             if (animal.move(new Point(x,y)) != 0){
                 currLocationLabel.setText("current location: " + animal.getLocation());
                 animal.setChanges(true);
-                animal.checkEatFood(getZooPanel().getFood());
+                animal.conditionalFoodEating(getZooPanel().getFood());
                 getZooPanel().manageZoo();
                 if (getModel().getChangesState()){
                     getModel().setChangesState(false);
