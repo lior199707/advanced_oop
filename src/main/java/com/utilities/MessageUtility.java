@@ -145,7 +145,17 @@ public class MessageUtility {
     }
 
 
+    /**
 
+     * @param name
+
+     *                  - Name of the Animal
+
+     * @param message
+
+     *                  - The animal's sound when eating
+
+     */
     public static void logSound(String name, String message) {
 
         String str = "[!]" + name + ":  \t" + message;
