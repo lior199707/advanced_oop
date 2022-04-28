@@ -21,14 +21,16 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Animal class is an abstract representing a mobile animal.
- * Every animal type is also edible.
+ * Animal class is an abstract class representing a mobile animal.
+ * Every animal type is also edible, drawable and has a set of behaviors.
  * @see com.mobility.Mobile
  * @see com.food.IEdible
+ * @see com.graphics.IDrawable
+ * @see com.graphics.IAnimalBehavior
  */
 public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior {
     /**
-     * String value of the animal name, should contain only letter.
+     * String value of the animal name.
      */
     private String name;
     /**
@@ -39,10 +41,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * IDiet reference indicating the diet type of animal.
      */
     private IDiet diet;
-    /**
-     * Not used yet, will be used for animal threads in the future.
-     */
-    private Thread thread;
     /**
      * Static attribute,the default color of an animal: "NATURAL".
      */
@@ -55,11 +53,11 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     /**
      * Static attribute, indicating movement in the direction of the positive X-axis and Y-axis
      */
-    public static final int RIGHT_DIRECTION = 1, UP_DIRECTION = 1;
+    public static final int RIGHT_DIRECTION = 1;
     /**
      * Static attribute, indicating movement in the direction of the negative X-axis and Y-axis
      */
-    public static final int LEFT_DIRECTION = -1, DOWN_DIRECTION = -1;
+    public static final int LEFT_DIRECTION = -1;
     /**
      * Boolean indicates the animal has moved to another location.
      */
@@ -90,8 +88,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * Int indicating movement direction on the Y-axis.
      * 1 indicates movement to the positive direction of the Y-axis.
      * -1 indicates movement to the negative direction of the Y-axis.
+     * currently, set to 1 by default.
      */
-    private final int y_dir = UP_DIRECTION;
+    private final int y_dir = RIGHT_DIRECTION;
     /**
      * Int value of the number of Food the animal ate.
      */
@@ -527,8 +526,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     }
 
     /**
-     * gets a String value representing the animal's short path name.
-     * initializes two images based on the animal's type, color and short path name.
+     * Initializes two images based on the animal's type, color and short path name.
      * image1 will contain an image of the animal facing to the right.
      * image1 will contain an image of the animal facing to the left.
      *
@@ -537,7 +535,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     @Override
     public void loadImages(String shortPathName) {
         String path;
-        path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(), shortPathName, col, RIGHT_DIRECTION);
+        path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(),col, RIGHT_DIRECTION);
         try {
             img1 = ImageIO.read(new File(path));
         } catch (IOException e) {
@@ -545,7 +543,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                         null, null, null);
         }
-        path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(), shortPathName, col, LEFT_DIRECTION);
+        path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(),col, LEFT_DIRECTION);
         try {
             img2 = ImageIO.read(new File(path));
         } catch (IOException e) {
@@ -564,8 +562,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public String getColor() {
         return this.col;
     }
-
-    //end override interface IDrawable
 
 
     /**
@@ -618,11 +614,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return this.eatCount;
     }
 
-    //end override interface IAnimalBehavior
-
-
-    //override class Object
-
     /**
      * equals method of animal object.
      * @param o the object to check equality.
@@ -648,7 +639,4 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public String toString() {
         return "[" + getClass().getSimpleName() + "]: " + this.name;
     }
-
-    //end override class Object
 }
-//end abstract class Animal
