@@ -28,6 +28,8 @@ public class Point {
      */
     private int y;
 
+    //Ctor
+
     /**
      * Point constructor.
      * 
@@ -58,20 +60,14 @@ public class Point {
         this.y = point.getY();
     }
 
-    /**
-     * checks if a point is within valid boundaries.
-     *
-     * @param newLocation Point reference to examine.
-     * @return true if the values are between the boundaries, false otherwise.
-     */
-    public static boolean checkBoundaries(Point newLocation) {
-        return ((MIN_XY <= newLocation.getX() && newLocation.getX() <= MAX_X) &&
-                (MIN_XY <= newLocation.getY() && newLocation.getY() <= MAX_Y));
-    }
+    //end Ctor
+
+
+    //getters
 
     /**
      * x getter
-     * 
+     *
      * @return int value of x coordinate.
      */
     public int getX() {
@@ -80,16 +76,21 @@ public class Point {
 
     /**
      * y getter
-     * 
+     *
      * @return int value of y coordinate.
      */
     public int getY() {
         return y;
     }
 
+    //end getters
+
+
+    //setters
+
     /**
      * x setter.
-     * 
+     *
      * @param x - int value of the new x coordinate.
      * @return boolean if x value is valid(between boundaries).
      */
@@ -104,7 +105,7 @@ public class Point {
 
     /**
      * y setter.
-     * 
+     *
      * @param y - int value of new y coordinate.
      * @return boolean if y value is valid(between boundaries).
      */
@@ -117,17 +118,48 @@ public class Point {
         return isSuccess;
     }
 
+    //end setters
+
+
+    //class methods
+
+    /**
+     * checks if a point is within valid boundaries.
+     *
+     * @param newLocation Point reference to examine.
+     * @return true if the values are between the boundaries, false otherwise.
+     */
+    public static boolean checkBoundaries(Point newLocation) {
+        return ((MIN_XY <= newLocation.getX() && newLocation.getX() <= MAX_X) &&
+                (MIN_XY <= newLocation.getY() && newLocation.getY() <= MAX_Y));
+    }
+
+
+    /**
+     * @return integer value, the max value of a point's x coordinate(800).
+     */
     public static int getMaxX() {
         return MAX_X;
     }
 
+    /**
+     * @return integer value, the max value of a point's y coordinate(600).
+     */
     public static int getMaxY() {
         return MAX_Y;
     }
 
+    /**
+     * @return integer value, the min value of a point's y and x coordinate(0).
+     */
     public static int getMinXY() {
         return MIN_XY;
     }
+
+    //end class methods
+
+
+    //override class Object
 
     /**
      * checks if this object and the other object 'o' are identical.
@@ -155,4 +187,8 @@ public class Point {
     public String toString() {
         return "(" + getX() + "," + getY() + ")";
     }
+
+    //end override class Object
+
 }
+//end class Point
