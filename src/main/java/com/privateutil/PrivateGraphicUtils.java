@@ -38,19 +38,18 @@ public class PrivateGraphicUtils {
      * @return String value of the path for loading the corresponding animal's picture based on animal's type,
      * shortPath, color and direction.
      */
-    public static String findAnimalImagePath(String type, String shortPath, String color, int direction){
+    public static String findAnimalImagePath(String type, String color, int direction){
         StringBuilder path = new StringBuilder();
         path.append(PICTURE_PATH);
         path.append(type.toLowerCase());
         path.append("_images/");
-//        switch (type) {
-//            case "Lion" -> path.append("lio");
-//            case "Bear" -> path.append("bea");
-//            case "Giraffe" -> path.append("grf");
-//            case "Turtle" -> path.append("trt");
-//            case "Elephant" -> path.append("elf");
-//        }
-        path.append(shortPath);
+        switch (type) {
+            case "Lion" -> path.append("lio");
+            case "Bear" -> path.append("bea");
+            case "Giraffe" -> path.append("grf");
+            case "Turtle" -> path.append("trt");
+            case "Elephant" -> path.append("elf");
+        }
 
         switch (color.toUpperCase()) {
             case "NATURAL" -> path.append("_n_");

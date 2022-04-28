@@ -14,12 +14,24 @@ import java.awt.event.ItemListener;
 
 import static com.privateutil.PrivateGraphicUtils.findAnimalImagePath;
 
+/**
+ * AddAnimalDialog represents a dialog for adding animal to the Zoo.
+ * users can select animal types from a combobox, input name, size vertical & horizontal speed and a color.
+ * the ui will present an appropriate image (based on animal type & color) dynamically.
+ * weight, unique fields and default location on the zoo panel are also changed dynamically based on size & animal type.
+ */
 public class AddAnimalDialog extends AnimalDialog {
+    /**
+     * int representation of the default animal direction.
+     */
     private static final int DEFAULT_DIRECTION = 1;
+    /**
+     * default Dimension object with width & height.
+     */
     private static final Dimension DEFAULT_DIMENSION = new Dimension(500, 350);
-    private final static String INIT_ANIMAL_TYPE = "Lion";
-    private final static String INIT_ANIMAL_COLOR = "Natural";
-    private final static String INIT_ANIMAL_SHORT_PATH = "lio";
+    /**
+     * array holding the size coefficients of each animal, used to calculate the animal weight dynamically.
+     */
     private final static double[] coefficientArr = {
             Lion.getSizeCoefficient(),
             Bear.getSizeCoefficient(),
@@ -27,50 +39,120 @@ public class AddAnimalDialog extends AnimalDialog {
             Elephant.getSizeCoefficient(),
             Turtle.getSizeCoefficient()
     };
+
+    /**
+     * animal types String array indicating the animalType combobox fields.
+     */
     private final String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
-    private final String[] animalShortPaths = {"lio", "bea", "grf", "elf", "trt"};
+
+    /**
+     * animal colors String array indicating the animalColors combobox fields.
+     */
     private final String[] animalColors = {"Natural", "Red", "Blue"};
 
+    /**
+     * default animal type when loading the dialog initially.
+     */
+    private final static String INIT_ANIMAL_TYPE = "Lion";
+
+    /**
+     * default animal color when loading the dialog initially.
+     */
+    private final static String INIT_ANIMAL_COLOR = "Natural";
+
+    /**
+     * comboBox of the animal types.
+     */
     private final JComboBox<String> animalTypesCmb;
+
+    /**
+     * comboBox of the animal colors.
+     */
     private final JComboBox<String> animalColorsCmb;
 
+    /**
+     * JTextField object to input animal size.
+     */
     private JTextField sizeTextField;
+
+    /**
+     * JTextField object to input animal vertical speed.
+     */
     private JTextField vSpeedTextField;
+
+    /**
+     * JTextField object to input animal horizontal speed.
+     */
     private JTextField hSpeedTextField;
+
+    /**
+     * JTextField object to input animal name.
+     */
     private JTextField nameTextField;
 
-    private JLabel sizeLabel;
-    private JLabel vSpeedLabel;
-    private JLabel hSpeedLabel;
-    private JLabel colorLabel;
-    private JLabel nameLabel;
-
+    /**
+     * JLabel object indicating default location, changed dynamically.
+     */
     private JLabel locationLabel;
+
+    /**
+     * JLabel object indicating animal weight, changed dynamically.
+     */
     private JLabel weightLabel;
+
+    /**
+     * JLabel object indicating animal unique attribute, changed dynamically.
+     */
     private JLabel uniqueLabel;
+
+    /**
+     * JLabel object indicating animal image, changed dynamically.
+     */
     private JLabel imageLabel;
 
+    /**
+     * JButton object indicating the add animal button, pressing it will initialize the animal with the user given input.
+     */
     private JButton addAnimalButton;
+    /**
+     * JButton object indicating the validate button, pressing it will validate the user input before enabling the add animal button.
+     */
     private JButton validateButton;
 
-    private String animalColor;
+    /**
+     * String representation of the animal type.
+     */
     private String animalType;
-    private String animalShortPathName;
+    /**
+     * String representation of the animal color.
+     */
+    private String animalColor;
 
+    /**
+     * boolean representation of the name text field validity state.
+     */
     private boolean nameStatus;
+    /**
+     * boolean representation of the size text field validity state.
+     */
     private boolean sizeStatus;
+    /**
+     * boolean representation of the vertical speed text field validity state.
+     */
     private boolean vSpeedStatus;
+    /**
+     * boolean representation of the horizontal speed text field validity state.
+     */
     private boolean hSpeedStatus;
 
     public AddAnimalDialog(AnimalModel model, ZooPanel zooPanel) {
         super(model, zooPanel, DEFAULT_DIMENSION);
-        // configurations
 
+        // configurations
         animalTypesCmb = new JComboBox<>(animalTypes);
         animalColorsCmb = new JComboBox<>(animalColors);
         animalType = INIT_ANIMAL_TYPE;
         animalColor = INIT_ANIMAL_COLOR;
-        animalShortPathName = INIT_ANIMAL_SHORT_PATH;
 
         this.setTitle("Add Animal");
         this.createDialog();
@@ -78,7 +160,10 @@ public class AddAnimalDialog extends AnimalDialog {
         this.pack();
     }
 
-    // setting up panels on given frame.
+    /**
+     * createDialog adding directional panels to the AddAnimalDialog
+     * @see com.graphics.AnimalDialog
+     */
     @Override
     public void createDialog() {
         this.getContentPane().add(createNorthPanel(), BorderLayout.NORTH);
@@ -87,10 +172,15 @@ public class AddAnimalDialog extends AnimalDialog {
         this.getContentPane().add(createSouthPanel(), BorderLayout.SOUTH);
     }
 
+    /**
+     * createNorthPanel will add items to the north panel.
+     * adding animal type combo box to the north panel.
+     * @see com.graphics.AnimalDialog
+     * @return JPanel object of the north panel.
+     */
     @Override
     protected JPanel createNorthPanel() {
         JPanel animalTypePanel = new JPanel();
-        locationLabel = new JLabel("Location: ");
 
         // setting border
         animalTypesCmb.setBorder(PrivateGraphicUtils.createTitledBorder("Choose Animal:",
@@ -106,24 +196,31 @@ public class AddAnimalDialog extends AnimalDialog {
     }
 
 
-    // creating west panel containing user input & dynamic fields.
+    /**
+     * createWestPanel will add items to the west panel.
+     * adding name, size, vertical & horizontal speed text fields & labels.
+     * adding color label & combobox.
+     * @return JPanel object of the west panel.
+     */
     @Override
     protected JPanel createWestPanel() {
+        // initializing panels.
         JPanel inputPanel = new JPanel();
         JPanel northInputPanel = new JPanel();
         JPanel southInputPanel = new JPanel();
 
+        // setting layouts.
         inputPanel.setLayout(new BorderLayout());
         northInputPanel.setLayout(new GridBagLayout());
         southInputPanel.setLayout(new GridBagLayout());
 
-        // create north input panel components
+        // create north input panel components with default placeholders.
 
-        nameLabel = new JLabel("Name:");
-        sizeLabel = new JLabel("Size:");
-        vSpeedLabel = new JLabel("V_Speed:");
-        hSpeedLabel = new JLabel("H_Speed:");
-        colorLabel = new JLabel("Color:");
+        JLabel nameLabel = new JLabel("Name:");
+        JLabel sizeLabel = new JLabel("Size:");
+        JLabel vSpeedLabel = new JLabel("V_Speed:");
+        JLabel hSpeedLabel = new JLabel("H_Speed:");
+        JLabel colorLabel = new JLabel("Color:");
 
         nameTextField = new JTextField(10);
         sizeTextField = new JTextField("50-300", 10);
@@ -145,43 +242,54 @@ public class AddAnimalDialog extends AnimalDialog {
         addValidRangeFocusListener(vSpeedTextField, 1, 10);
         addValidRangeFocusListener(hSpeedTextField, 1, 10);
 
-        // action listener for input - TODO: DO WE NEED ACTION LISTENERS HERE?
+        // document listener for size text field.
         sizeTextField.getDocument().addDocumentListener(new IChangeDocument() {
             @Override
             public void changeDocument(DocumentEvent e) {
                 try {
                     String currentSizeText = sizeTextField.getText();
+                    // disabling animal button upon changes to the size text field.
                     addAnimalButton.setEnabled(false);
                     if (currentSizeText.equals("")) {
                         weightLabel.setText("Weight: ");
                     } else {
+                        // currently, valid - set to black foreground.
                         setValidTextField(sizeTextField, sizeStatus = true);
                         int size = Integer.parseInt(currentSizeText);
                         if (size < 50 || size > 300) {
                             throw new NumberFormatException();
                         }
+                        // if the size value is between 50-300, calculate the weight of selected animal
+                        // based on the size input.
                         weightLabel.setText("Weight: " + getWeightOfSelectedAnimal(size));
                     }
                 } catch (NumberFormatException ignored) {
+                    // otherwise, invalid - set to red foreground.
                     setValidTextField(sizeTextField, sizeStatus = false);
                 }
             }
         });
 
+        // document listener for name text field.
         nameTextField.getDocument().addDocumentListener(new IChangeDocument() {
             @Override
             public void changeDocument(DocumentEvent e) {
                 String currentText = nameTextField.getText();
+                // disabling animal button upon changes to the name text field.
                 addAnimalButton.setEnabled(false);
+                // if the name text field is alphabetic set to black foreground.
                 if (currentText.matches("[A-Za-z]+")) {
                     setValidTextField(nameTextField, nameStatus = true);
                 } else {
+                    // if name is not alphabetic - contains numeric value or signs i.e. ^&*(@#$.
                     setValidTextField(nameTextField, nameStatus = false);
                 }
             }
         });
 
         // create south input panel components
+
+        // initializing default label values, Lion is the first choice by default.
         weightLabel = new JLabel("Weight:");
         uniqueLabel = new JLabel("Scar Count: " + Lion.getDefaultScarCount());
         locationLabel = new JLabel("Location: " + Lion.getDefaultStartingLocation());
@@ -242,7 +350,6 @@ public class AddAnimalDialog extends AnimalDialog {
         southInputPanel.add(locationLabel, gbcSouthInputPanel);
 
         // setting up a titled border.
-//        TitledBorder northInputBorder = BorderFactory.createTitledBorder("Input: ");
         northInputPanel.setBorder(PrivateGraphicUtils.createTitledBorder("Input:", TitledBorder.CENTER, TitledBorder.LEFT));
 
         // positioning the panels in north & south
@@ -253,24 +360,39 @@ public class AddAnimalDialog extends AnimalDialog {
         return inputPanel;
     }
 
+    /**
+     * createEastPanel will add items to the east panel.
+     * add image panel, loading the image.
+     * @return JPanel object of the west panel.
+     */
     @Override
     protected JPanel createEastPanel() {
+        // initializing image panel with GridBagLayout.
         JPanel imagePanel = new JPanel(new GridBagLayout());
-        String path = findAnimalImagePath(INIT_ANIMAL_TYPE,INIT_ANIMAL_SHORT_PATH, INIT_ANIMAL_COLOR, DEFAULT_DIRECTION);
+        // loading the image path with default values into a label.
+        String path = findAnimalImagePath(INIT_ANIMAL_TYPE, INIT_ANIMAL_COLOR, DEFAULT_DIRECTION);
         imageLabel = new JLabel(PrivateGraphicUtils.resizeImage(path, 220, 180));
 
+        // setting constraints for the panel.
         GridBagConstraints gbcImagePanel = new GridBagConstraints();
         gbcImagePanel.insets = new Insets(0, 0, 0, 10);
         setGridBagConstraintPosition(gbcImagePanel,5,5);
 
+        // adding a border to the panel.
         imageLabel.setBorder(PrivateGraphicUtils.createTitledBorder("Picture",TitledBorder.BELOW_TOP, TitledBorder.CENTER));
         imagePanel.add(imageLabel, gbcImagePanel);
 
         return imagePanel;
     }
 
+    /**
+     * createSouthPanel will add items to the south panel.
+     * adding validate & add animal buttons.
+     * @return JPanel object of the west panel.
+     */
     @Override
     protected JPanel createSouthPanel() {
+        // initialize the button panel.
         JPanel buttonPanel = new JPanel();
 
         addAnimalButton = new JButton("Add Animal");
@@ -282,12 +404,14 @@ public class AddAnimalDialog extends AnimalDialog {
         // adding to action listener.
         validateButton.addActionListener(validationHandler -> {
             boolean validated;
+            // if the model contains the animal name, it will throw an exception leading to prompting an error message.
             if (getModel().containsAnimalName(nameTextField.getText())) {
                 try {
                     String message = "Name already used, please choose another name";
                     throw new PrivateGraphicUtils.ErrorDialogException(getContentPane(), message);
                 } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
             } else {
+                // if all status indicators are true, the add animal button will be enabled.
                 validated = (nameStatus && sizeStatus && vSpeedStatus && hSpeedStatus);
                 addAnimalButton.setEnabled(validated);
             }
@@ -301,10 +425,22 @@ public class AddAnimalDialog extends AnimalDialog {
         return buttonPanel;
     }
 
+    /**
+     * getWeightOfSelectedAnimal calculates the weight of the selected animal (from the combobox),
+     * based ln the size of the animal given as input times the coefficient of the animal.
+     * @param sizeOfAnimal integer value representing the size of the animal.
+     * @return double value representing the weight of the selected animal.
+     */
     public double getWeightOfSelectedAnimal(int sizeOfAnimal) {
         return sizeOfAnimal * coefficientArr[animalTypesCmb.getSelectedIndex()];
     }
 
+    /**
+     * addSpeedInputDocumentListener is a utility method, adding a document listener
+     * to a given text field object. It sets the vertical or horizontal speed validity status and changes
+     * the foreground color upon changes.
+     * @param speedTextField JTextField object to listen.
+     */
     private void addSpeedInputDocumentListener(JTextField speedTextField) {
         speedTextField.getDocument().addDocumentListener(new IChangeDocument() {
             @Override
@@ -333,60 +469,65 @@ public class AddAnimalDialog extends AnimalDialog {
     }
 
 
+    /**
+     * AnimalTypesHandler is a utility class implementing ItemListener.
+     * it listens to a JComboBox holding the animal types and setting the appropriate unique attribute,
+     * location and picture based on the selected event (item) and repainting the label.
+     */
     private class AnimalTypesHandler implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
+                // disable add animal button upon selecting a new item.
                 addAnimalButton.setEnabled(false);
                 String item = (String) e.getItem();
                 switch (item) {
                     case "Lion" -> {
                         uniqueLabel.setText("Scar Count: " + Lion.getDefaultScarCount());
                         locationLabel.setText("Location: " + Lion.getDefaultStartingLocation());
-                        animalType = animalTypes[0];
-                        animalShortPathName = animalShortPaths[0];
                     }
                     case "Bear" -> {
                         uniqueLabel.setText("Fur Color: " + Bear.getDefaultFurColor());
                         locationLabel.setText("Location: " + Bear.getDefaultStartingLocation());
-                        animalType = animalTypes[1];
-                        animalShortPathName = animalShortPaths[1];
                     }
                     case "Giraffe" -> {
                         uniqueLabel.setText("Neck Length: " + Giraffe.getDefaultNeckLength());
                         locationLabel.setText("Location: " + Giraffe.getDefaultStartingLocation());
-                        animalType = animalTypes[2];
-                        animalShortPathName = animalShortPaths[2];
                     }
                     case "Turtle" -> {
                         uniqueLabel.setText("Age: " + Turtle.getDefaultAge());
                         locationLabel.setText("Location: " + Turtle.getDefaultStartingLocation());
-                        animalType = animalTypes[4];
-                        animalShortPathName = animalShortPaths[4];
                     }
                     case "Elephant" -> {
                         uniqueLabel.setText("Trunk Length: " + Elephant.getDefaultTrunkLength());
                         locationLabel.setText("Location: " + Elephant.getDefaultStartingLocation());
-                        animalType = animalTypes[3];
-                        animalShortPathName = animalShortPaths[3];
                     }
                 }
-                String path = findAnimalImagePath(animalType, animalShortPathName, animalColor, DEFAULT_DIRECTION);
+                // loading the appropriate image.
+                animalType = item;
+                String path = findAnimalImagePath(animalType, animalColor, DEFAULT_DIRECTION);
                 imageLabel.setIcon(PrivateGraphicUtils.resizeImage(path, 220, 180));
                 imageLabel.repaint();
             }
         }
     }
 
+    /**
+     * AddAnimalHandler is a utility class implementing ActionListener.
+     * upon clicking on the add animal button (enabled only when the inputs are valid),
+     * a new animal will be added to the animal model and a set of commands will occur.
+     */
     private class AddAnimalHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // assigning current input to variables.
             String animalName = nameTextField.getText();
             String animalColor = String.valueOf(animalColorsCmb.getSelectedItem());
             int animalSize = Integer.parseInt(sizeTextField.getText());
             int animalVSpeed = Integer.parseInt(vSpeedTextField.getText());
             int animalHSpeed = Integer.parseInt(hSpeedTextField.getText());
 
+            // if the model size is yet to reach the maximum size allowed, instantiate an animal
             if (getModel().getAnimalModelSize() < AnimalModel.getModelMaxSize()) {
                 Animal animal = null;
                 switch (animalType) {
@@ -400,7 +541,10 @@ public class AddAnimalDialog extends AnimalDialog {
                 assert animal != null;
                 animal.setChanges(true);
                 animal.setPan(getZooPanel());
+
                 getModel().addAnimal(animal);
+
+                // reset fields to default placeholders.
                 nameTextField.setText("");
                 sizeTextField.setText("50-300");
                 vSpeedTextField.setText("1-10");
@@ -408,12 +552,15 @@ public class AddAnimalDialog extends AnimalDialog {
                 sizeTextField.setForeground(Color.GRAY);
                 vSpeedTextField.setForeground(Color.GRAY);
                 hSpeedTextField.setForeground(Color.GRAY);
-
                 animalColorsCmb.setSelectedIndex(0);
+                // setting focus to the animal type combo box.
                 animalTypesCmb.requestFocusInWindow();
+
+                // if the info table is open, it will update it dynamically upon adding a new animal.
                 if (InfoTableDialog.getIsOpen())
                     getZooPanel().getInfoTable().updateTable();
 
+                // calling manage zoo to repaint the panel.
                 getZooPanel().manageZoo();
             } else {
                 try {
@@ -424,12 +571,16 @@ public class AddAnimalDialog extends AnimalDialog {
         }
     }
 
+    /**
+     * AnimalColorHandler is a utility class implementing ItemListener.
+     * it changes the animal image label dynamically when selecting different colors from the combobox.
+     */
     private class AnimalColorHandler implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 animalColor = (String) e.getItem();
-                String path = findAnimalImagePath(animalType, animalShortPathName, animalColor, DEFAULT_DIRECTION);
+                String path = findAnimalImagePath(animalType, animalColor, DEFAULT_DIRECTION);
                 imageLabel.setIcon(PrivateGraphicUtils.resizeImage(path, 220, 180));
                 imageLabel.repaint();
             }
