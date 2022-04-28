@@ -98,19 +98,19 @@ public class ZooFrame extends JFrame{
                 case "Manual" -> {
                     String message = """
                             OPTIONS:
-                            1.Add animals- lets you add animals to the zoo, up to 10 animals in the zoo
-                            2.Move animals- lets you move the animals to another location
-                            3.Clear - deletes all the animals in the zoo, doesn't affects food though.
-                            4.Add food - lets you choose the type of food: Lettuce, Meat, Cabbage.
-                            5.Info- lets you see the zoo animals information.
+                            1.Add Animal - allows you to add animals to the zoo, you may add up to 10 animals to the zoo at a time.
+                            2.Move Animal - allows you to move a selected animals to another location.
+                            3.Clear All - removes all the animals in the zoo panel, does not affect food.
+                            4.Add Food - allows you to add food to the zoo panel, type of food: Lettuce, Meat, Cabbage.
+                            5.Info - allows you view the zoo's information in a tabular form dynamically.
                             6.Exit - exits the program.
                             
                             IMPORTANT SIDE NOTES:
-                            *When adding a new animal please check that there are no predators on the same coordinates, otherwise the animal will be instantly eaten
-                            *When adding a new animal red text fields indicate invalid input and black text fields indicate valid input
-                            *Food spawns in the middle of the screen(400, 300).
-                            *A predator can eat more than a single prey at a time
-                            *We recommend to leave the info table open, it will exhibit every information changes about the animals dynamically.""";
+                            * When adding a new animal, please confirm there are no predators on the same coordinates, otherwise the added animal will be instantly eaten.
+                            * When adding a new animal, red text fields indicate invalid input and black text fields indicate valid input.
+                            * Food spawns in the middle of the zoo panel, it's coordinates are: (400, 300).
+                            * A predator can eat more than a single prey at a time.
+                            * We recommend to leave the info table open, it will exhibit every information changes about the animals dynamically.""";
                     try {
                         throw new PrivateGraphicUtils.InformationDialogException(null, message);
                     } catch (PrivateGraphicUtils.InformationDialogException ignored) {};
@@ -118,7 +118,6 @@ public class ZooFrame extends JFrame{
             }
         }
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
