@@ -431,7 +431,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * @param food , food of the ZooPanel (food: "Cabbage","Lettuce","Meat").
      * @return true if succeeded eating food, false otherwise.
      */
-    public boolean checkEatFood(Food food) {
+    public boolean conditionalFoodEating(Food food) {
         if (food == null) return false;
 
         int distanceX = Math.abs(this.getLocation().getX() - food.getLocation().getX());
