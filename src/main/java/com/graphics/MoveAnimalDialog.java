@@ -199,10 +199,12 @@ public class MoveAnimalDialog extends AnimalDialog {
                 xTextField.setForeground(Color.GRAY);
                 yTextField.setForeground(Color.GRAY);
             } else {
-                try {
-                    String message = "Animal did not move!";
-                    throw new PrivateGraphicUtils.InformationDialogException(getContentPane(), message);
-                } catch (PrivateGraphicUtils.InformationDialogException ignored) {}
+                String message = "Animal did not move!";
+                PrivateGraphicUtils.popInformationDialog(null, message);
+//                try {
+//                    String message = "Animal did not move!";
+//                    throw new PrivateGraphicUtils.InformationDialogException(getContentPane(), message);
+//                } catch (PrivateGraphicUtils.InformationDialogException ignored) {}
             }
         }
     }

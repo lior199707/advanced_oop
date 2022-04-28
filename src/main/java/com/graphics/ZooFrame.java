@@ -91,9 +91,10 @@ public class ZooFrame extends JFrame{
                 }
                 case "Help" -> {
                     String message = "Home Work 2\nGUI";
-                    try {
-                        throw new PrivateGraphicUtils.InformationDialogException(null, message);
-                    } catch (PrivateGraphicUtils.InformationDialogException ignored) {}
+                    PrivateGraphicUtils.popInformationDialog(null, message);
+//                    try {
+//                        throw new PrivateGraphicUtils.InformationDialogException(null, message);
+//                    } catch (PrivateGraphicUtils.InformationDialogException ignored) {}
                 }
                 case "Manual" -> {
                     String message = """
@@ -111,9 +112,10 @@ public class ZooFrame extends JFrame{
                             *Food spawns in the middle of the screen(400, 300).
                             *A predator can eat more than a single prey at a time
                             *We recommend to leave the info table open, it will exhibit every information changes about the animals dynamically.""";
-                    try {
-                        throw new PrivateGraphicUtils.InformationDialogException(null, message);
-                    } catch (PrivateGraphicUtils.InformationDialogException ignored) {};
+//                    try {
+//                        throw new PrivateGraphicUtils.InformationDialogException(null, message);
+//                    } catch (PrivateGraphicUtils.InformationDialogException ignored) {};
+                    PrivateGraphicUtils.popInformationDialog(null, message);
                 }
             }
         }

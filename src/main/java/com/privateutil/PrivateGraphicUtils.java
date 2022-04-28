@@ -137,9 +137,18 @@ public class PrivateGraphicUtils {
         }
     }
 
-    public static class InformationDialogException extends Exception {
-        public InformationDialogException(Container container, String message){
-            JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
-        }
+//    public static class InformationDialogException extends Exception {
+//        public InformationDialogException(Container container, String message){
+//            JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
+//        }
+//    }
+
+    /**
+     * * Pops up an Information Dialog window with the wanted container and message.
+     * @param container - the container of the information dialog window.
+     * @param message - the message to be presented in the information dialog window.
+     */
+    public static void popInformationDialog(Container container, String message){
+        JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
     }
 }
