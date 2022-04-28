@@ -140,8 +140,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         setHorSpeed(horSpeed);
         setVerSpeed(verSpeed);
         setColor(col);
-        //loadImages(getAnimalName());
-
         this.eatCount = 0;
         this.coordChanged = false;
     }

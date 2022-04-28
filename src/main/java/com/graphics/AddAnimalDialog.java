@@ -361,14 +361,14 @@ public class AddAnimalDialog extends AnimalDialog {
                     case "Turtle" -> {
                         uniqueLabel.setText("Age: " + Turtle.getDefaultAge());
                         locationLabel.setText("Location: " + Turtle.getDefaultStartingLocation());
-                        animalType = animalTypes[3];
-                        animalShortPathName = animalShortPaths[3];
+                        animalType = animalTypes[4];
+                        animalShortPathName = animalShortPaths[4];
                     }
                     case "Elephant" -> {
                         uniqueLabel.setText("Trunk Length: " + Elephant.getDefaultTrunkLength());
                         locationLabel.setText("Location: " + Elephant.getDefaultStartingLocation());
-                        animalType = animalTypes[4];
-                        animalShortPathName = animalShortPaths[4];
+                        animalType = animalTypes[3];
+                        animalShortPathName = animalShortPaths[3];
                     }
                 }
                 String path = findAnimalImagePath(animalType, animalShortPathName, animalColor, DEFAULT_DIRECTION);

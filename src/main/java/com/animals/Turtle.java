@@ -54,6 +54,7 @@ public class Turtle extends AnimalChew {
         setWeight(0.5 * getSize());
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
+        loadImages(animalShortPathName());
         MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
