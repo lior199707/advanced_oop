@@ -176,7 +176,7 @@ public class Lion extends AnimalRoar {
         boolean isSuccess = super.eat(food);
         if (isSuccess){
             Random random = new Random();
-            //after eating Lion has 50% chance ti get a scar
+            //after eating Lion has 50% chance to get a scar
             if (random.nextInt(2) == 0) {
                 this.scarCount++;
             }
