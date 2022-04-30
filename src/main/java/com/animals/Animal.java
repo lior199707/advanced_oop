@@ -435,8 +435,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     public boolean conditionalFoodEating(Food food) {
         if (food == null) return false;
-
+        //calculates the distance (in pixels) on the X-axis between the animal and the food
         int distanceX = Math.abs(this.getLocation().getX() - food.getLocation().getX());
+        //calculates the distance (in pixels) on the Y-axis between the animal and the food
         int distanceY = Math.abs(this.getLocation().getY() - food.getLocation().getY());
 
         if (distanceX <= EAT_DISTANCE && distanceY <= EAT_DISTANCE)
@@ -467,6 +468,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     @Override
     public double move(Point nextLocation) {
         final double CONST = 0.00025;
+        //calculates the distance the animal has traveled while moving to the new location
         double distance = super.move(nextLocation);
         if (distance > 0) {
             double currentWeight = getWeight();
@@ -520,9 +522,11 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         int coordinateX = getLocation().getX();
         int coordinateY = getLocation().getY();
 
+        //draws image 1, when the animal is facing right
         if (x_dir == RIGHT_DIRECTION) { // goes to the right side
             g.drawImage(getImg1(),coordinateX - (size/3),coordinateY- (size/8), (int) (size * 1.2),size, getPan());
         }
+        //draws image 2, when the animal is facing left
         else // goes to the left side
             g.drawImage(getImg2(), coordinateX, coordinateY - (size / 10), (int) (size * 1.2), size, getPan());
     }
@@ -537,6 +541,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     @Override
     public void loadImages(String shortPathName) {
         String path;
+        // creating animal's image 1 path to load
         path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(),col, RIGHT_DIRECTION);
         try {
             img1 = ImageIO.read(new File(path));
@@ -545,6 +550,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                         null, null, null);
         }
+        // creating animal's image 2 path to load
         path = PrivateGraphicUtils.findAnimalImagePath(this.getAnimalName(),col, LEFT_DIRECTION);
         try {
             img2 = ImageIO.read(new File(path));
