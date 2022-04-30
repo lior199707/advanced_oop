@@ -253,11 +253,13 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * @return boolean value if name was set or not (NaN).
      */
     public boolean setName(String name) {
+        //checks if all characters are letters.
         boolean isSuccess = name.chars().allMatch(Character::isAlphabetic);
         if (isSuccess){
             this.name = name;
         } else {
             System.out.println("-- Removing non-alphabetic characters from name --");
+            //remove all non-alphabetic characters
             this.name = name.replaceAll("[^A-Za-z]", "");
             System.out.println("New name: " + this.name);
             isSuccess = !Objects.equals(this.name, "");
