@@ -41,7 +41,7 @@ public abstract class AnimalChew extends Animal {
     }
 
     /**
-     * equals of animalchew object.
+     * equals of AnimalChew object.
      * @param o the object to check equality.
      * @return boolean value if the objects are equal or not.
      */
@@ -51,9 +51,9 @@ public abstract class AnimalChew extends Animal {
     }
 
     /**
-     * toString of animalchew object.
+     * toString of AnimalChew object.
      * @see com.animals.Animal toString() method.
-     * @return String representation of the animalchew object.
+     * @return String representation of the AnimalChew object.
      */
     @Override
     public String toString() {

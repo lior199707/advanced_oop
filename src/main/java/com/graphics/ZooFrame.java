@@ -16,11 +16,11 @@ public class ZooFrame extends JFrame{
     /**
      * JMenuBar object to hold different menu items.
      */
-    private JMenuBar menuBar;
+    private final JMenuBar menuBar;
     /**
      * ZooPanel object where the animals and buttons will take place.
      */
-    private ZooPanel zooPanel;
+    private final ZooPanel zooPanel;
 
     /**
      * ZooFrame constructor.
@@ -101,18 +101,10 @@ public class ZooFrame extends JFrame{
         public void actionPerformed(ActionEvent e) {
             String actionCommand = e.getActionCommand();
             switch (actionCommand) {
-                case  "Exit" -> {
-                    System.exit(1);
-                }
-                case "Image" -> {
-                    zooPanel.setImageBackground();
-                }
-                case "Green" -> {
-                    zooPanel.setGreenBackground();
-                }
-                case "None" -> {
-                    zooPanel.setNoBackground();
-                }
+                case  "Exit" -> System.exit(1);
+                case "Image" -> zooPanel.setImageBackground();
+                case "Green" -> zooPanel.setGreenBackground();
+                case "None" -> zooPanel.setNoBackground();
                 case "Help" -> {
                     String message = "Home Work 2\nGUI";
                     PrivateGraphicUtils.popInformationDialog(null,message);

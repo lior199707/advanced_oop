@@ -5,7 +5,6 @@ import com.privateutil.PrivateGraphicUtils;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,16 +38,6 @@ public class AddAnimalDialog extends AnimalDialog {
             Elephant.getSizeCoefficient(),
             Turtle.getSizeCoefficient()
     };
-
-    /**
-     * animal types String array indicating the animalType combobox fields.
-     */
-    private final String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
-
-    /**
-     * animal colors String array indicating the animalColors combobox fields.
-     */
-    private final String[] animalColors = {"Natural", "Red", "Blue"};
 
     /**
      * default animal type when loading the dialog initially.
@@ -155,7 +144,10 @@ public class AddAnimalDialog extends AnimalDialog {
         super(model, zooPanel, DEFAULT_DIMENSION);
 
         // configurations
+        String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
         animalTypesCmb = new JComboBox<>(animalTypes);
+
+        String[] animalColors = {"Natural", "Red", "Blue"};
         animalColorsCmb = new JComboBox<>(animalColors);
         animalType = INIT_ANIMAL_TYPE;
         animalColor = INIT_ANIMAL_COLOR;
@@ -249,47 +241,41 @@ public class AddAnimalDialog extends AnimalDialog {
         addValidRangeFocusListener(hSpeedTextField, 1, 10);
 
         // document listener for size text field.
-        sizeTextField.getDocument().addDocumentListener(new IChangeDocument() {
-            @Override
-            public void changeDocument(DocumentEvent e) {
-                try {
-                    String currentSizeText = sizeTextField.getText();
-                    // disabling animal button upon changes to the size text field.
-                    addAnimalButton.setEnabled(false);
-                    if (currentSizeText.equals("")) {
-                        weightLabel.setText("Weight: ");
-                    } else {
-                        // currently, valid - set to black foreground.
-                        setValidTextField(sizeTextField, sizeStatus = true);
-                        int size = Integer.parseInt(currentSizeText);
-                        if (size < 50 || size > 300) {
-                            throw new NumberFormatException();
-                        }
-                        // if the size value is between 50-300, calculate the weight of selected animal
-                        // based on the size input.
-                        weightLabel.setText("Weight: " + getWeightOfSelectedAnimal(size));
+        sizeTextField.getDocument().addDocumentListener((IChangeDocument) e -> {
+            try {
+                String currentSizeText = sizeTextField.getText();
+                // disabling animal button upon changes to the size text field.
+                addAnimalButton.setEnabled(false);
+                if (currentSizeText.equals("")) {
+                    weightLabel.setText("Weight: ");
+                } else {
+                    // currently, valid - set to black foreground.
+                    setValidTextField(sizeTextField, sizeStatus = true);
+                    int size = Integer.parseInt(currentSizeText);
+                    if (size < 50 || size > 300) {
+                        throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ignored) {
-                    // otherwise, invalid - set to red foreground.
-                    setValidTextField(sizeTextField, sizeStatus = false);
+                    // if the size value is between 50-300, calculate the weight of selected animal
+                    // based on the size input.
+                    weightLabel.setText("Weight: " + getWeightOfSelectedAnimal(size));
                 }
+            } catch (NumberFormatException ignored) {
+                // otherwise, invalid - set to red foreground.
+                setValidTextField(sizeTextField, sizeStatus = false);
             }
         });
 
         // document listener for name text field.
-        nameTextField.getDocument().addDocumentListener(new IChangeDocument() {
-            @Override
-            public void changeDocument(DocumentEvent e) {
-                String currentText = nameTextField.getText();
-                // disabling animal button upon changes to the name text field.
-                addAnimalButton.setEnabled(false);
-                // if the name text field is alphabetic set to black foreground.
-                if (currentText.matches("[A-Za-z]+")) {
-                    setValidTextField(nameTextField, nameStatus = true);
-                } else {
-                    // if name is not alphabetic - contains numeric value or signs i.e. ^&*(@#$.
-                    setValidTextField(nameTextField, nameStatus = false);
-                }
+        nameTextField.getDocument().addDocumentListener((IChangeDocument) e -> {
+            String currentText = nameTextField.getText();
+            // disabling animal button upon changes to the name text field.
+            addAnimalButton.setEnabled(false);
+            // if the name text field is alphabetic set to black foreground.
+            if (currentText.matches("[A-Za-z]+")) {
+                setValidTextField(nameTextField, nameStatus = true);
+            } else {
+                // if name is not alphabetic - contains numeric value or signs i.e. ^&*(@#$.
+                setValidTextField(nameTextField, nameStatus = false);
             }
         });
 
@@ -414,11 +400,16 @@ public class AddAnimalDialog extends AnimalDialog {
             if (getModel().containsAnimalName(nameTextField.getText())) {
                 try {
                     String message = "Name already used, please choose another name";
-                    throw new PrivateGraphicUtils.ErrorDialogException(getContentPane(), message);
+                    throw new PrivateGraphicUtils.ErrorDialogException(this, message);
                 } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
             } else {
                 // if all status indicators are true, the add animal button will be enabled.
                 validated = (nameStatus && sizeStatus && vSpeedStatus && hSpeedStatus);
+                if (!validated){
+                    try {
+                        throw new PrivateGraphicUtils.ErrorDialogException(this,"Invalid input!\nPlease ensure there are no red flags before validating the input.");
+                    } catch (PrivateGraphicUtils.ErrorDialogException ignored) { }
+                }
                 addAnimalButton.setEnabled(validated);
             }
         });
@@ -448,27 +439,24 @@ public class AddAnimalDialog extends AnimalDialog {
      * @param speedTextField JTextField object to listen.
      */
     private void addSpeedInputDocumentListener(JTextField speedTextField) {
-        speedTextField.getDocument().addDocumentListener(new IChangeDocument() {
-            @Override
-            public void changeDocument(DocumentEvent e) {
-                try {
-                    addAnimalButton.setEnabled(false);
-                    String currentText = speedTextField.getText();
-                    if (speedTextField == vSpeedTextField){
-                        setValidTextField(speedTextField, vSpeedStatus = true);
-                    } else {
-                        setValidTextField(speedTextField, hSpeedStatus = true);
-                    }
-                    int speed = Integer.parseInt(currentText);
-                    if (speed < 1 || speed > 10){
-                        throw new NumberFormatException();
-                    }
-                } catch (NumberFormatException ignored){
-                    if (speedTextField == vSpeedTextField){
-                        setValidTextField(speedTextField, vSpeedStatus = false);
-                    } else {
-                        setValidTextField(speedTextField, hSpeedStatus = false);
-                    }
+        speedTextField.getDocument().addDocumentListener((IChangeDocument) e -> {
+            try {
+                addAnimalButton.setEnabled(false);
+                String currentText = speedTextField.getText();
+                if (speedTextField == vSpeedTextField){
+                    setValidTextField(speedTextField, vSpeedStatus = true);
+                } else {
+                    setValidTextField(speedTextField, hSpeedStatus = true);
+                }
+                int speed = Integer.parseInt(currentText);
+                if (speed < 1 || speed > 10){
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException ignored){
+                if (speedTextField == vSpeedTextField){
+                    setValidTextField(speedTextField, vSpeedStatus = false);
+                } else {
+                    setValidTextField(speedTextField, hSpeedStatus = false);
                 }
             }
         });

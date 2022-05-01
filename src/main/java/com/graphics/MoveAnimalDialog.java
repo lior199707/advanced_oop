@@ -168,13 +168,16 @@ public class MoveAnimalDialog extends AnimalDialog {
 
         // adding to listeners
         moveAnimalButton.addActionListener(new MoveAnimalHandler());
-        validateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean validated = xStatus && yStatus;
-                // enables the move animal button only if both values are true.
-                moveAnimalButton.setEnabled(validated);
+        validateButton.addActionListener(validationHandler -> {
+            boolean validated;
+            validated = xStatus && yStatus;
+            // enables the move animal button only if both values are true.
+            if (!validated){
+                try {
+                    throw new PrivateGraphicUtils.ErrorDialogException(this,"Invalid input!\nPlease ensure there are no red flags before validating the input.");
+                } catch (PrivateGraphicUtils.ErrorDialogException ignored) { }
             }
+            moveAnimalButton.setEnabled(validated);
         });
 
         southPanel.add(validateButton);

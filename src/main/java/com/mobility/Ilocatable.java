@@ -10,7 +10,7 @@ public interface Ilocatable {
     public Point getLocation();
 
     /**
-     * sets the location of the object to the ne location which is point
+     * sets the location of the object to the new location which is point
      * @param point the new locating
      * @return true if the location of the object has changed to the new location, false otherwise
      */

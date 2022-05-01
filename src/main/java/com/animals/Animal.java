@@ -89,7 +89,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * -1 indicates movement to the negative direction of the Y-axis.
      * currently, set to 1 by default.
      */
-    private final int y_dir = RIGHT_DIRECTION;
+    private final int y_dir = 1;
     /**
      * Int value of the number of Food the animal ate.
      */
@@ -183,6 +183,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public int getX_dir() {
         return this.x_dir;
     }
+
     /**
      * movement direction on Y-axis getter.
      * @return 1 indicates movement to the positive direction of the Y-axis.
@@ -191,6 +192,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public int getY_dir() {
         return this.y_dir;
     }
+
     /**
      * vertical speed getter.
      * @return int value representing animal vertical speed.

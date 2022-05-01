@@ -128,12 +128,12 @@ public abstract class AnimalDialog extends JDialog {
      * setGridBackConstraints attempts to simplify and reduce the amount code necessary to set
      * the position constraints of an element.
      * @param gbc GridBackConstraints object to modify.
-     * @param gridx the grid x value.
-     * @param gridy the grid y value.
+     * @param gridX the grid x value.
+     * @param gridY the grid y value.
      */
-    protected void setGridBagConstraintPosition(GridBagConstraints gbc, int gridx, int gridy){
-        gbc.gridx = gridx;
-        gbc.gridy = gridy;
+    protected void setGridBagConstraintPosition(GridBagConstraints gbc, int gridX, int gridY){
+        gbc.gridx = gridX;
+        gbc.gridy = gridY;
     }
 
     /**

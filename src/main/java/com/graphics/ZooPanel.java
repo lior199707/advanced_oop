@@ -264,14 +264,14 @@ public class ZooPanel extends JPanel implements ActionListener {
 
     /**
      * getFood is the ZooPanel food data field getter.
-     * @return Food object of the zoopanel.
+     * @return Food object of the zoo panel.
      */
     public Food getFood(){
         return food;
     }
 
     /**
-     * setImageBackground sets the background image to a predetermined "savana" image and repaints the panel.
+     * setImageBackground sets the background image to a predetermined Savanna image and repaints the panel.
      */
     public void setImageBackground(){
         try {
@@ -316,16 +316,14 @@ public class ZooPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
         switch (actionCommand) {
-            case "Add Animal" -> {
-                new AddAnimalDialog(model, this);
-            }
+            case "Add Animal" -> new AddAnimalDialog(model, this);
             case "Move Animal" -> {
                 if (model.getAnimalModelSize() > 0) {
                     new MoveAnimalDialog(model, this);
                 } else {
                     String message = "Zoo is currently empty!";
                     try {
-                        throw new PrivateGraphicUtils.ErrorDialogException(null, message);
+                        throw new PrivateGraphicUtils.ErrorDialogException(this, message);
                     } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
                 }
             }
@@ -334,6 +332,7 @@ public class ZooPanel extends JPanel implements ActionListener {
                 setTotalEatCount(0);
                 infoTable.setIsOpen(false);
                 repaint();
+                PrivateGraphicUtils.popInformationDialog(this,"Removed all animals from the panel!");
             }
             case "Food" -> {
                 createFoodDialog();
@@ -349,13 +348,11 @@ public class ZooPanel extends JPanel implements ActionListener {
                 } else {
                     String message = "Zoo is currently empty!";
                     try {
-                        throw new PrivateGraphicUtils.ErrorDialogException(null, message);
+                        throw new PrivateGraphicUtils.ErrorDialogException(this, message);
                     } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
                 }
             }
-            case "Exit" -> {
-                System.exit(1);
-            }
+            case "Exit" -> System.exit(1);
         }
     }
 }
