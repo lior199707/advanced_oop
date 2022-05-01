@@ -12,22 +12,60 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+/**
+ * MoveAnimalDialog represents a dialog for moving animals in the Zoo.
+ * users can select animals from a combobox, input coordinates and move the animals to the new coordinates if in boundaries.
+ * the ui will present an appropriate image (based on animal type and color) dynamically.
+ * @see com.graphics.AnimalDialog
+ */
 public class MoveAnimalDialog extends AnimalDialog {
-    // choose coordinates panel
+    /**
+     * default Dimension object with width and height.
+     */
     private static final Dimension DEFAULT_DIMENSION = new Dimension(350,400);
+    /**
+     * combobox of animal names - taken from the AnimalModel.
+     */
     private JComboBox<String> animalNamesCmb;
-    private JLabel xLabel;
-    private JLabel yLabel;
+    /**
+     * JLabel object indicating animal image, changed dynamically.
+     */
     private JLabel imageLabel;
+    /**
+     * JTextField to input the x coordinate.
+     */
     private JTextField xTextField;
+    /**
+     * JTextField to input the y coordinate.
+     */
     private JTextField yTextField;
+    /**
+     * JButton object indicating the validate button, pressing it will validate the user input before enabling the move animal button.
+     */
     private JButton validateButton;
+     /**
+     * JButton object indicating the move animal button, pressing it will move the animal to the given input coordinates.
+     */
     private JButton moveAnimalButton;
+    /**
+     * JLabel object indicating the current location coordinates of a selected animal.
+     */
     private JLabel currLocationLabel;
-
+    /**
+     * boolean representation of the x text field validity state.
+     */
     private boolean xStatus;
+    /**
+     * boolean representation of the y text field validity state.
+     */
     private boolean yStatus;
 
+    /**
+     * MoveAnimalDialog constructor
+     * @param model AnimalModel object, the animal container.
+     * @param zooPanel ZooPanel object, the zoo panel.
+     * @see com.graphics.AnimalDialog
+     */
     public MoveAnimalDialog(AnimalModel model, ZooPanel zooPanel) {
         super(model,zooPanel, DEFAULT_DIMENSION);
         // configurations
@@ -37,6 +75,10 @@ public class MoveAnimalDialog extends AnimalDialog {
         this.pack();
     }
 
+    /**
+     * createDialog adding directional panels to the MoveAnimalDialog
+     * @see com.graphics.AnimalDialog
+     */
     @Override
     public void createDialog() {
         this.getContentPane().add(createNorthPanel(), BorderLayout.NORTH);
@@ -44,6 +86,12 @@ public class MoveAnimalDialog extends AnimalDialog {
         this.getContentPane().add(createSouthPanel(), BorderLayout.SOUTH);
     }
 
+    /**
+     * createNorthPanel will add items to the north panel.
+     * adding animal name combo box to the north panel.
+     * @see com.graphics.AnimalDialog
+     * @return JPanel object of the north panel.
+     */
     @Override
     protected JPanel createNorthPanel() {
         JPanel northPanel = new JPanel(new GridLayout());
@@ -55,51 +103,76 @@ public class MoveAnimalDialog extends AnimalDialog {
         return northPanel;
     }
 
+    /**
+     * createWestPanel does nothing.
+     * @see com.graphics.AnimalDialog
+     */
     @Override
     protected JPanel createWestPanel() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * createEastPanel does nothing.
+     * @see com.graphics.AnimalDialog
+     */
     @Override
     protected JPanel createEastPanel() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * createSouthPanel will add items to the south panel.
+     * adding the coordinates x and y text fields to a northern panel.
+     * adding the move animal and validate buttons to a southern panel.
+     * adding the mentioned panels above to the south panel of the dialog.
+     * @see com.graphics.AnimalDialog
+     * @return JPanel object of the south panel.
+     */
     @Override
     protected JPanel createSouthPanel() {
+        // initializing panels.
         JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
         JPanel northPanel = new JPanel();
+        JPanel southPanel = new JPanel();
 
-        xLabel = new JLabel("X: ");
-        yLabel = new JLabel("Y: ");
+        // setting layout
+        panel.setLayout(new BorderLayout());
+
+        // create north panel components.
+        JLabel xLabel = new JLabel("X: ");
+        JLabel yLabel = new JLabel("Y: ");
         xTextField = new JTextField("0-800",10);
         yTextField = new JTextField("0-600",10);
 
+        xTextField.setForeground(Color.GRAY);
+        yTextField.setForeground(Color.GRAY);
+
+        // adding to listeners
         addValidRangeFocusListener(xTextField, Point.getMinXY(), Point.getMaxX());
         addValidRangeFocusListener(yTextField, Point.getMinXY(), Point.getMaxY());
 
         addCoordinatesInputDocumentListener(xTextField);
         addCoordinatesInputDocumentListener(yTextField);
 
-        xTextField.setForeground(Color.GRAY);
-        yTextField.setForeground(Color.GRAY);
-
+        // adding components to the north panel. note it's using FlowLayout by default.
         northPanel.add(xLabel);
         northPanel.add(xTextField);
         northPanel.add(yLabel);
         northPanel.add(yTextField);
 
-        JPanel southPanel = new JPanel();
-
+        // create south panel components.
         validateButton = new JButton("Validate");
         moveAnimalButton = new JButton("Move Animal");
         moveAnimalButton.setEnabled(false);
+
+        // adding to listeners
         moveAnimalButton.addActionListener(new MoveAnimalHandler());
         validateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean validated = xStatus && yStatus;
+                // enables the move animal button only if both values are true.
                 moveAnimalButton.setEnabled(validated);
             }
         });
@@ -112,40 +185,54 @@ public class MoveAnimalDialog extends AnimalDialog {
         panel.add(southPanel, BorderLayout.SOUTH);
 
         panel.setBorder(PrivateGraphicUtils.createTitledBorder("New Location", TitledBorder.TOP, TitledBorder.CENTER));
+
         return panel;
     }
 
+    /**
+     * utility method to create a center panel.
+     * adding image and current location labels to the panel.
+     * @return JPanel object of the center panel.
+     */
     private JPanel createCenterPanel(){
-        JPanel centerPanel = new JPanel(new GridBagLayout());
+        JPanel centerPanel = new JPanel();
+
         imageLabel = new JLabel();
         imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(getModel().getAnimalModel().get(0)));
 
         GridBagConstraints centerPanelGbc = new GridBagConstraints();
+        centerPanelGbc.anchor = GridBagConstraints.LINE_START;
 
-        //adding the picture label
+        // setting up the image label.
         setGridBagConstraintPosition(centerPanelGbc, 0,0);
+        imageLabel.setBorder(PrivateGraphicUtils.createTitledBorder("Picture", TitledBorder.BELOW_TOP, TitledBorder.CENTER));
         centerPanel.add(imageLabel, centerPanelGbc);
 
-        centerPanelGbc.anchor = GridBagConstraints.LINE_START;
+        // setting up the current location label.
+        setGridBagConstraintPosition(centerPanelGbc,0,1);
         Animal animal = getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex());
         currLocationLabel = new JLabel("current location: " + animal.getLocation());
-
-        setGridBagConstraintPosition(centerPanelGbc,0,1);
         centerPanel.add(currLocationLabel, centerPanelGbc);
-
-        imageLabel.setBorder(PrivateGraphicUtils.createTitledBorder("Picture", TitledBorder.BELOW_TOP, TitledBorder.CENTER));
 
         return centerPanel;
     }
 
+    /**
+     * utility method using a document listener to listen for document events on the coordinates
+     * text fields x and y.
+     * @param coordinatesTextField JTextField object, either xTextField or yTextField.
+     */
     private void addCoordinatesInputDocumentListener(JTextField coordinatesTextField){
         coordinatesTextField.getDocument().addDocumentListener((IChangeDocument) e -> {
             try {
+                // getting the current input.
                 String currentText = coordinatesTextField.getText();
                 moveAnimalButton.setEnabled(false);
 
                 int coordinate = Integer.parseInt(currentText);
+                // if the coordinate is parsed successfully it will check if the coordinate are in range.
                 if (coordinatesTextField == xTextField) {
+                    // if so, the text field foreground will be set to black & the status will be set to true.
                     setValidTextField(coordinatesTextField, xStatus = true);
                     if (coordinate < Point.getMinXY() || coordinate > Point.getMaxX()) {
                         throw new NumberFormatException();
@@ -156,6 +243,8 @@ public class MoveAnimalDialog extends AnimalDialog {
                         throw new NumberFormatException();
                     }
                 }
+                // otherwise, a NumberFormatException will be thrown and turn the foreground of the
+                // text fields to red, and its status to false.
             } catch (NumberFormatException ignored){
                 if (coordinatesTextField == xTextField){
                     setValidTextField(coordinatesTextField, xStatus = false);
@@ -167,6 +256,11 @@ public class MoveAnimalDialog extends AnimalDialog {
     }
 
 
+    /**
+     * AnimalNamesHandler is a utility class implementing ItemListener.
+     * it is used to update the current location label and the image label upon selection of a new animal.
+     * @see ItemListener
+     */
     private class AnimalNamesHandler implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -178,6 +272,15 @@ public class MoveAnimalDialog extends AnimalDialog {
         }
     }
 
+    /**
+     * MoveAnimalHandler is a utility class implementing ActionListener.
+     * it is used to listen to move animal button event.
+     * if the distance measured between current location and the new location is 0, the animal will not move
+     * and an appropriate dialog will appear.
+     * otherwise, the animal will move to the new location and a set of actions will take place to update the UI.
+     * upon moving an animal conditionalFoodEating will attempt to eat Food if existed.
+     * @see ActionListener
+     */
     private class MoveAnimalHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -185,15 +288,20 @@ public class MoveAnimalDialog extends AnimalDialog {
             int y = Integer.parseInt(yTextField.getText());
             Animal animal = getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex());
             if (animal.move(new Point(x,y)) != 0){
-                currLocationLabel.setText("current location: " + animal.getLocation());
+                // updating animal coordChanged to true.
                 animal.setChanges(true);
+                // updating the current location label.
+                currLocationLabel.setText("current location: " + animal.getLocation());
+                // attempting to eat food.
                 animal.conditionalFoodEating(getZooPanel().getFood());
                 getZooPanel().manageZoo();
+                // if the model was changed via this movement in manageZoo it will refresh the UI.
                 if (getModel().getChangesState()){
                     getModel().setChangesState(false);
                     refreshUI();
                 }
 
+                // resetting fields to default placeholders.
                 xTextField.setText("0-800");
                 yTextField.setText("0-600");
                 xTextField.setForeground(Color.GRAY);
@@ -201,20 +309,21 @@ public class MoveAnimalDialog extends AnimalDialog {
             } else {
                 String message = "Animal did not move!";
                 PrivateGraphicUtils.popInformationDialog(null, message);
-//                try {
-//                    String message = "Animal did not move!";
-//                    throw new PrivateGraphicUtils.InformationDialogException(getContentPane(), message);
-//                } catch (PrivateGraphicUtils.InformationDialogException ignored) {}
             }
         }
     }
 
 
+    /**
+     * refreshes the combobox, image and current location labels upon changes.
+     * generally used if the moving animal was eaten.
+     */
     public void refreshUI(){
+        // updating the combobox with the current names in the model.
         animalNamesCmb.setModel(new DefaultComboBoxModel<>(getModel().getAnimalNames()));
         // if the moved animal was eaten, set the current selected index animal image
         Animal current = getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex());
+        currLocationLabel.setText("current location: " + current.getLocation());
         imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(current));
-
     }
 }

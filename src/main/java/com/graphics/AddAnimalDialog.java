@@ -16,9 +16,9 @@ import static com.privateutil.PrivateGraphicUtils.findAnimalImagePath;
 
 /**
  * AddAnimalDialog represents a dialog for adding animal to the Zoo.
- * users can select animal types from a combobox, input name, size vertical & horizontal speed and a color.
- * the ui will present an appropriate image (based on animal type & color) dynamically.
- * weight, unique fields and default location on the zoo panel are also changed dynamically based on size & animal type.
+ * users can select animal types from a combobox, input name, size vertical and horizontal speed and a color.
+ * the ui will present an appropriate image (based on animal type and color) dynamically.
+ * weight, unique fields and default location on the zoo panel are also changed dynamically based on size and animal type.
  */
 public class AddAnimalDialog extends AnimalDialog {
     /**
@@ -26,7 +26,7 @@ public class AddAnimalDialog extends AnimalDialog {
      */
     private static final int DEFAULT_DIRECTION = 1;
     /**
-     * default Dimension object with width & height.
+     * default Dimension object with width and height.
      */
     private static final Dimension DEFAULT_DIMENSION = new Dimension(500, 350);
     /**
@@ -145,6 +145,12 @@ public class AddAnimalDialog extends AnimalDialog {
      */
     private boolean hSpeedStatus;
 
+    /**
+     * AddAnimalDialog constructor.
+     * @param model AnimalModel object, the animal container.
+     * @param zooPanel ZooPanel object, the zoo panel.
+     * @see com.graphics.AnimalDialog
+     */
     public AddAnimalDialog(AnimalModel model, ZooPanel zooPanel) {
         super(model, zooPanel, DEFAULT_DIMENSION);
 
@@ -198,8 +204,8 @@ public class AddAnimalDialog extends AnimalDialog {
 
     /**
      * createWestPanel will add items to the west panel.
-     * adding name, size, vertical & horizontal speed text fields & labels.
-     * adding color label & combobox.
+     * adding name, size, vertical and horizontal speed text fields and labels.
+     * adding color label and combobox.
      * @return JPanel object of the west panel.
      */
     @Override
@@ -387,7 +393,7 @@ public class AddAnimalDialog extends AnimalDialog {
 
     /**
      * createSouthPanel will add items to the south panel.
-     * adding validate & add animal buttons.
+     * adding validate and add animal buttons.
      * @return JPanel object of the west panel.
      */
     @Override

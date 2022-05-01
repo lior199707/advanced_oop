@@ -1,20 +1,14 @@
 package com.food;
 
-import com.utilities.MessageUtility;
-
 /**
  * class Meat, handles food of type meat, extends abstract class Food.
  */
 public class Meat extends Food{
 
-    //Ctor
-
-    public Meat() { MessageUtility.logConstractor("Meat", "Meat");}
-
-    //end Ctor
-
-
-    //override interface IEdible
+    /**
+     * Meat constructor.
+     */
+    public Meat() { }
 
     /**
      * @see com.food.IEdible#getFoodType()
@@ -22,14 +16,8 @@ public class Meat extends Food{
      */
     @Override
     public EFoodType getFoodType() {
-        MessageUtility.logGetter(this.getClass().getSimpleName(), "getFoodType", EFoodType.VEGETABLE);
         return EFoodType.MEAT;
     }
-
-    //end override interface IEdible
-
-
-    //override class Food
 
     /**
      * @return String representation of the short path name for loading Meat image.
@@ -38,7 +26,4 @@ public class Meat extends Food{
     public String foodShortPathName() {
         return "Meat";
     }
-
-    //end override class Food
 }
-//end class Meat

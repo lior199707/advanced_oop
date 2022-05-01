@@ -10,7 +10,6 @@ import com.graphics.ZooPanel;
 import com.mobility.Mobile;
 import com.mobility.Point;
 import com.privateutil.PrivateGraphicUtils;
-import com.utilities.MessageUtility;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -106,19 +105,13 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     private BufferedImage img1, img2;
 
-    //static methods
-
     /**
-     * Static method.
+     * Default color getter.
      * @return String representation of the default color for an animal("NATURAL").
      */
     public static String getDefaultColor() {
         return DEFAULT_COLOR;
     }
-
-    //end static methods
-
-    // ctor
 
     /**
      * Animal constructor
@@ -158,10 +151,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public Animal(String name, Point location, int size, int horSpeed, int verSpeed) {
         this(name,location,size, horSpeed,verSpeed,DEFAULT_COLOR);
     }
-    //end ctor
 
-
-    //getters
     /**
      * name getter.
      * @return String value representing animal name.
@@ -238,10 +228,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return pan;
     }
 
-    //end getters
-
-
-    //setters
     /**
      * name setter.
      * this method checks if given name param is alphabetic, if so it updates the name field.
@@ -388,22 +374,16 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         this.pan = pan;
     }
 
-    //end setters
-
-
-    //abstract methods
-
+    /**
+     * abstract method, animals will have to implement their own short path name.
+     * @return String representation of the animal short path name. i.e. Lion - lio etc.
+     */
     public abstract String animalShortPathName();
 
     /**
      * abstract method, animals will have to implement their own sounds.
      */
     public abstract void makeSound();
-
-    // end abstract methods
-
-
-    //methods
 
     /**
      * eat activates the appropriate eat method based on the current animal's diet.
@@ -420,7 +400,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             setWeight(this.weight + updatedWeight);
             isSuccess = true;
         }
-        MessageUtility.logBooleanFunction(getName(), "eat", food, isSuccess);
         return isSuccess;
     }
 
@@ -449,11 +428,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             }
         return false;
     }
-
-    //end methods
-
-
-    // override abstract class Mobile
 
     /**
      * move uses Mobile.move() method to set the new location and calculate the distance between
@@ -488,11 +462,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return super.getLocation();
     }
 
-    // end override abstract class Mobile
-
-
-    // override interface IEdible
-
     /**
      * Override interface IEdible getFoodType().
      * The food type of all animals is MEAT except Lion.
@@ -502,14 +471,8 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     @Override
     public EFoodType getFoodType() {
-        MessageUtility.logGetter(this.name, "getFoodType", EFoodType.MEAT);
         return EFoodType.MEAT;
     }
-
-    // end override interface IEdible
-
-
-    // override interface IDrawable
 
     /**
      * Draws animal's picture on the main panel based on her size and location.

@@ -4,7 +4,6 @@ package com.animals;
 
 import com.diet.Omnivore;
 import com.mobility.Point;
-import com.utilities.MessageUtility;
 
 /**
  * Bear class representing the Bear animal. It can roar!
@@ -87,7 +86,6 @@ public class Bear extends AnimalRoar {
         setFurColor(String.valueOf(FurColors.GRAY));
         setDiet(new Omnivore());
         loadImages(animalShortPathName());
-        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -120,7 +118,6 @@ public class Bear extends AnimalRoar {
      * @return furColor value of bear.
      */
     public FurColors getFurColor() {
-        MessageUtility.logGetter(getName(), "getFurColor", furColor);
         return furColor;
     }
 
@@ -162,7 +159,6 @@ public class Bear extends AnimalRoar {
                 break;
             }
         }
-        MessageUtility.logSetter(this.toString(), "setFurColor", furColor, isSuccess);
         return isSuccess;
     }
 
@@ -175,7 +171,7 @@ public class Bear extends AnimalRoar {
      */
     @Override
     public void roar() {
-        MessageUtility.logSound(getName(), "Stands on its hind legs, roars and scratches its belly");
+        System.out.println(getName() + " Stands on its hind legs, roars and scratches its belly");
     }
 
     /**

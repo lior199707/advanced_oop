@@ -2,7 +2,6 @@ package com.food.plants;
 
 import com.food.EFoodType;
 import com.food.Food;
-import com.utilities.MessageUtility;
 
 /**
  * @author baroh
@@ -14,9 +13,7 @@ public abstract class Plant extends Food {
 	/**
 	 * Plant constructor
 	 */
-	public Plant() {
-		MessageUtility.logConstractor("Plant", "Plant");
-	}
+	public Plant() { }
 
 	//end Ctor
 
@@ -29,7 +26,6 @@ public abstract class Plant extends Food {
 	 */
 	@Override
 	public EFoodType getFoodType() {
-		MessageUtility.logGetter(this.getClass().getSimpleName(), "getFoodType", EFoodType.VEGETABLE);
 		return EFoodType.VEGETABLE;
 	}
 

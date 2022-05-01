@@ -41,8 +41,6 @@ public class InfoTableDialog extends JDialog {
      */
     private TotalModel totalModel;
 
-    //Ctor
-
     /**
      * InfoTableDialog constructor, opens a dialog window containing a table which presents
      * all the zoo animals information. and a sub table of one row holding the total eat counter of the zoo panel.
@@ -53,6 +51,7 @@ public class InfoTableDialog extends JDialog {
         tableModel = new ZooModel(model);
         totalModel = new TotalModel();
 
+        // configuration of the animalTable.
         animalTable = new JTable(tableModel);
         animalTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         animalTable.setFillsViewportHeight(true);
@@ -61,15 +60,18 @@ public class InfoTableDialog extends JDialog {
         animalTable.setPreferredScrollableViewportSize(animalTable.getPreferredSize());
         animalTable.getTableHeader().setReorderingAllowed(false);
 
+        // configuration of the totalRow.
         totalRow = new JTable(new TotalModel());
         totalRow.setTableHeader(null);
         totalRow.setFocusable(false);
         totalRow.setRowSelectionAllowed(false);
         totalRow.setOpaque(false);
 
+        // adding the tables to the dialog.
         this.add(new JScrollPane(animalTable), BorderLayout.CENTER);
         this.add(totalRow, BorderLayout.SOUTH);
 
+        // configuration of the dialog.
         this.setModalityType(ModalityType.DOCUMENT_MODAL);
         this.setLocationRelativeTo(this);
         this.setResizable(false);
@@ -87,11 +89,9 @@ public class InfoTableDialog extends JDialog {
         this.pack();
     }
 
-    //end Ctor
-
     /**
      * static method. is open getter.
-     * @return Boolean value indocates if the table dialog is open or not.
+     * @return Boolean value indicates if the table dialog is open or not.
      */
     public static boolean getIsOpen(){
         return isOpen;
@@ -109,7 +109,7 @@ public class InfoTableDialog extends JDialog {
 
     /**
      * updates the table after changes in the animals model.
-     * i.e. animal was eaten thus removed from the model, animal ate and her eat counter needs to be updated.
+     * i.e. animal was eaten thus removed from the model.
      */
     public void updateTable(){
         tableModel.fireTableDataChanged();
@@ -119,7 +119,7 @@ public class InfoTableDialog extends JDialog {
     }
 
     /**
-     * private class TotalModel, presents a table of one row
+     * utility class TotalModel, presents a table of one row
      * containing the total amount of eating the zoo animals made.
      */
     private class TotalModel extends AbstractTableModel {
@@ -164,7 +164,7 @@ public class InfoTableDialog extends JDialog {
 
 
     /**
-     * private class ZooModel extends AbstractTableModel, handles the model of the zoo table.
+     * utility class ZooModel extends AbstractTableModel, handles the model of the zoo table.
      */
     private class ZooModel extends AbstractTableModel {
         /**

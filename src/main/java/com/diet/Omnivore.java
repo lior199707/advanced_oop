@@ -3,7 +3,6 @@ package com.diet;
 import com.animals.Animal;
 import com.food.EFoodType;
 import com.food.IEdible;
-import com.utilities.MessageUtility;
 
 /**
  * class Omnivore, handles animal that eat both meat and vegetables
@@ -92,9 +91,7 @@ public class Omnivore implements IDiet {
      */
     @Override
     public boolean canEat(EFoodType food) {
-        boolean isSuccess = food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
-        MessageUtility.logBooleanFunction(this.toString(),"canEat", food, isSuccess);
-        return isSuccess;
+        return food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
     }
 
     //end override interface IDiet
