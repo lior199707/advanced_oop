@@ -7,6 +7,10 @@ import javax.swing.event.DocumentListener;
  * interface IChangeDocument extends document listener and set default implementation to avoid code duplication.
  */
 public interface IChangeDocument extends DocumentListener {
+    /**
+     * uses the document event to perform changes upon listener events.
+     * @param e DocumentEvent object.
+     */
     void changeDocument(DocumentEvent e);
 
     /**

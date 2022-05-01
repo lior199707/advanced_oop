@@ -7,14 +7,10 @@ import com.utilities.MessageUtility;
  */
 public class Meat extends Food{
 
-    //Ctor
-
+    /**
+     * Meat constructor.
+     */
     public Meat() { MessageUtility.logConstractor("Meat", "Meat");}
-
-    //end Ctor
-
-
-    //override interface IEdible
 
     /**
      * @see com.food.IEdible#getFoodType()
@@ -26,11 +22,6 @@ public class Meat extends Food{
         return EFoodType.MEAT;
     }
 
-    //end override interface IEdible
-
-
-    //override class Food
-
     /**
      * @return String representation of the short path name for loading Meat image.
      */
@@ -38,7 +29,4 @@ public class Meat extends Food{
     public String foodShortPathName() {
         return "Meat";
     }
-
-    //end override class Food
 }
-//end class Meat

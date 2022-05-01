@@ -6,11 +6,28 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * ZooFrame is the main frame for the view aspect of the zoo project.
+ * it extends JFrame and holds several components in it such as a menu bar,
+ * the zoo panel and acts as the main class.
+ * @see JFrame
+ */
 public class ZooFrame extends JFrame{
+    /**
+     * JMenuBar object to hold different menu items.
+     */
     private JMenuBar menuBar;
+    /**
+     * ZooPanel object where the animals and buttons will take place.
+     */
     private ZooPanel zooPanel;
 
+    /**
+     * ZooFrame constructor.
+     * configuration of the frame window.
+     */
     ZooFrame(){
+        super("Zoo");
         menuBar = constructJMenuBar();
         zooPanel = new ZooPanel();
 
@@ -21,11 +38,14 @@ public class ZooFrame extends JFrame{
         this.setSize(frameX,frameY);
         this.setLocation(PrivateGraphicUtils.centerWindow(frameX,frameY));
         this.setResizable(false);
-        this.setTitle("Zoo");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
+    /**
+     * utility method to construct the menu bar.
+     * @return JMenuBar with JMenu's and JMenuItems set up.
+     */
     private JMenuBar constructJMenuBar( ){
         JMenuBar menuBar = new JMenuBar();
         // initiating JMenu fields.
@@ -61,7 +81,7 @@ public class ZooFrame extends JFrame{
         menuBar.add(background);
         menuBar.add(help);
 
-        ZooMenuBarListener listener = new ZooMenuBarListener();
+        MenuBarHandler listener = new MenuBarHandler();
         exit.addActionListener(listener);
         image.addActionListener(listener);
         green.addActionListener(listener);
@@ -72,7 +92,11 @@ public class ZooFrame extends JFrame{
         return menuBar;
     }
 
-    private class ZooMenuBarListener implements ActionListener {
+    /**
+     * MenuBarHandler is a utility class implementing ActionListener.
+     * it listens to events coming from the menu bar.
+     */
+    private class MenuBarHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String actionCommand = e.getActionCommand();
@@ -91,9 +115,7 @@ public class ZooFrame extends JFrame{
                 }
                 case "Help" -> {
                     String message = "Home Work 2\nGUI";
-                    try {
-                        throw new PrivateGraphicUtils.InformationDialogException(null, message);
-                    } catch (PrivateGraphicUtils.InformationDialogException ignored) {}
+                    PrivateGraphicUtils.popInformationDialog(null,message);
                 }
                 case "Manual" -> {
                     String message = """
@@ -111,14 +133,17 @@ public class ZooFrame extends JFrame{
                             * Food spawns in the middle of the zoo panel, it's coordinates are: (400, 300).
                             * A predator can eat more than a single prey at a time.
                             * We recommend to leave the info table open, it will exhibit every information changes about the animals dynamically.""";
-                    try {
-                        throw new PrivateGraphicUtils.InformationDialogException(null, message);
-                    } catch (PrivateGraphicUtils.InformationDialogException ignored) {};
+                    PrivateGraphicUtils.popInformationDialog(null,message);
+
                 }
             }
         }
     }
 
+    /**
+     * main method
+     * @param args arguments input from cli.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

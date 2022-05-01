@@ -30,7 +30,6 @@ public class PrivateGraphicUtils {
 
     /**
      * @param type - String representing of the animal's type.
-     * @param shortPath -   String used for loading animal picture.
      * @param color - String representing the animal's color.
      * @param direction - int representing animal's walking direction.
      *                  1 - right
@@ -113,7 +112,6 @@ public class PrivateGraphicUtils {
      * @param height - the new height of the image
      * @return ImageIcon reference, SCALE_SMOOTH image with new width and height, if image failed to load return null.
      */
-    // TODO: Consider naming for both methods including local variables.
     // change to path name.
     public static ImageIcon resizeImage(String path, int width, int height){
         try {
@@ -134,7 +132,6 @@ public class PrivateGraphicUtils {
      * @param animal - the animal to resize its image.
      * @return ImageIcon reference, SCALE_SMOOTH image with new width(200) and height(180).
      */
-    // TODO: Consider naming for both methods including local variables.
     public static ImageIcon setAnimalImageIcon(Animal animal){
         BufferedImage bufferedImage = animal.getImg1();
         ImageIcon image = new ImageIcon(bufferedImage);
@@ -161,10 +158,6 @@ public class PrivateGraphicUtils {
      * handles invalid input in Dialogs (AddAnimalDialog and MoveAnimalDialog).
      */
     public static class ErrorDialogException extends Exception {
-//        public ErrorDialogException(Container container, String message, String title){
-//            JOptionPane.showMessageDialog(container, message,title,JOptionPane.ERROR_MESSAGE);
-//        }
-
         /**
          * Pops up an Error Dialog window with the wanted container and message.
          * @param container - the container of the error dialog window.
@@ -175,12 +168,6 @@ public class PrivateGraphicUtils {
         }
     }
 
-//    public static class InformationDialogException extends Exception {
-//        public InformationDialogException(Container container, String message){
-//            JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
-//        }
-//    }
-
     /**
      * * Pops up an Information Dialog window with the wanted container and message.
      * @param container - the container of the information dialog window.
@@ -190,4 +177,3 @@ public class PrivateGraphicUtils {
         JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
     }
 }
-//end class PrivateGraphicsUtils

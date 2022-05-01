@@ -41,8 +41,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
      */
     private BufferedImage img;
 
-    //Ctor
-
     /**
      *Food constructor
      * sets the height and weight of the food to random values, and sets food's location to the middle of the
@@ -57,11 +55,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         loadImages(foodShortPathName());
         MessageUtility.logConstractor("Food", "Food");
     }
-
-    //end Ctor
-
-
-    //getters
 
     /**
      * @return double value representing plant weight.
@@ -78,11 +71,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         MessageUtility.logGetter(this.getClass().getSimpleName(), "getHeight", this.height);
         return this.height;
     }
-
-    //end getters
-
-
-    //setters
 
     /**
      * @param pan , the panel main panel the food is drawn upon.
@@ -123,21 +111,12 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         return isSuccess;
     }
 
-    //end setters
-
-
-    //abstract methods
-
     /**
      * @return String representation of the short path name for loading food image.
      * will be overridden by classes that extend from abstract class Food.
      */
     public abstract String foodShortPathName();
 
-    //end abstract methods
-
-
-    //override class Object
 
     /**
      *
@@ -148,13 +127,8 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         return "[" + this.getClass().getSimpleName() + "] ";
     }
 
-    //end override class Object
-
-
-    //override interface ILocatable
-
     /**
-     * @see com.mobility.Ilocatable#getLocation()
+     * @see com.mobility.Ilocatable getLocation()
      *
      * @return Point reference of the food's location, always:(400,300).
      */
@@ -167,7 +141,7 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
     /**
      * checks if the point given is a valid point(boundaries (0-800,0-600)), if valid sets food location to the
      * new location and returns true, otherwise returns false.
-     * @see com.mobility.Ilocatable#setLocation(Point).
+     * @see com.mobility.Ilocatable setLocation(Point).
      *
      * @param newLocation, Point reference for the new location of the food.
      * @return Boolean value representing success or failure.
@@ -181,11 +155,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         MessageUtility.logSetter(this.getClass().getSimpleName(), "setLocation", newLocation, isSuccess);
         return isSuccess;
     }
-
-    //end override interface ILocatable
-
-
-    //override interface IDrawable
 
     /**
      * @return null, food doesn't have color.
@@ -220,7 +189,4 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
                     null, null, null);
         }
     }
-
-    //end override interface IDrawable
 }
-//end abstract class Food
