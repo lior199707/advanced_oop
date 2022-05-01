@@ -2,7 +2,6 @@ package com.animals;
 
 import com.diet.Herbivore;
 import com.mobility.Point;
-import com.utilities.MessageUtility;
 
 /**
  * Giraffe class representing the Giraffe animal. It can chew!
@@ -54,7 +53,6 @@ public class Giraffe extends AnimalChew {
         setNeckLength(DEFAULT_NECK_LENGTH);
         setDiet(new Herbivore());
         loadImages(animalShortPathName());
-        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -87,7 +85,6 @@ public class Giraffe extends AnimalChew {
      * @return double value of the neck length.
      */
     public double getNeckLength() {
-        MessageUtility.logGetter(this.getName(), "getNeckLength", this.neckLength);
         return neckLength;
     }
 
@@ -128,7 +125,6 @@ public class Giraffe extends AnimalChew {
             this.neckLength = neckLength;
             isSuccess = true;
         }
-        MessageUtility.logSetter(this.getName(), "setNeckLength", neckLength, isSuccess);
         return isSuccess;
     }
 
@@ -142,7 +138,7 @@ public class Giraffe extends AnimalChew {
      */
     @Override
     public void chew() {
-        MessageUtility.logSound(this.getName(), "Bleats and Stomps its legs, then chews");
+        System.out.println(this.getName() + " Bleats and Stomps its legs, then chews");
     }
 
     /**

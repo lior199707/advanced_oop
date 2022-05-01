@@ -2,7 +2,6 @@ package com.animals;
 
 import com.diet.Herbivore;
 import com.mobility.Point;
-import com.utilities.MessageUtility;
 
 /**
  * Elephant class representing the elephant animal. It can chew!
@@ -54,7 +53,6 @@ public class Elephant extends AnimalChew {
         setTrunkLength(DEFAULT_TRUNK_LENGTH);
         setDiet(new Herbivore());
         loadImages(animalShortPathName());
-        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -87,7 +85,6 @@ public class Elephant extends AnimalChew {
      * @return double value of the trunk length.
      */
     public double getTrunkLength() {
-        MessageUtility.logGetter(this.getName(), "getTrunkLength", this.trunkLength);
         return trunkLength;
     }
 
@@ -128,7 +125,6 @@ public class Elephant extends AnimalChew {
             this.trunkLength = trunkLength;
             isSuccess = true;
         }
-        MessageUtility.logSetter(getName(), "setTrunkLength", trunkLength, isSuccess);
         return isSuccess;
     }
 
@@ -142,7 +138,7 @@ public class Elephant extends AnimalChew {
      */
     @Override
     public void chew() {
-        MessageUtility.logSound(this.getName(), "Trumpets with joy while flapping its ears, then chews");
+        System.out.println(getName() + " Trumpets with joy while flapping its ears, then chews");
     }
 
     /**

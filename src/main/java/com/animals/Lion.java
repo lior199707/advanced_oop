@@ -4,7 +4,6 @@ import com.diet.Carnivore;
 import com.food.EFoodType;
 import com.food.IEdible;
 import com.mobility.Point;
-import com.utilities.MessageUtility;
 
 import java.util.Random;
 
@@ -58,7 +57,6 @@ public class Lion extends AnimalRoar {
         setDiet(new Carnivore());
         scarCount = DEFAULT_SCAR_COUNT;
         loadImages(animalShortPathName());
-        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -92,7 +90,6 @@ public class Lion extends AnimalRoar {
      * @return integer value of the lion's scar count.
      */
     public int getScarCount() {
-        MessageUtility.logGetter(getName(), "getScarCount", scarCount);
         return scarCount;
     }
 
@@ -127,7 +124,7 @@ public class Lion extends AnimalRoar {
      */
     @Override
     public void roar() {
-        MessageUtility.logSound(getName(), "Roars, then stretches and shakes its mane");
+        System.out.println(getName() + " Roars, then stretches and shakes its mane");
     }
 
     /**
@@ -180,7 +177,6 @@ public class Lion extends AnimalRoar {
                 this.scarCount++;
             }
         }
-        MessageUtility.logBooleanFunction(getName(),"eat",food,isSuccess);
         return isSuccess;
     }
 

@@ -1,7 +1,5 @@
 package com.food;
 
-import com.utilities.MessageUtility;
-
 /**
  * class Meat, handles food of type meat, extends abstract class Food.
  */
@@ -10,7 +8,7 @@ public class Meat extends Food{
     /**
      * Meat constructor.
      */
-    public Meat() { MessageUtility.logConstractor("Meat", "Meat");}
+    public Meat() { }
 
     /**
      * @see com.food.IEdible#getFoodType()
@@ -18,7 +16,6 @@ public class Meat extends Food{
      */
     @Override
     public EFoodType getFoodType() {
-        MessageUtility.logGetter(this.getClass().getSimpleName(), "getFoodType", EFoodType.VEGETABLE);
         return EFoodType.MEAT;
     }
 

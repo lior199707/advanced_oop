@@ -10,7 +10,6 @@ import com.graphics.ZooPanel;
 import com.mobility.Mobile;
 import com.mobility.Point;
 import com.privateutil.PrivateGraphicUtils;
-import com.utilities.MessageUtility;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -399,7 +398,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             setWeight(this.weight + updatedWeight);
             isSuccess = true;
         }
-        MessageUtility.logBooleanFunction(getName(), "eat", food, isSuccess);
         return isSuccess;
     }
 
@@ -469,7 +467,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     @Override
     public EFoodType getFoodType() {
-        MessageUtility.logGetter(this.name, "getFoodType", EFoodType.MEAT);
         return EFoodType.MEAT;
     }
 

@@ -5,7 +5,6 @@ import com.graphics.ZooPanel;
 import com.mobility.Ilocatable;
 import com.mobility.Point;
 import com.privateutil.PrivateGraphicUtils;
-import com.utilities.MessageUtility;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -53,14 +52,12 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         this.weight = rand.nextInt(12);
         this.location = new Point(Point.getMaxX()/2, Point.getMaxY()/2);
         loadImages(foodShortPathName());
-        MessageUtility.logConstractor("Food", "Food");
     }
 
     /**
      * @return double value representing plant weight.
      */
     public double getWeight() {
-        MessageUtility.logGetter(this.getClass().getSimpleName(), "getWeight", this.weight);
         return weight;
     }
 
@@ -68,7 +65,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
      * @return double value representing plant height.
      */
     public double getHeight() {
-        MessageUtility.logGetter(this.getClass().getSimpleName(), "getHeight", this.height);
         return this.height;
     }
 
@@ -91,7 +87,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         } else {
             this.height = 0;
         }
-        MessageUtility.logSetter(this.getClass().getSimpleName(), "setHeight", height, isSuccess);
         return isSuccess;
     }
 
@@ -106,8 +101,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         } else {
             this.weight = 0;
         }
-        MessageUtility.logSetter(this.getClass().getSimpleName(), "setWeight", weight, isSuccess);
-
         return isSuccess;
     }
 
@@ -134,7 +127,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
      */
     @Override
     public Point getLocation() {
-        MessageUtility.logGetter(this.getClass().getSimpleName(), "getLocation", this.location);
         return this.location;
     }
 
@@ -152,7 +144,6 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         if (isSuccess) {
             this.location = newLocation;
         }
-        MessageUtility.logSetter(this.getClass().getSimpleName(), "setLocation", newLocation, isSuccess);
         return isSuccess;
     }
 

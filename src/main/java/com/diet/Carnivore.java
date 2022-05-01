@@ -3,7 +3,6 @@ package com.diet;
 import com.animals.Animal;
 import com.food.EFoodType;
 import com.food.IEdible;
-import com.utilities.MessageUtility;
 
 /**
  * class Carnivore, handles meat eating animals
@@ -67,9 +66,7 @@ public class Carnivore implements IDiet {
      */
     @Override
     public boolean canEat(EFoodType food) {
-        boolean isSuccess = food == EFoodType.MEAT;
-        MessageUtility.logBooleanFunction(this.toString(),"canEat", food, isSuccess);
-        return isSuccess;
+        return food == EFoodType.MEAT;
     }
 
     //end override interface IDiet

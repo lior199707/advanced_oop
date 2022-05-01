@@ -2,7 +2,6 @@ package com.animals;
 
 import com.diet.Herbivore;
 import com.mobility.Point;
-import com.utilities.MessageUtility;
 
 /**
  * Turtle class representing the Turtle animal. It can chew!
@@ -55,7 +54,6 @@ public class Turtle extends AnimalChew {
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
         loadImages(animalShortPathName());
-        MessageUtility.logConstractor(getClass().getSimpleName(), getName());
     }
 
     /**
@@ -88,7 +86,6 @@ public class Turtle extends AnimalChew {
      * @return integer value of turtle age.
      */
     public int getAge() {
-        MessageUtility.logGetter(getName(), "getAge", age);
         return age;
     }
 
@@ -129,7 +126,6 @@ public class Turtle extends AnimalChew {
             this.age = age;
             isSuccess = true;
         }
-        MessageUtility.logSetter(getName(), "setAge", age, isSuccess);
         return isSuccess;
     }
 
@@ -143,7 +139,7 @@ public class Turtle extends AnimalChew {
      */
     @Override
     public void chew() {
-        MessageUtility.logSound(getName(), "Retracts its head in then eats quietly");
+        System.out.println(getName() + " Retracts its head in then eats quietly");
     }
 
     /**
