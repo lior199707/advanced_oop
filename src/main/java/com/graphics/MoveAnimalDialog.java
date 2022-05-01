@@ -323,6 +323,7 @@ public class MoveAnimalDialog extends AnimalDialog {
         animalNamesCmb.setModel(new DefaultComboBoxModel<>(getModel().getAnimalNames()));
         // if the moved animal was eaten, set the current selected index animal image
         Animal current = getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex());
+        currLocationLabel.setText("current location: " + current.getLocation());
         imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(current));
     }
 }
