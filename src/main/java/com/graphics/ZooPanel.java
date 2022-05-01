@@ -183,10 +183,10 @@ public class ZooPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * checkEatAnimal is a utility method used to attempt eating animals when manageZoo is called.
+     * attemptEatAnimal is a utility method used to attempt eating animals when manageZoo is called.
      * predators can eat their prey, prey may eat its predator.
      */
-    private void checkEatAnimal(){
+    private void attemptEatAnimal(){
         for (int i = 0; i < model.getAnimalModelSize(); i++) {
             Animal predator = model.getAnimalModel().get(i);
             for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
@@ -226,13 +226,15 @@ public class ZooPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * manageZoo is the controller method
+     * manageZoo is the controller method, repaints the panel when a change occurs to the model.
+     * it runs the attemptEatAnimal method when called and tries to make changes to the model.
+     * if the info table dialog is open it updates the table for a dynamic feel.
      */
     public void manageZoo() {
         if (isChange()) {
             repaint();
         }
-        checkEatAnimal();
+        attemptEatAnimal();
         if (InfoTableDialog.getIsOpen())
             infoTable.updateTable();
     }
