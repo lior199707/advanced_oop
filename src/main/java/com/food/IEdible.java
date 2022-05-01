@@ -10,4 +10,3 @@ public interface IEdible {
      */
     public EFoodType getFoodType();
 }
-//end interface IEdible

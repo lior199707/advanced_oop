@@ -41,7 +41,7 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
     private BufferedImage img;
 
     /**
-     *Food constructor
+     * Food constructor
      * sets the height and weight of the food to random values, and sets food's location to the middle of the
      * ZooPanel.
      * sets food's image to the matching food type image.
@@ -112,7 +112,7 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
 
 
     /**
-     *
+     * toString method of Food class.
      * @return String representation of the food object.
      */
     @Override
@@ -135,7 +135,7 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
      * new location and returns true, otherwise returns false.
      * @see com.mobility.Ilocatable setLocation(Point).
      *
-     * @param newLocation, Point reference for the new location of the food.
+     * @param newLocation Point reference for the new location of the food.
      * @return Boolean value representing success or failure.
      */
     @Override
@@ -157,7 +157,7 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
 
     /**
      * Draws the image of the food in the middle of the ZooPanel.
-     * @param g , the graphics object to protect
+     * @param g the graphics object to protect
      */
     @Override
     public void drawObject(Graphics g) {

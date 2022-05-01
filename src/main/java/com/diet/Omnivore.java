@@ -18,8 +18,6 @@ public class Omnivore implements IDiet {
      */
     private final IDiet herbivore;
 
-    //ctor
-
     /**
      * Omnivore constructor
      */
@@ -28,14 +26,9 @@ public class Omnivore implements IDiet {
         this.herbivore = new Herbivore();
     }
 
-    //end ctor
-
-
-    //override class Object
-
     /**
      * check if this carnivore object is the same reference as o
-     * @param o , the second object
+     * @param o the second object
      * @return true if the same reference, false otherwise
      */
     @Override
@@ -57,18 +50,13 @@ public class Omnivore implements IDiet {
         return "[Omnivore]";
     }
 
-    //end override class Object
-
-
-    //override interface IDiet
-
     /**
      * if the animal can eat the food, and the food and the animal aren't pointing to the same animal
      * if the food is meat type uses Carnivore eat, else if the food is vegetable type uses herbivore eat
      * returns the weight the eating animal has gained in the process of eating, else returns 0
-     * @param animal , the animal that eats
-     * @param food, the animal that is being eaten
-     * @return double, the weight the animal gained in the process of eating.
+     * @param animal the animal that eats
+     * @param food the animal that is being eaten
+     * @return double the weight the animal gained in the process of eating.
      */
     @Override
     public double eat(Animal animal, IEdible food) {
@@ -85,7 +73,7 @@ public class Omnivore implements IDiet {
 
     /**
      * checks if this object can eat the food
-     * @param food , reference to EFoodType
+     * @param food reference to EFoodType
      * @return true if the food is vegetable or meat, false otherwise (if the food is NOTFOOD type)
      * @see com.food.EFoodType
      */
@@ -94,6 +82,4 @@ public class Omnivore implements IDiet {
         return food == EFoodType.MEAT || food == EFoodType.VEGETABLE;
     }
 
-    //end override interface IDiet
 }
-//end class Omnivore

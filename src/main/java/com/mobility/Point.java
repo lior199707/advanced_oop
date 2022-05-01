@@ -28,13 +28,11 @@ public class Point {
      */
     private int y;
 
-    //Ctor
-
     /**
      * Point constructor.
      * 
-     * @param x - int value of x coordinate.
-     * @param y - int value of y coordinate.
+     * @param x int value of x coordinate.
+     * @param y int value of y coordinate.
      *          if not viable values, the constructor will initialize them with 0.
      */
     public Point(int x, int y) {
@@ -60,11 +58,6 @@ public class Point {
         this.y = point.getY();
     }
 
-    //end Ctor
-
-
-    //getters
-
     /**
      * x getter
      *
@@ -83,15 +76,10 @@ public class Point {
         return y;
     }
 
-    //end getters
-
-
-    //setters
-
     /**
      * x setter.
      *
-     * @param x - int value of the new x coordinate.
+     * @param x int value of the new x coordinate.
      * @return boolean if x value is valid(between boundaries).
      */
     public boolean setX(int x) {
@@ -106,7 +94,7 @@ public class Point {
     /**
      * y setter.
      *
-     * @param y - int value of new y coordinate.
+     * @param y int value of new y coordinate.
      * @return boolean if y value is valid(between boundaries).
      */
     public boolean setY(int y) {
@@ -117,11 +105,6 @@ public class Point {
         }
         return isSuccess;
     }
-
-    //end setters
-
-
-    //class methods
 
     /**
      * checks if a point is within valid boundaries.
@@ -156,15 +139,10 @@ public class Point {
         return MIN_XY;
     }
 
-    //end class methods
-
-
-    //override class Object
-
     /**
      * checks if this object and the other object 'o' are identical.
      *
-     * @param o , the second object to check equality with.
+     * @param o the second object to check equality with.
      * @return true, if the both objects point to the same address in memory or the 2 objects have identical attributes
      * values, false otherwise.
      */
@@ -188,7 +166,4 @@ public class Point {
         return "(" + getX() + "," + getY() + ")";
     }
 
-    //end override class Object
-
 }
-//end class Point

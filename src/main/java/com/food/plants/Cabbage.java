@@ -5,18 +5,11 @@ package com.food.plants;
  *
  */
 public class Cabbage extends Plant {
-
-    //Ctor
-
     /**
      * Cabbage constructor.
      */
     public Cabbage() { }
 
-    //end Ctor
-
-
-    //override class Food
     /**
      * override abstract class Food animalShortPathName().
      * @return String representation of the short path name for loading Cabbage image.
@@ -26,7 +19,4 @@ public class Cabbage extends Plant {
         return "Cabbage";
     }
 
-    //end override class Food
-
 }
-//end class Cabbage

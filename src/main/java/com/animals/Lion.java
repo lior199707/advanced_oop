@@ -37,18 +37,16 @@ public class Lion extends AnimalRoar {
      */
     private int scarCount;
 
-    //Ctor
-
     /**
      * Lion constructor.
      * setting default location, default scar count and diet!
      * passing name, location, size, horizontal speed, vertical speed and color to super.
      * @see com.animals.AnimalRoar
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param size , Int indicates the size of the animal, affect image size and eating.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
-     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
+     * @param name String value of the animal's name, should contain only letters.
+     * @param size Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
+     * @param col String representing animal's color, "BLUE", "RED", "NATURAL".
      */
 
     public Lion(String name, int size, int horSpeed, int verSpeed, String col) {
@@ -63,19 +61,13 @@ public class Lion extends AnimalRoar {
      * Lion constructor.
      * setting default size.
      * passing name, horizontal speed and vertical speed to main constructor.
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
+     * @param name String value of the animal's name, should contain only letters.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
      */
     public Lion(String name, int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
-
-    //end Ctor
-
-
-
-    //getters
 
     /**
      * class Lion static method.
@@ -108,16 +100,6 @@ public class Lion extends AnimalRoar {
     public static double getSizeCoefficient() {
         return SIZE_COEFFICIENT;
     }
-
-    //end getters
-
-
-    //setters
-
-    //end setters
-
-
-    //override class AnimalRoar
 
     /**
      * roar implementation of lion.
@@ -152,11 +134,6 @@ public class Lion extends AnimalRoar {
         return super.toString();
     }
 
-    //end override class AnimalRoar
-
-
-    //override class Animal
-
     @Override
     public String animalShortPathName() {
         return "lio";
@@ -189,11 +166,6 @@ public class Lion extends AnimalRoar {
         return EFoodType.NOTFOOD;
     }
 
-    //end override class Animal
-
-
-    //override interface IAnimalBehavior
-
     /**
      * override interface IAnimalBehavior getAnimalName().
      * @return String representation of the animal natural name.
@@ -203,6 +175,4 @@ public class Lion extends AnimalRoar {
         return "Lion";
     }
 
-    //end override interface IAnimalBehavior
 }
-//end class Lion

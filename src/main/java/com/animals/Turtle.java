@@ -34,19 +34,17 @@ public class Turtle extends AnimalChew {
     private int age;
 
 
-    //Ctor
-
     /**
      * Turtle constructor.
      * setting default location, default age and diet!
      * passing name, location, size, horizontal speed, vertical speed and color to super.
      *
      * @see com.animals.AnimalChew
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param size , Int indicates the size of the animal, affect image size and eating.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
-     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
+     * @param name String value of the animal's name, should contain only letters.
+     * @param size Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
+     * @param col String representing animal's color, "BLUE", "RED", "NATURAL".
      */
     public Turtle(String name, int size, int horSpeed, int verSpeed, String col) {
         super(name, DEFAULT_STARTING_LOCATION,size,horSpeed,verSpeed,col);
@@ -60,18 +58,13 @@ public class Turtle extends AnimalChew {
      * Turtle constructor.
      * setting default size.
      * passing name, horizontal speed and vertical speed to main constructor.
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
+     * @param name String value of the animal's name, should contain only letters.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
      */
     public Turtle(String name, int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
-
-    //end Ctor
-
-
-    //getters
 
     /**
      * class Turtle static method.
@@ -105,11 +98,6 @@ public class Turtle extends AnimalChew {
         return SIZE_COEFFICIENT;
     }
 
-    //end getters
-
-
-    //setters
-
     /**
      * age setter.
      * checks if the age is valid (between min/max values).
@@ -128,11 +116,6 @@ public class Turtle extends AnimalChew {
         }
         return isSuccess;
     }
-
-    //end setters
-
-
-    //override class AnimalChew
 
     /**
      * chew implementation of a turtle.
@@ -167,11 +150,6 @@ public class Turtle extends AnimalChew {
         return super.toString();
     }
 
-    //end override class AnimalChew
-
-
-    //override class Animal
-
     /**
      * override abstract class Animal animalShortPathName().
      * @return String representation of the short path name for loading Turtle images.
@@ -180,11 +158,6 @@ public class Turtle extends AnimalChew {
     public String animalShortPathName() {
         return "trt";
     }
-
-    //end override class Animal
-
-
-    //override interface IAnimalBehavior
 
     /**
      * override interface IAnimalBehavior getAnimalName().
@@ -195,6 +168,4 @@ public class Turtle extends AnimalChew {
         return "Turtle";
     }
 
-    //end override interface IAnimalBehavior
 }
-//end class Turtle

@@ -33,19 +33,17 @@ public class Giraffe extends AnimalChew {
      */
     private double neckLength;
 
-    //Ctor
-
     /**
      * Giraffe constructor.
      * setting default location, default neck length and diet!
      * passing name, location, size, horizontal speed, vertical speed and color to super.
      *
      * @see com.animals.AnimalChew
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param size , Int indicates the size of the animal, affect image size and eating.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
-     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
+     * @param name String value of the animal's name, should contain only letters.
+     * @param size Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
+     * @param col String representing animal's color, "BLUE", "RED", "NATURAL".
      */
     public Giraffe(String name, int size, int horSpeed, int verSpeed, String col){
         super(name, DEFAULT_STARTING_LOCATION,size, horSpeed, verSpeed, col);
@@ -66,11 +64,6 @@ public class Giraffe extends AnimalChew {
     public Giraffe(String name, int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
-
-    //end Ctor
-
-
-    //getters
 
     /**
      * class Giraffe static method.
@@ -104,11 +97,6 @@ public class Giraffe extends AnimalChew {
         return SIZE_COEFFICIENT;
     }
 
-    //end getters
-
-
-    //setters
-
     /**
      * neck length setter.
      * checks if the neck length is valid (between min/max values).
@@ -127,11 +115,6 @@ public class Giraffe extends AnimalChew {
         }
         return isSuccess;
     }
-
-    //end setters
-
-
-    //override class AnimalChew
 
     /**
      * chew implementation of a giraffe.
@@ -166,11 +149,6 @@ public class Giraffe extends AnimalChew {
         return super.toString();
     }
 
-    //end override class AnimalChew
-
-
-    //override class Animal
-
     /**
      * override abstract class Animal animalShortPathName().
      * @return String representation of the short path name for loading Giraffe images.
@@ -179,11 +157,6 @@ public class Giraffe extends AnimalChew {
     public String animalShortPathName() {
         return "grf";
     }
-
-    //end override class Animal
-
-
-    //override interface IAnimalBehavior
 
     /**
      * override interface IAnimalBehavior getAnimalName().
@@ -194,6 +167,4 @@ public class Giraffe extends AnimalChew {
         return "Giraffe";
     }
 
-    //end override interface IAnimalBehavior
 }
-//end class Giraffe

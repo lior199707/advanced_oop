@@ -201,13 +201,12 @@ public class InfoTableDialog extends JDialog {
          */
         @Override
         public String getColumnName(int column) {
-            //
             return columnNames[column];
         }
 
         /**
          * returns the class of the content stored in a specific column of the table.
-         * @param column - the column to get its stored content class.
+         * @param column the column to get its stored content class.
          * @return the class of the content stored in the column.
          */
         @Override
@@ -215,9 +214,8 @@ public class InfoTableDialog extends JDialog {
 
 
         /**
-         *
-         * @param rowIndex - the current row.
-         * @param columnIndex - the current column.
+         * @param rowIndex the current row.
+         * @param columnIndex the current column.
          * @return String, the information to be presented based on the current row and column, if the column number
          * doesn't exist returns null.
          */

@@ -33,18 +33,17 @@ public class Elephant extends AnimalChew {
      */
     private double trunkLength;
 
-    //Ctor
     /**
      * Elephant constructor.
      * setting default location, default trunk length and diet!
      * passing name, location, size, horizontal speed, vertical speed and color to super.
      *
      * @see com.animals.AnimalChew
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param size , Int indicates the size of the animal, affect image size and eating.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
-     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
+     * @param name String value of the animal's name, should contain only letters.
+     * @param size Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
+     * @param col String representing animal's color, "BLUE", "RED", "NATURAL".
      */
 
     public Elephant(String name, int size, int horSpeed, int verSpeed, String col) {
@@ -59,18 +58,13 @@ public class Elephant extends AnimalChew {
      * Elephant constructor.
      * setting default size.
      * passing name, horizontal speed and vertical speed to main constructor.
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
+     * @param name String value of the animal's name, should contain only letters.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
      */
     public Elephant(String name, int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
-
-    //end Ctor
-
-
-    //getters
 
     /**
      * class Elephant static method.
@@ -104,11 +98,6 @@ public class Elephant extends AnimalChew {
         return SIZE_COEFFICIENT;
     }
 
-    //end getters
-
-
-    //setters
-
     /**
      * trunk length setter.
      * checks if the trunk length is valid (between min/max values).
@@ -127,11 +116,6 @@ public class Elephant extends AnimalChew {
         }
         return isSuccess;
     }
-
-    //end setters
-
-
-    //override class AnimalChew
 
     /**
      * chew implementation of an elephant.
@@ -166,11 +150,6 @@ public class Elephant extends AnimalChew {
         return super.toString();
     }
 
-    //end override class AnimalChew
-
-
-    //override class Animal
-
     /**
      * override abstract class Animal animalShortPathName().
      * @return String representation of the short path name for loading Elephant images.
@@ -179,11 +158,6 @@ public class Elephant extends AnimalChew {
     public String animalShortPathName() {
         return "elf";
     }
-
-    //end override class Animal
-
-
-    //override interface IAnimalBehavior
 
     /**
      * override interface IAnimalBehavior getAnimalName().
@@ -194,6 +168,4 @@ public class Elephant extends AnimalChew {
         return "Elephant";
     }
 
-    //end override interface IAnimalBehavior
 }
-//end class Elephant

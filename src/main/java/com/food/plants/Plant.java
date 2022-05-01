@@ -8,17 +8,10 @@ import com.food.Food;
  *abstract class Plant extends abstract class Foods, handles food that are vegetables.
  */
 public abstract class Plant extends Food {
-
-	//Ctor
 	/**
 	 * Plant constructor
 	 */
 	public Plant() { }
-
-	//end Ctor
-
-
-	//override class Food
 
 	/**
 	 * @see com.food.IEdible getFoodtype()
@@ -28,8 +21,4 @@ public abstract class Plant extends Food {
 	public EFoodType getFoodType() {
 		return EFoodType.VEGETABLE;
 	}
-
-	//end override class Food
-
 }
-//end abstract class Plant

@@ -116,14 +116,14 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     /**
      * Animal constructor
      *
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param location, Point (x,y) indicating the location of the animal.
+     * @param name String value of the animal's name, should contain only letters.
+     * @param location Point (x,y) indicating the location of the animal.
      *                  X coordinate valid range: 0-800.
      *                  Y coordinate valid range: 0-600.
-     * @param size , Int indicates the size of the animal, affect image size and eating.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
-     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
+     * @param size Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
+     * @param col String representing animal's color, "BLUE", "RED", "NATURAL".
      */
     public Animal(String name, Point location, int size, int horSpeed, int verSpeed, String col){
         super(location);
@@ -140,13 +140,13 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * Animal Ctor, creates an animal without providing the color, sets color to Default Color.
      *Used for instantiating animals in main.
      *
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param location, Point (x,y) indicating the location of the animal.
+     * @param name String value of the animal's name, should contain only letters.
+     * @param location Point (x,y) indicating the location of the animal.
      *                  X coordinate valid range: 0-800.
      *                  Y coordinate valid range: 0-600.
-     * @param size , Int indicates the size of the animal, affect image size and eating.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
+     * @param size Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
      */
     public Animal(String name, Point location, int size, int horSpeed, int verSpeed) {
         this(name,location,size, horSpeed,verSpeed,DEFAULT_COLOR);
@@ -260,7 +260,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * checks if the size given is between 50 and 300, if between boundaries sets the size of the animal
      * to the size given and returns true, otherwise returns false indicates failure.
      *
-     * @param size , Int value of the animal size.
+     * @param size Int value of the animal size.
      * @return true if succeeded, false otherwise.
      */
     public boolean setSize(int size){
@@ -278,7 +278,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * checks if the speed given is between 1 and 10, if between boundaries sets the vertical speed of the animal
      * to the speed given and returns true, otherwise sets the vertical speed to 1 and returns false indicates failure.
      *
-     * @param verSpeed ,Int value representing the vertical speed of the animal, valid values: 1,-1.
+     * @param verSpeed Int value representing the vertical speed of the animal, valid values: 1,-1.
      *                 1 indicates movement to the positive direction of the Y-axis.
      *                 -1 indicates movement to the negative direction of the Y-axis.
      * @return true is succeeded, false otherwise.
@@ -298,7 +298,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * checks if the speed given is between 1 and 10, if between boundaries sets the horizontal speed of the animal
      * to the speed given and returns true, otherwise sets the horizontal speed to 1 and returns false indicates failure.
      *
-     * @param horSpeed , Int value representing the  horizontal speed of the animal, valid values: 1,-1.
+     * @param horSpeed Int value representing the  horizontal speed of the animal, valid values: 1,-1.
      *                 1 indicates movement to the positive direction of the X-axis.
      *                 -1 indicates movement to the negative direction of the X-axis.
      * @return true is succeeded, false otherwise.
@@ -320,7 +320,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * to the color given and returns true,
      * otherwise sets the color to NATURAL and returns false indicates failure.
      *
-     * @param color , String value of the animal's color, valid value ("RED", "BLUE", "NATURAL")
+     * @param color String value of the animal's color, valid value ("RED", "BLUE", "NATURAL")
      * @return true is succeeded, false otherwise.
      */
     public boolean setColor(String color){
@@ -366,7 +366,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 
     /**
      * ZooPanel setter.
-     * @param pan , the main panel the animals are drawn upon.
+     * @param pan the main panel the animals are drawn upon.
      */
     public void setPan(ZooPanel pan) {
         this.pan = pan;
@@ -407,7 +407,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * if the distance between the x,y cords of the animal and the x,y cords of food is at most 10.
      * if both conditions are true the animals eats the food,otherwise it doesn't and false is returned.
      *
-     * @param food , food of the ZooPanel (food: "Cabbage","Lettuce","Meat").
+     * @param food food of the ZooPanel (food: "Cabbage","Lettuce","Meat").
      * @return true if succeeded eating food, false otherwise.
      */
     public boolean conditionalFoodEating(Food food) {
@@ -433,7 +433,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * current weight - (distance * current weight * CONST = 0.00025)
      *
      * @see com.mobility.Mobile move() for reference.
-     * @param nextLocation - Point object to change location to.
+     * @param nextLocation Point object to change location to.
      * @return distance traveled between two points.
      */
     @Override
@@ -473,7 +473,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     /**
      * Draws animal's picture on the main panel based on her size and location.
      *
-     * @param g , the graphics object to protect.
+     * @param g the graphics object to protect.
      */
     @Override
     public void drawObject(Graphics g) {
@@ -493,7 +493,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * image1 will contain an image of the animal facing to the right.
      * image1 will contain an image of the animal facing to the left.
      *
-     * @param shortPathName , the image's short path name of the corresponding animal.
+     * @param shortPathName the image's short path name of the corresponding animal.
      */
     @Override
     public void loadImages(String shortPathName) {
@@ -543,7 +543,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * override interface IAnimalBehavior.
      * changes setter, sets Boolean changes to the Boolean value of state.
      *
-     * @param state , Boolean value to set changes to.
+     * @param state Boolean value to set changes to.
      */
     @Override
     public void setChanges (boolean state){

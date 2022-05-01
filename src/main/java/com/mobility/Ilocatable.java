@@ -11,9 +11,8 @@ public interface Ilocatable {
 
     /**
      * sets the location of the object to the ne location which is point
-     * @param point , the new locating
+     * @param point the new locating
      * @return true if the location of the object has changed to the new location, false otherwise
      */
     public boolean setLocation(Point point);
 }
-//end interface Ilocatable

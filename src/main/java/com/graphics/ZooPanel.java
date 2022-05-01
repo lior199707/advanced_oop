@@ -317,11 +317,11 @@ public class ZooPanel extends JPanel implements ActionListener {
         String actionCommand = e.getActionCommand();
         switch (actionCommand) {
             case "Add Animal" -> {
-                AddAnimalDialog addAnimalDialog = new AddAnimalDialog(model, this);
+                new AddAnimalDialog(model, this);
             }
             case "Move Animal" -> {
                 if (model.getAnimalModelSize() > 0) {
-                    MoveAnimalDialog moveAnimalDialog = new MoveAnimalDialog(model, this);
+                    new MoveAnimalDialog(model, this);
                 } else {
                     String message = "Zoo is currently empty!";
                     try {

@@ -9,21 +9,14 @@ import com.food.IEdible;
  */
 public class Herbivore implements IDiet {
 
-    //Ctor
-
     /**
      * Herbivore constructor.
      */
     public Herbivore(){}
 
-    //end Ctor
-
-
-    //override class Object
-
     /**
      * check if this carnivore object is the same reference as obj
-     * @param obj , the second object
+     * @param obj the second object
      * @return true if the same reference, false otherwise
      */
     @Override
@@ -39,11 +32,6 @@ public class Herbivore implements IDiet {
     public String toString() {
         return "[Herbivore]";
     }
-
-    //end override class Object
-
-
-    //override interface IDiet
 
     /**
      * if the animal can eat the food, and the food and the animal aren't pointing to the same animal
@@ -63,7 +51,7 @@ public class Herbivore implements IDiet {
 
     /**
      * checks if this object can eat the food
-     * @param food , reference to EFoodType
+     * @param food reference to EFoodType
      * @return true if the food is vegetable, false otherwise
      */
     @Override
@@ -71,7 +59,4 @@ public class Herbivore implements IDiet {
         // can eat VEGETABLE.
         return food == EFoodType.VEGETABLE;
     }
-
-    //end override interface IDiet
 }
-//end class Herbivore

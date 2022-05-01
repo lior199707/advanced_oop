@@ -67,18 +67,16 @@ public class Bear extends AnimalRoar {
         }
     }
 
-    //ctor
-
     /**
      * Bear constructor.
      * setting default location, default fur color and diet!
      * passing name, location, size, horizontal speed, vertical speed and color to super.
      * @see com.animals.AnimalRoar
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param size , Int indicates the size of the animal, affect image size and eating.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
-     * @param col , String representing animal's color, "BLUE", "RED", "NATURAL".
+     * @param name String value of the animal's name, should contain only letters.
+     * @param size Int indicates the size of the animal, affect image size and eating.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
+     * @param col String representing animal's color, "BLUE", "RED", "NATURAL".
      */
     public Bear(String name, int size, int horSpeed, int verSpeed, String col){
         super(name,DEFAULT_STARTING_LOCATION,size,horSpeed,verSpeed,col);
@@ -92,18 +90,13 @@ public class Bear extends AnimalRoar {
      * Bear constructor.
      * setting default size.
      * passing name, horizontal speed and vertical speed to main constructor.
-     * @param name , String value of the animal's name, should contain only letters.
-     * @param horSpeed , Int value indicates animal's horizontal speed.
-     * @param verSpeed , Int value indicates animal's vertical speed.
+     * @param name String value of the animal's name, should contain only letters.
+     * @param horSpeed Int value indicates animal's horizontal speed.
+     * @param verSpeed Int value indicates animal's vertical speed.
      */
     public Bear(String name,int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed,verSpeed, getDefaultColor());
     }
-
-    //end ctor
-
-
-    //getters
 
     /**
      * class Bear static method.
@@ -137,11 +130,6 @@ public class Bear extends AnimalRoar {
         return SIZE_COEFFICIENT;
     }
 
-    //end getter
-
-
-    //setters
-
     /**
      * furColor  setter.
      * traverses the FurColors enum, if value of given param is equal it updates the furColor field.
@@ -162,10 +150,6 @@ public class Bear extends AnimalRoar {
         return isSuccess;
     }
 
-    //end setters
-
-
-    //override class AnimalRoar
     /**
      * roar implementation of a bear.
      */
@@ -199,12 +183,6 @@ public class Bear extends AnimalRoar {
         return super.toString();
     }
 
-
-    //end override class AnimalRoar
-
-
-    //override class Animal
-
     /**
      * override abstract class Animal animalShortPathName().
      * @return String representation of the short path name for loading Bear images.
@@ -213,11 +191,6 @@ public class Bear extends AnimalRoar {
     public String animalShortPathName() {
         return "bea";
     }
-
-    //end override class animal
-
-
-    //override interface IAnimalBehavior
 
     /**
      * override interface IAnimalBehavior getAnimalName().
@@ -228,6 +201,4 @@ public class Bear extends AnimalRoar {
         return "Bear";
     }
 
-    //end override interface IAnimalBehavior
 }
-//end class Bear
