@@ -1,8 +1,7 @@
 package com.food.plants;
 
 /**
- * @author baroh
- *
+ * Cabbage class, a Plant descendant.
  */
 public class Cabbage extends Plant {
     /**

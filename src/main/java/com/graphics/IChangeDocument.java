@@ -15,7 +15,7 @@ public interface IChangeDocument extends DocumentListener {
 
     /**
      * invokes upon insertion to a document.
-     * @param e - DocumentEvent object.
+     * @param e DocumentEvent object.
      */
     @Override
     default void insertUpdate(DocumentEvent e){
@@ -23,7 +23,7 @@ public interface IChangeDocument extends DocumentListener {
     }
     /**
      * invokes upon deleting from a document.
-     * @param e - DocumentEvent object.
+     * @param e DocumentEvent object.
      */
     @Override
     default void removeUpdate(DocumentEvent e){
@@ -31,7 +31,7 @@ public interface IChangeDocument extends DocumentListener {
     }
     /**
      * invokes upon changing a document.
-     * @param e - DocumentEvent object.
+     * @param e DocumentEvent object.
      */
     @Override
     default void changedUpdate(DocumentEvent e){

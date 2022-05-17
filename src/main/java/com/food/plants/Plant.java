@@ -4,8 +4,7 @@ import com.food.EFoodType;
 import com.food.Food;
 
 /**
- * @author baroh
- *abstract class Plant extends abstract class Foods, handles food that are vegetables.
+ * abstract class Plant extends abstract class Foods, handles food that are vegetables.
  */
 public abstract class Plant extends Food {
 	/**

@@ -1,8 +1,7 @@
 package com.food.plants;
 
 /**
- * @author baroh
- *
+ * Lettuce class, a Plant descendant.
  */
 public class Lettuce extends Plant {
 

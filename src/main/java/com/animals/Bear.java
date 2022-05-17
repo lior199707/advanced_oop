@@ -66,6 +66,10 @@ public class Bear extends AnimalRoar {
             this.color = color;
         }
 
+        /**
+         * color getter
+         * @return String representation of the fur color.
+         */
         public String getColor() {
             return color;
         }
