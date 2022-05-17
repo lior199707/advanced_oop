@@ -18,6 +18,8 @@ import static com.privateutil.PrivateGraphicUtils.findAnimalImagePath;
  * users can select animal types from a combobox, input name, size vertical and horizontal speed and a color.
  * the ui will present an appropriate image (based on animal type and color) dynamically.
  * weight, unique fields and default location on the zoo panel are also changed dynamically based on size and animal type.
+ * @see com.graphics.AnimalDialog
+ * @see com.graphics.ZooPanel
  */
 public class AddAnimalDialog extends AnimalDialog {
     /**
@@ -177,7 +179,7 @@ public class AddAnimalDialog extends AnimalDialog {
      * @return JPanel object of the north panel.
      */
     @Override
-    protected JPanel createNorthPanel() {
+    public JPanel createNorthPanel() {
         JPanel animalTypePanel = new JPanel();
 
         // setting border
@@ -201,7 +203,7 @@ public class AddAnimalDialog extends AnimalDialog {
      * @return JPanel object of the west panel.
      */
     @Override
-    protected JPanel createWestPanel() {
+    public JPanel createWestPanel() {
         // initializing panels.
         JPanel inputPanel = new JPanel();
         JPanel northInputPanel = new JPanel();
@@ -358,7 +360,7 @@ public class AddAnimalDialog extends AnimalDialog {
      * @return JPanel object of the west panel.
      */
     @Override
-    protected JPanel createEastPanel() {
+    public JPanel createEastPanel() {
         // initializing image panel with GridBagLayout.
         JPanel imagePanel = new JPanel(new GridBagLayout());
         // loading the image path with default values into a label.
@@ -383,7 +385,7 @@ public class AddAnimalDialog extends AnimalDialog {
      * @return JPanel object of the west panel.
      */
     @Override
-    protected JPanel createSouthPanel() {
+    public JPanel createSouthPanel() {
         // initialize the button panel.
         JPanel buttonPanel = new JPanel();
 
