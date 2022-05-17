@@ -55,7 +55,6 @@ public class ZooPanel extends JPanel implements ActionListener {
         JPanel actionPanel = new JPanel();
         // instantiating buttons
         JButton addAnimal = new JButton("Add Animal");
-        JButton moveAnimal = new JButton("Move Animal");
         JButton clear = new JButton("Clear All");
         JButton food = new JButton("Food");
         JButton info = new JButton("Info");
@@ -63,7 +62,6 @@ public class ZooPanel extends JPanel implements ActionListener {
 
         // adding to action listener
         addAnimal.addActionListener(this);
-        moveAnimal.addActionListener(this);
         clear.addActionListener(this);
         food.addActionListener(this);
         info.addActionListener(this);
@@ -71,7 +69,6 @@ public class ZooPanel extends JPanel implements ActionListener {
 
         // adding buttons to panel
         actionPanel.add(addAnimal);
-        actionPanel.add(moveAnimal);
         actionPanel.add(clear);
         actionPanel.add(food);
         actionPanel.add(info);
@@ -317,16 +314,6 @@ public class ZooPanel extends JPanel implements ActionListener {
         String actionCommand = e.getActionCommand();
         switch (actionCommand) {
             case "Add Animal" -> new AddAnimalDialog(model, this);
-            case "Move Animal" -> {
-                if (model.getAnimalModelSize() > 0) {
-                    new MoveAnimalDialog(model, this);
-                } else {
-                    String message = "Zoo is currently empty!";
-                    try {
-                        throw new PrivateGraphicUtils.ErrorDialogException(this, message);
-                    } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
-                }
-            }
             case "Clear All" -> {
                 model.removeAllAnimals();
                 setTotalEatCount(0);
