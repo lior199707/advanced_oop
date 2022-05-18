@@ -40,6 +40,7 @@ public class AnimalModel {
         boolean isSuccess = false;
         if (animals.size() < MAX_SIZE){
             animals.add(animal);
+            animal.start();
             isSuccess = true;
         }
         return isSuccess;

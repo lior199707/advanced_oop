@@ -27,7 +27,7 @@ import java.util.Objects;
  * @see com.graphics.IDrawable
  * @see com.graphics.IAnimalBehavior
  */
-public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior {
+public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior, Runnable {
     /**
      * String value of the animal name.
      */
@@ -50,13 +50,21 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     private static final int EAT_DISTANCE = 10;
     /**
-     * Static attribute, indicating movement in the direction of the positive X-axis and Y-axis
+     * Static attribute, indicating movement in the direction of the positive X-axis (right).
      */
     public static final int RIGHT_DIRECTION = 1;
     /**
-     * Static attribute, indicating movement in the direction of the negative X-axis and Y-axis
+     * Static attribute, indicating movement in the direction of the negative X-axis (left).
      */
     public static final int LEFT_DIRECTION = -1;
+    /**
+     * Static attribute, indicating movement in the direction of the positive Y-axis (up).
+     */
+    public static final int UP_DIRECTION = 1;
+    /**
+     * Static attribute, indicating movement in the direction of the negative Y-axis (down).
+     */
+    public static final int DOWN_DIRECTION = -1;
     /**
      * Boolean indicates the animal has moved to another location.
      */
@@ -82,14 +90,13 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * 1 indicates movement to the positive direction of the X-axis.
      * -1 indicates movement to the negative direction of the X-axis.
      */
-    private final int x_dir = RIGHT_DIRECTION;
+    private int x_dir = RIGHT_DIRECTION;
     /**
      * Int indicating movement direction on the Y-axis.
      * 1 indicates movement to the positive direction of the Y-axis.
      * -1 indicates movement to the negative direction of the Y-axis.
-     * currently, set to 1 by default.
      */
-    private final int y_dir = 1;
+    private int y_dir = UP_DIRECTION;
     /**
      * Int value of the number of Food the animal ate.
      */
@@ -104,6 +111,16 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * img2 - movement to the left.
      */
     private BufferedImage img1, img2;
+
+    /**
+     * Thread object used as executor for the run command implemented by Runnable.
+     */
+    private Thread thread;
+
+    /**
+     * boolean representation of the thread suspended state.
+     */
+    private boolean threadSuspended;
 
     /**
      * Default color getter.
@@ -134,6 +151,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         setColor(col);
         this.eatCount = 0;
         this.coordChanged = false;
+        thread = new Thread(this);
     }
 
     /**
@@ -381,6 +399,13 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public abstract String animalShortPathName();
 
     /**
+     * starting the animal thread.
+     */
+    public void start(){
+        this.thread.start();
+    }
+
+    /**
      * abstract method, animals will have to implement their own sounds.
      */
     public abstract void makeSound();
@@ -484,10 +509,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         int coordinateY = getLocation().getY();
 
         if (x_dir == RIGHT_DIRECTION) { // goes to the right side
-            g.drawImage(getImg1(),coordinateX - (size/3),coordinateY- (size/8), (int) (size * 1.2),size, getPan());
+            g.drawImage(getImg1(),coordinateX - (size/3),coordinateY - (size/8), (int) (size * 1.2),size, getPan());
         }
         else // goes to the left side
-            g.drawImage(getImg2(), coordinateX, coordinateY - (size / 10), (int) (size * 1.2), size, getPan());
+            g.drawImage(getImg2(), coordinateX, coordinateY - (size / 8), (int) (size * 1.2), size, getPan());
     }
 
     /**
@@ -554,6 +579,29 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 
     /**
      * override interface IAnimalBehavior.
+     * @see IAnimalBehavior
+     */
+    @Override
+    public void setSuspended() {
+        try {
+            this.wait();
+            this.threadSuspended = true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * override interface IAnimalBehavior.
+     * @see IAnimalBehavior
+     */
+    @Override
+    public void setResumed(){
+        this.notify();
+        this.threadSuspended = false;
+    }
+
+    /**
+     * override interface IAnimalBehavior.
      * After animal ate increases it's eat counter by 1.
      */
     @Override
@@ -577,6 +625,34 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     @Override
     public int getEatCount() {
         return this.eatCount;
+    }
+
+    /**
+     * runs while the thread is active.
+     * moving animal according to its current direction, speed and dynamically change
+     * the image of the animal.
+     */
+    @Override
+    public void run() {
+        while (!threadSuspended) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (getLocation().getX() <= Point.getMinXY()) x_dir = RIGHT_DIRECTION;
+            if (getLocation().getX() >= Point.getMaxX()) x_dir = LEFT_DIRECTION;
+            if (getLocation().getY() >= Point.getMaxY()) y_dir = DOWN_DIRECTION;
+            if (getLocation().getY() <= Point.getMinXY()) y_dir = UP_DIRECTION;
+            int new_x = getLocation().getX() + horSpeed * x_dir;
+            int new_y = getLocation().getY() + verSpeed * y_dir;
+            move(new Point(new_x, new_y));
+            if (pan.getFood() != null){
+                conditionalFoodEating(pan.getFood());
+            }
+            setChanges(true);
+            pan.manageZoo();
+        }
     }
 
     /**
