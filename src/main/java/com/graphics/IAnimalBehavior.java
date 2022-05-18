@@ -37,4 +37,16 @@ public interface IAnimalBehavior {
      * @param state boolean value to set the animal state.
      */
     public void setChanges (boolean state);
+
+    /**
+     * Suspend state setter.
+     * animal enters a suspended state - waiting in ready queue.
+     */
+    public void setSuspended();
+
+    /**
+     * Resumed state setter.
+     * animal enters resumed state - done waiting in ready queue.
+     */
+    public void setResumed();
 }
