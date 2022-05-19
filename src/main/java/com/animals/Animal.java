@@ -4,6 +4,7 @@ import com.diet.IDiet;
 import com.food.EFoodType;
 import com.food.Food;
 import com.food.IEdible;
+import com.graphics.Asyncable;
 import com.graphics.IAnimalBehavior;
 import com.graphics.IDrawable;
 import com.graphics.ZooPanel;
@@ -18,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Animal class is an abstract class representing a mobile animal.
@@ -27,7 +29,7 @@ import java.util.Objects;
  * @see com.graphics.IDrawable
  * @see com.graphics.IAnimalBehavior
  */
-public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior, Runnable {
+public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior, Runnable, Asyncable {
     /**
      * String value of the animal name.
      */
@@ -120,15 +122,11 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     /**
      * boolean representation of the thread suspended state.
      */
-    private boolean threadSuspended;
+    private volatile boolean threadSuspended;
 
-    /**
-     * Default color getter.
-     * @return String representation of the default color for an animal("NATURAL").
-     */
-    public static String getDefaultColor() {
-        return DEFAULT_COLOR;
-    }
+    private AtomicBoolean flag = new AtomicBoolean(true);
+
+
 
     /**
      * Animal constructor
@@ -151,7 +149,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         setColor(col);
         this.eatCount = 0;
         this.coordChanged = false;
-        thread = new Thread(this);
+        this.threadSuspended = false;
     }
 
     /**
@@ -242,12 +240,36 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 
     /**
      * ZooPanel getter.
-     * @return ZooPane reference of the main panel the animals are drawn upon.
+     * @return ZooPanel reference of the main panel the animals are drawn upon.
      */
     public ZooPanel getPan(){
         return pan;
     }
 
+    /**
+     * Thread getter.
+     * @return Thread object of the animal.
+     */
+    public Thread getThread() {
+        return thread;
+    }
+
+    /**
+     * Default color getter.
+     * @return String representation of the default color for an animal("NATURAL").
+     */
+    public static String getDefaultColor() {
+        return DEFAULT_COLOR;
+    }
+
+    public boolean getThreadState() {
+        return threadSuspended;
+    }
+
+    public boolean setThreadState(boolean state) {
+        threadSuspended = state;
+        return true;
+    }
     /**
      * name setter.
      * this method checks if given name param is alphabetic, if so it updates the name field.
@@ -402,6 +424,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * starting the animal thread.
      */
     public void start(){
+        thread = new Thread(this);
         this.thread.start();
     }
 
@@ -582,22 +605,17 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * @see IAnimalBehavior
      */
     @Override
-    public void setSuspended() {
-        try {
-            this.wait();
-            this.threadSuspended = true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public synchronized void setSuspended() {
+        this.threadSuspended = true;
     }
     /**
      * override interface IAnimalBehavior.
      * @see IAnimalBehavior
      */
     @Override
-    public void setResumed(){
-        this.notify();
+    public synchronized void setResumed(){
         this.threadSuspended = false;
+        notify();
     }
 
     /**
@@ -627,6 +645,70 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return this.eatCount;
     }
 
+    public void stop(){
+        flag.set(false);
+    }
+
+    public float straightEquation(int x, float m,float n) {
+        return m*x - n;
+    }
+
+    public void goToFood(){
+        Food food = pan.getFood();
+        float m = ((-1) * (food.getLocation().getY() - this.getLocation().getY()) / (float) (food.getLocation().getX() - this.getLocation().getX()));
+        float n = ((-1) * food.getLocation().getY() - m * food.getLocation().getX());
+        m = Math.abs(m);
+        n = Math.abs(n);
+
+        if (getLocation().getX() < food.getLocation().getX())  x_dir = RIGHT_DIRECTION;
+        if (getLocation().getX() >= food.getLocation().getX())  x_dir = LEFT_DIRECTION;
+
+        if (pan.getFood() != null && this.diet.canEat(pan.getFood().getFoodType())){
+            Point curr = this.getLocation();
+            int new_x = curr.getX() + horSpeed * x_dir;
+            int new_y = Math.abs((int) straightEquation(new_x, m,n));
+            System.out.println(new_x + " " + new_y);
+            this.move(new Point(new_x, new_y));
+            if (pan.getFood() != null) {
+                conditionalFoodEating(pan.getFood());
+            }
+        }
+    }
+
+
+
+    public void goToFood2(){
+        Point currLocation = this.getLocation();
+
+        int currX = currLocation.getX();
+        int currY = currLocation.getY();
+        int new_x = currX ,new_y = currY;
+
+        if (currY > Point.getMaxY() / 2){
+            new_y = currY - verSpeed;
+        }
+        else if (currY < Point.getMaxY() / 2) {
+             new_y = currY + verSpeed;
+        }
+        if (currX < Point.getMaxX() / 2) {
+            new_x = currX + horSpeed;
+            x_dir = RIGHT_DIRECTION;
+        }
+        else if (currX > Point.getMaxX() / 2) {
+            new_x = currX - horSpeed;
+            x_dir = LEFT_DIRECTION;
+        }
+        Point newLocation = new Point(new_x, new_y);
+        System.out.println("new location: " + newLocation);
+        this.move(new Point(new_x, new_y));
+
+
+        if (pan.getFood() != null) {
+            conditionalFoodEating(pan.getFood());
+        }
+    }
+
+
     /**
      * runs while the thread is active.
      * moving animal according to its current direction, speed and dynamically change
@@ -634,24 +716,47 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     @Override
     public void run() {
-        while (!threadSuspended) {
+        while (flag.get()) {
+            synchronized (this) {
+                if (getThreadState()) {
+                    try {
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (getLocation().getX() <= Point.getMinXY()) x_dir = RIGHT_DIRECTION;
-            if (getLocation().getX() >= Point.getMaxX()) x_dir = LEFT_DIRECTION;
-            if (getLocation().getY() >= Point.getMaxY()) y_dir = DOWN_DIRECTION;
-            if (getLocation().getY() <= Point.getMinXY()) y_dir = UP_DIRECTION;
-            int new_x = getLocation().getX() + horSpeed * x_dir;
-            int new_y = getLocation().getY() + verSpeed * y_dir;
-            move(new Point(new_x, new_y));
-            if (pan.getFood() != null){
-                conditionalFoodEating(pan.getFood());
+
+            if (pan.getFood() != null && this.diet.canEat(pan.getFood().getFoodType()))
+                    goToFood2();
+            else {
+                if (getLocation().getX() < Point.getMinXY()) x_dir = RIGHT_DIRECTION;
+                if (getLocation().getX() > Point.getMaxX()) x_dir = LEFT_DIRECTION;
+                if (getLocation().getY() >= Point.getMaxY()) y_dir = DOWN_DIRECTION;
+                if (getLocation().getY() <= Point.getMinXY()) y_dir = UP_DIRECTION;
+                int new_x = getLocation().getX() + horSpeed * x_dir;
+                int new_y = getLocation().getY() + verSpeed * y_dir;
+//                if (new_x > Point.getMaxX()) {
+//                    new_x = Point.getMaxX();
+//                }
+//                if (new_y > Point.getMaxY()) {
+//                    new_y = Point.getMaxY();
+//                }
+
+
+                move(new Point(new_x, new_y));
+                if (pan.getFood() != null) {
+                    conditionalFoodEating(pan.getFood());
+                }
+
             }
             setChanges(true);
-            pan.manageZoo();
         }
     }
 
@@ -680,4 +785,5 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     public String toString() {
         return "[" + getClass().getSimpleName() + "]: " + this.name;
     }
+
 }

@@ -555,9 +555,6 @@ public class AddAnimalDialog extends AnimalDialog {
                 // if the info table is open, it will update it dynamically upon adding a new animal.
                 if (InfoTableDialog.getIsOpen())
                     getZooPanel().getInfoTable().updateTable();
-
-                // calling manage zoo to repaint the panel.
-                getZooPanel().manageZoo();
             } else {
                 try {
                     String message = "You cannot add more than 10 animals";

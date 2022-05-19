@@ -21,6 +21,7 @@ public class AnimalModel {
      * boolean value indicating if the model is changed or not.
      */
     private boolean isChanged;
+    private boolean state;
 
     /**
      * AnimalModel constructor.
@@ -39,6 +40,7 @@ public class AnimalModel {
     public boolean addAnimal(Animal animal){
         boolean isSuccess = false;
         if (animals.size() < MAX_SIZE){
+            animal.setThreadState(isAsleep());
             animals.add(animal);
             animal.start();
             isSuccess = true;
@@ -84,7 +86,29 @@ public class AnimalModel {
         return names;
     }
 
+    public void sleep(){
+        for (Animal animal : animals){
+            animal.setSuspended();
+            state = true;
+        }
+    }
 
+    public void wakeUp(){
+        for (Animal animal : animals){
+            animal.setResumed();
+            state = false;
+        }
+    }
+
+    public void stopAll() {
+        for (Animal animal : animals){
+            animal.stop();
+        }
+    }
+
+    public boolean isAsleep() {
+        return state;
+    }
     /**
      * containsAnimalName evaluates if the animal model contains a given name or not.
      * @param name String representation of the animal name.
