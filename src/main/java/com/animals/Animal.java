@@ -62,11 +62,11 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     /**
      * Static attribute, indicating movement in the direction of the positive Y-axis (up).
      */
-    public static final int UP_DIRECTION = 1;
+    public static final int DOWN_DIRECTION = 1;
     /**
      * Static attribute, indicating movement in the direction of the negative Y-axis (down).
      */
-    public static final int DOWN_DIRECTION = -1;
+    public static final int UP_DIRECTION = -1;
     /**
      * Boolean indicates the animal has moved to another location.
      */
@@ -98,7 +98,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * 1 indicates movement to the positive direction of the Y-axis.
      * -1 indicates movement to the negative direction of the Y-axis.
      */
-    private int y_dir = UP_DIRECTION;
+    private int y_dir = DOWN_DIRECTION;
     /**
      * Int value of the number of Food the animal ate.
      */
@@ -649,58 +649,29 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         flag.set(false);
     }
 
-    public float straightEquation(int x, float m,float n) {
-        return m*x - n;
-    }
-
     public void goToFood(){
-        Food food = pan.getFood();
-        float m = ((-1) * (food.getLocation().getY() - this.getLocation().getY()) / (float) (food.getLocation().getX() - this.getLocation().getX()));
-        float n = ((-1) * food.getLocation().getY() - m * food.getLocation().getX());
-        m = Math.abs(m);
-        n = Math.abs(n);
-
-        if (getLocation().getX() < food.getLocation().getX())  x_dir = RIGHT_DIRECTION;
-        if (getLocation().getX() >= food.getLocation().getX())  x_dir = LEFT_DIRECTION;
-
-        if (pan.getFood() != null && this.diet.canEat(pan.getFood().getFoodType())){
-            Point curr = this.getLocation();
-            int new_x = curr.getX() + horSpeed * x_dir;
-            int new_y = Math.abs((int) straightEquation(new_x, m,n));
-            System.out.println(new_x + " " + new_y);
-            this.move(new Point(new_x, new_y));
-            if (pan.getFood() != null) {
-                conditionalFoodEating(pan.getFood());
-            }
-        }
-    }
-
-
-
-    public void goToFood2(){
         Point currLocation = this.getLocation();
 
         int currX = currLocation.getX();
         int currY = currLocation.getY();
-        int new_x = currX ,new_y = currY;
+        int nextX = currX ,nextY = currY;
 
         if (currY > Point.getMaxY() / 2){
-            new_y = currY - verSpeed;
+            nextY = currY - verSpeed;
         }
         else if (currY < Point.getMaxY() / 2) {
-             new_y = currY + verSpeed;
+             nextY = currY + verSpeed;
         }
         if (currX < Point.getMaxX() / 2) {
-            new_x = currX + horSpeed;
+            nextX = currX + horSpeed;
             x_dir = RIGHT_DIRECTION;
         }
         else if (currX > Point.getMaxX() / 2) {
-            new_x = currX - horSpeed;
+            nextX = currX - horSpeed;
             x_dir = LEFT_DIRECTION;
         }
-        Point newLocation = new Point(new_x, new_y);
-        System.out.println("new location: " + newLocation);
-        this.move(new Point(new_x, new_y));
+        Point newLocation = new Point(nextX, nextY);
+        this.move(newLocation);
 
 
         if (pan.getFood() != null) {
@@ -734,23 +705,18 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
             }
 
             if (pan.getFood() != null && this.diet.canEat(pan.getFood().getFoodType()))
-                    goToFood2();
+                    goToFood();
             else {
-                if (getLocation().getX() < Point.getMinXY()) x_dir = RIGHT_DIRECTION;
-                if (getLocation().getX() > Point.getMaxX()) x_dir = LEFT_DIRECTION;
-                if (getLocation().getY() >= Point.getMaxY()) y_dir = DOWN_DIRECTION;
-                if (getLocation().getY() <= Point.getMinXY()) y_dir = UP_DIRECTION;
-                int new_x = getLocation().getX() + horSpeed * x_dir;
-                int new_y = getLocation().getY() + verSpeed * y_dir;
-//                if (new_x > Point.getMaxX()) {
-//                    new_x = Point.getMaxX();
-//                }
-//                if (new_y > Point.getMaxY()) {
-//                    new_y = Point.getMaxY();
-//                }
+                if (getLocation().getX() - getHorSpeed() < Point.getMinXY()) x_dir = RIGHT_DIRECTION;
+                if (getLocation().getX() + getHorSpeed() > Point.getMaxX()) x_dir = LEFT_DIRECTION;
+                if (getLocation().getY() - getVerSpeed() <= Point.getMinXY()) y_dir = DOWN_DIRECTION;
+                if (getLocation().getY() + getVerSpeed() >= Point.getMaxY()) y_dir = UP_DIRECTION;
 
+                int nextX = getLocation().getX() + horSpeed * x_dir;
+                int nextY = getLocation().getY() + verSpeed * y_dir;
+                Point nextLocation  = new Point(nextX,nextY);
+                move(nextLocation);
 
-                move(new Point(new_x, new_y));
                 if (pan.getFood() != null) {
                     conditionalFoodEating(pan.getFood());
                 }
