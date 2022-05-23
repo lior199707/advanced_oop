@@ -12,10 +12,11 @@ import java.awt.event.WindowEvent;
 
 /**
  * AnimalDialog is an abstract JDialog class, instantiating default behaviors for different
- * interactive dialogs.
+ * interactive dialogs. implementing the cardinal dialog interface as it will use cardinal positions
+ * for each panel.
  * @see com.graphics.AddAnimalDialog
  */
-public abstract class AnimalDialog extends JDialog implements CardinalDialog {
+public abstract class AnimalDialog extends JDialog implements ICardinalDialog {
     /**
      * Composed ZooPanel object which is the parent panel of the dialog window.
      */
