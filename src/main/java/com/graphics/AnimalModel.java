@@ -21,7 +21,10 @@ public class AnimalModel {
      * boolean value indicating if the model is changed or not.
      */
     private boolean isChanged;
-    private boolean state;
+    /**
+     * boolean value indicating the current model sleep state.
+     */
+    private boolean sleepState;
 
     /**
      * AnimalModel constructor.
@@ -40,7 +43,7 @@ public class AnimalModel {
     public boolean addAnimal(Animal animal){
         boolean isSuccess = false;
         if (animals.size() < MAX_SIZE){
-            animal.setThreadState(isAsleep());
+            animal.setThreadSuspended(isAsleep());
             animals.add(animal);
             animal.start();
             isSuccess = true;
@@ -73,42 +76,45 @@ public class AnimalModel {
     }
 
     /**
-     * Animal names getter
-     * @return String array of the animal names of all the animals in the animal model.
+     * the sleep method, setting all animals in model to suspended state
+     * sleep state of the model is set to true.
      */
-    public String[] getAnimalNames() {
-        String[] names = new String[animals.size()];
-
-        for (int i = 0; i < getAnimalModelSize(); i++){
-            names[i] = animals.get(i).toString();
-        }
-
-        return names;
-    }
-
     public void sleep(){
         for (Animal animal : animals){
             animal.setSuspended();
-            state = true;
+            sleepState = true;
         }
     }
 
+    /**
+     * the wakeUp method, setting all animals in model to resumed state
+     * sleep state of the model is set to false.
+     */
     public void wakeUp(){
         for (Animal animal : animals){
             animal.setResumed();
-            state = false;
+            sleepState = false;
         }
     }
 
+    /**
+     * stopping all animal threads in the model.
+     * allowing safe thread termination.
+     */
     public void stopAll() {
         for (Animal animal : animals){
             animal.stop();
         }
     }
 
+    /**
+     * sleepState getter.
+     * @return boolean representation of the sleepState, true if sleep is on false otherwise.
+     */
     public boolean isAsleep() {
-        return state;
+        return sleepState;
     }
+
     /**
      * containsAnimalName evaluates if the animal model contains a given name or not.
      * @param name String representation of the animal name.
