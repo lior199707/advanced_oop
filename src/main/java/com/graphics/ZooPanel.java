@@ -21,8 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * ZooPanel is a panel contained in ZooFrame, it holds the action panel which has buttons that open different types
  * of dialogs to interact with the model.
+ * Every ZooPanel object is a thread.
  */
-public class ZooPanel extends JPanel implements ActionListener,Runnable,Asyncable {
+public class ZooPanel extends JPanel implements ActionListener, IThread {
     /**
      * static integer representing the total amount of eaten objects (animals or food).
      */
@@ -44,20 +45,16 @@ public class ZooPanel extends JPanel implements ActionListener,Runnable,Asyncabl
      */
     private BufferedImage backgroundImage;
 
+    /**
+     * Thread object indicating the controller thread.
+     */
     private Thread controller;
 
-    private AtomicBoolean flag = new AtomicBoolean(true);
+    /**
+     * Atomic boolean flag which indicates if the thread is alive or not.
+     */
+    private AtomicBoolean threadAlive = new AtomicBoolean(true);
 
-    @Override
-    public void start(){
-        controller = new Thread(this);
-        controller.start();
-    }
-
-    @Override
-    public void stop(){
-        flag.set(false);
-    }
 
     /**
      * ZooPanel constructor.
@@ -367,8 +364,19 @@ public class ZooPanel extends JPanel implements ActionListener,Runnable,Asyncabl
     }
 
     @Override
+    public void start(){
+        controller = new Thread(this);
+        controller.start();
+    }
+
+    @Override
+    public void stop(){
+        threadAlive.set(false);
+    }
+
+    @Override
     public void run() {
-        while (flag.get()) {
+        while (threadAlive.get()) {
             if (isChange()) {
                 repaint();
             }
