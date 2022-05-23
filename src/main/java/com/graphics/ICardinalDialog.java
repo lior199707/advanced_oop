@@ -2,7 +2,10 @@ package com.graphics;
 
 import javax.swing.*;
 
-public interface CardinalDialog {
+/**
+ * ICardinal Dialog is an interface used by Dialogs that want to be set up with cardinal positons.
+ */
+public interface ICardinalDialog {
     /**
      * abstract method to create the north side of the panel.
      * @return JPanel containing different items each descendant can implement.
