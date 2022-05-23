@@ -2,6 +2,9 @@ package com.food;
 
 /**
  * class Meat, handles food of type meat, extends abstract class Food.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class Meat extends Food{
 

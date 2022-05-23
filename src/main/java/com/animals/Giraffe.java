@@ -6,6 +6,9 @@ import com.mobility.Point;
 /**
  * Giraffe class representing the Giraffe animal. It can chew!
  * @see com.animals.AnimalChew
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class Giraffe extends AnimalChew {
     /**

@@ -16,6 +16,9 @@ import java.util.Random;
 
 /**
  * abstract class Food, handles foods of types meat and plants, food is edible has a location and drawable.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public abstract class Food implements IEdible, Ilocatable, IDrawable {
 

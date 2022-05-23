@@ -10,6 +10,9 @@ import java.util.Random;
 /**
  * Lion class representing the Lion animal. It can roar!
  * @see com.animals.AnimalRoar
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class Lion extends AnimalRoar {
      /**

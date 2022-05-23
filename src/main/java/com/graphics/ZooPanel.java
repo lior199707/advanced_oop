@@ -22,6 +22,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * ZooPanel is a panel contained in ZooFrame, it holds the action panel which has buttons that open different types
  * of dialogs to interact with the model.
  * Every ZooPanel object is a thread.
+ *
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class ZooPanel extends JPanel implements ActionListener, IThread {
     /**

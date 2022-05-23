@@ -7,6 +7,9 @@ import java.util.ArrayList;
 /**
  * AnimalModel represents the model used for the zoo.
  * it consists of array list with default set size.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class AnimalModel {
     /**

@@ -8,6 +8,9 @@ import com.mobility.Point;
 /**
  * Bear class representing the Bear animal. It can roar!
  * @see com.animals.AnimalRoar
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class Bear extends AnimalRoar {
     /**

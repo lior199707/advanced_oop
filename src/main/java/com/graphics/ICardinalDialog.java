@@ -3,7 +3,10 @@ package com.graphics;
 import javax.swing.*;
 
 /**
- * ICardinal Dialog is an interface used by Dialogs that want to be set up with cardinal positons.
+ * ICardinal Dialog is an interface used by Dialogs that want to be set up with cardinal positions.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public interface ICardinalDialog {
     /**

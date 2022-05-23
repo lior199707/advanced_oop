@@ -12,6 +12,9 @@ import static com.graphics.IDrawable.PICTURE_PATH;
 
 /**
  * PrivateGraphicUtils class holds utility methods used within the UI parts of the project.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class PrivateGraphicUtils {
 

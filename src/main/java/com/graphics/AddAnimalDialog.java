@@ -20,6 +20,9 @@ import static com.privateutil.PrivateGraphicUtils.findAnimalImagePath;
  * weight, unique fields and default location on the zoo panel are also changed dynamically based on size and animal type.
  * @see com.graphics.AnimalDialog
  * @see com.graphics.ZooPanel
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class AddAnimalDialog extends AnimalDialog {
     /**

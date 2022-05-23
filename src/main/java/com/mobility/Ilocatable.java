@@ -2,6 +2,9 @@ package com.mobility;
 
 /**
  * Ilocatable interface describes the functionality of a location.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public interface Ilocatable {
     /**

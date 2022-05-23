@@ -15,6 +15,9 @@ import java.awt.event.WindowEvent;
  * interactive dialogs. implementing the cardinal dialog interface as it will use cardinal positions
  * for each panel.
  * @see com.graphics.AddAnimalDialog
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public abstract class AnimalDialog extends JDialog implements ICardinalDialog {
     /**

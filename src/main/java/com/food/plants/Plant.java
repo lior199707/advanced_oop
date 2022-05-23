@@ -5,6 +5,9 @@ import com.food.Food;
 
 /**
  * abstract class Plant extends abstract class Foods, handles food that are vegetables.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public abstract class Plant extends Food {
 	/**

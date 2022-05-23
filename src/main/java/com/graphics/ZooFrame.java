@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
  * it extends JFrame and holds several components in it such as a menu bar,
  * the zoo panel and acts as the main class.
  * @see JFrame
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class ZooFrame extends JFrame{
     /**

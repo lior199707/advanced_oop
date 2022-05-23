@@ -6,6 +6,9 @@ import com.mobility.Point;
  * AnimalChew is an abstract class representing animals that can chew.
  * it is an Animal descendant.
  * @see com.animals.Animal
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public abstract class AnimalChew extends Animal {
 
