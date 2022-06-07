@@ -120,11 +120,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     private BufferedImage img1, img2;
 
     /**
-     * Thread object used as executor for the run command implemented by Runnable.
-     */
-    private Thread thread;
-
-    /**
      * boolean representation of the thread suspended state.
      */
     private volatile boolean threadSuspended;
@@ -254,13 +249,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return pan;
     }
 
-    /**
-     * Thread getter.
-     * @return Thread object of the animal.
-     */
-    public Thread getThread() {
-        return thread;
-    }
 
     /**
      * Default color getter.
@@ -698,8 +686,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * initializing and starting the animal thread.
      */
     public void start(){
-        thread = new Thread(this);
-        this.thread.start();
+        threadAlive.set(true);
     }
 
     /**
