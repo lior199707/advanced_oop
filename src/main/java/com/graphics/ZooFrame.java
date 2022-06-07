@@ -32,7 +32,7 @@ public class ZooFrame extends JFrame{
     ZooFrame(){
         super("Zoo");
         menuBar = constructJMenuBar();
-        zooPanel = new ZooPanel();
+        zooPanel = ZooPanel.getInstance();
 
         this.add(zooPanel);
         this.setJMenuBar(menuBar);
