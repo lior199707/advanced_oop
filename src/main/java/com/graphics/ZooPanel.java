@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Lior Shilon 316126143
  */
 public class ZooPanel extends JPanel implements ActionListener, IThread {
+    private static ZooPanel instance = null;
     /**
      * static integer representing the total amount of eaten objects (animals or food).
      */
@@ -112,6 +113,12 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
         this.start();
     }
 
+    public static ZooPanel getInstance() {
+        if (instance == null)
+            instance = new ZooPanel();
+        return instance;
+    }
+
     /**
      * repaints the zoo panel.
      * @see JComponent paintComponent
@@ -149,9 +156,9 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
                 null);
 
         switch (result) {
-            case 0 -> setPanelFood(new Lettuce());
-            case 1 -> setPanelFood(new Cabbage());
-            case 2 -> setPanelFood(new Meat());
+            case 0 -> setPanelFood(Lettuce.getInstance());
+            case 1 -> setPanelFood(Cabbage.getInstance());
+            case 2 -> setPanelFood(Meat.getInstance());
         }
     }
 
