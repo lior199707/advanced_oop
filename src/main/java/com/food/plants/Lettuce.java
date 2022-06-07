@@ -7,11 +7,18 @@ package com.food.plants;
  * @author Lior Shilon 316126143
  */
 public class Lettuce extends Plant {
-
+	private static Lettuce instance = null;
 	/**
 	 * Lettuce constructor.
 	 */
 	public Lettuce() { }
+
+	public static Lettuce getInstance() {
+		if (instance == null){
+			instance = new Lettuce();
+		}
+		return instance;
+	}
 
 	/**
 	 * override abstract class Food animalShortPathName().

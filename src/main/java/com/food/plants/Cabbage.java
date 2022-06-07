@@ -7,10 +7,17 @@ package com.food.plants;
  * @author Lior Shilon 316126143
  */
 public class Cabbage extends Plant {
+    private static Cabbage instance = null;
     /**
      * Cabbage constructor.
      */
     public Cabbage() { }
+
+    public static Cabbage getInstance() {
+        if (instance == null)
+            instance = new Cabbage();
+        return instance;
+    }
 
     /**
      * override abstract class Food animalShortPathName().

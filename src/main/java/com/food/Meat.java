@@ -7,11 +7,18 @@ package com.food;
  * @author Lior Shilon 316126143
  */
 public class Meat extends Food{
-
+    private static Meat instance = null;
     /**
      * Meat constructor.
      */
     public Meat() { }
+
+    public static Meat getInstance() {
+        if (instance == null){
+            instance = new Meat();
+        }
+        return instance;
+    }
 
     /**
      * @see com.food.IEdible#getFoodType()
