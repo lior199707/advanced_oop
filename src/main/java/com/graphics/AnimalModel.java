@@ -3,6 +3,8 @@ package com.graphics;
 import com.animals.Animal;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * AnimalModel represents the model used for the zoo.
@@ -29,11 +31,14 @@ public class AnimalModel {
      */
     private boolean sleepState;
 
+    private ExecutorService pool;
+
     /**
      * AnimalModel constructor.
      * initiating the array list and default state to false.
      */
     AnimalModel(){
+        pool = Executors.newFixedThreadPool(MAX_SIZE);
         animals = new ArrayList<>();
         isChanged = false;
     }
@@ -48,7 +53,7 @@ public class AnimalModel {
         if (animals.size() < MAX_SIZE){
             animal.setThreadSuspended(isAsleep());
             animals.add(animal);
-            animal.start();
+            pool.execute(animal);
             isSuccess = true;
         }
         return isSuccess;
@@ -108,6 +113,7 @@ public class AnimalModel {
         for (Animal animal : animals){
             animal.stop();
         }
+        pool.shutdown();
     }
 
     /**
