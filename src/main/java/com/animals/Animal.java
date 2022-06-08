@@ -4,12 +4,14 @@ import com.diet.IDiet;
 import com.food.EFoodType;
 import com.food.Food;
 import com.food.IEdible;
-import com.graphics.IThread;
 import com.graphics.IAnimalBehavior;
 import com.graphics.IDrawable;
+import com.graphics.IThread;
 import com.graphics.ZooPanel;
 import com.mobility.Mobile;
 import com.mobility.Point;
+import com.observer.Observable;
+import com.observer.Observer;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.imageio.ImageIO;
@@ -34,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior, IThread {
+public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior, IThread, Observable {
     /**
      * String value of the animal name.
      */
@@ -123,6 +125,8 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      * boolean representation of the thread suspended state.
      */
     private volatile boolean threadSuspended;
+
+    private Observer controller;
 
     /**
      * Atomic boolean flag which indicates if the thread is alive or not.
@@ -475,6 +479,11 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return false;
     }
 
+    @Override
+    public void setObserver(Observer o){
+        controller = o;
+    }
+
     /**
      * move uses Mobile.move() method to set the new location and calculate the distance between
      * the current and nextLocation.
@@ -741,6 +750,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
                 move(nextLocation);
             }
             setChanges(true);
+            controller.notify(this,pan);
         }
     }
 

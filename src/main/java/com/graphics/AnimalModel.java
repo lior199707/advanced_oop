@@ -1,6 +1,8 @@
 package com.graphics;
 
 import com.animals.Animal;
+import com.observer.Controller;
+import com.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -33,6 +35,8 @@ public class AnimalModel {
 
     private ExecutorService pool;
 
+    private Observer controller;
+
     /**
      * AnimalModel constructor.
      * initiating the array list and default state to false.
@@ -41,6 +45,7 @@ public class AnimalModel {
         pool = Executors.newFixedThreadPool(MAX_SIZE);
         animals = new ArrayList<>();
         isChanged = false;
+        controller = new Controller();
     }
 
     /**
@@ -52,6 +57,7 @@ public class AnimalModel {
         boolean isSuccess = false;
         if (animals.size() < MAX_SIZE){
             animal.setThreadSuspended(isAsleep());
+            animal.setObserver(controller);
             animals.add(animal);
             pool.execute(animal);
             isSuccess = true;

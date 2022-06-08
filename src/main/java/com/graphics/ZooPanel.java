@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public class ZooPanel extends JPanel implements ActionListener, IThread {
+public class ZooPanel extends JPanel implements ActionListener {
     private static ZooPanel instance = null;
     /**
      * static integer representing the total amount of eaten objects (animals or food).
@@ -51,15 +51,9 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
     private BufferedImage backgroundImage;
 
     /**
-     * Thread object indicating the controller thread.
-     */
-    private Thread controller;
-
-    /**
      * Atomic boolean flag which indicates if the thread is alive or not.
      */
     private AtomicBoolean threadAlive = new AtomicBoolean(true);
-
 
     /**
      * ZooPanel constructor.
@@ -112,8 +106,6 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
 
         this.setLayout(new BorderLayout());
         this.add(actionPanel, BorderLayout.SOUTH);
-
-        this.start();
     }
 
     public static ZooPanel getInstance() {
@@ -236,7 +228,7 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
      * attemptEatAnimal is a utility method used to attempt eating animals when manageZoo is called.
      * predators can eat their prey, prey may eat its predator.
      */
-    private void attemptEatAnimal(){
+    public void attemptEatAnimal(){
         for (int i = 0; i < model.getAnimalModelSize(); i++) {
             Animal predator = model.getAnimalModel().get(i);
             for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
@@ -387,7 +379,6 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
                 if (model.getAnimalModelSize() > 0) {
                     if (!InfoTableDialog.getIsOpen()){
                         infoTable = new InfoTableDialog(model);
-                        System.out.println("koko");
                         infoTable.setIsOpen(true);
                     }
                 } else {
@@ -401,41 +392,54 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
                 // terminating animal's threads.
                 model.stopAll();
                 // terminating ZooPanel thread.
-                stop();
                 System.exit(1);
             }
         }
     }
 
-    @Override
-    public void start(){
-        controller = new Thread(this);
-        controller.start();
-    }
+//    @Override
+//    public void stop(){
+//        threadAlive.set(false);
+//    }
+//
+//    @Override
+//    public void start() {
+//       Thread t = new Thread(this);
+//       t.start();
+//    }
 
-    @Override
-    public void stop(){
-        threadAlive.set(false);
-    }
-
-    @Override
-    public void run() {
-        while (threadAlive.get()) {
-            if (isChange()) {
-                repaint();
-            }
-            // will sleep for 0.1 seconds to avoid stuttering.
-            // #Todo =: use synchronized insted sleep
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            attemptEatAnimal();
-            if (InfoTableDialog.getIsOpen()) {
-                //System.out.println("fsdffgdfgdfgd");
-                infoTable.updateTable();
-            }
+    public void nicetry(){
+        if (isChange()) {
+            repaint();
+        }
+        // will sleep for 0.1 seconds to avoid stuttering.
+//        try {
+//            Thread.sleep(50);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        attemptEatAnimal();
+        if (InfoTableDialog.getIsOpen()) {
+            infoTable.updateTable();
         }
     }
+
+//    @Override
+//    public void run() {
+//        while (threadAlive.get()) {
+//            if (isChange()) {
+//                repaint();
+//            }
+//            // will sleep for 0.1 seconds to avoid stuttering.
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            attemptEatAnimal();
+//            if (InfoTableDialog.getIsOpen()) {
+//                infoTable.updateTable();
+//            }
+//        }
+//    }
 }
