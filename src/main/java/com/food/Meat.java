@@ -11,7 +11,7 @@ public class Meat extends Food{
     /**
      * Meat constructor.
      */
-    public Meat() { }
+    private Meat() { }
 
     public static Meat getInstance() {
         if (instance == null){

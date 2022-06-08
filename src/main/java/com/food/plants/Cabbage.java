@@ -11,7 +11,7 @@ public class Cabbage extends Plant {
     /**
      * Cabbage constructor.
      */
-    public Cabbage() { }
+    private Cabbage() { }
 
     public static Cabbage getInstance() {
         if (instance == null)

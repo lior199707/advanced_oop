@@ -1,5 +1,7 @@
 package com.privateutil;
 
+import com.animals.Animal;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -122,6 +124,20 @@ public class PrivateGraphicUtils {
             System.err.println(path + " Not found!");
         }
         return null;
+    }
+
+    /**
+     * resizes animal's image to constant width(220) and height(180).
+     * used in order to present the image in the MoveAnimalDialog.
+     *
+     * @param animal the animal to resize its image.
+     * @return ImageIcon reference, SCALE_SMOOTH image with new width(200) and height(180).
+     */
+    public static ImageIcon setAnimalImageIcon(Animal animal){
+        BufferedImage bufferedImage = animal.getImg1();
+        ImageIcon image = new ImageIcon(bufferedImage);
+        Image resizedImage = image.getImage().getScaledInstance(220, 180, Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
     }
 
     /**

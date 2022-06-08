@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
+import java.util.ConcurrentModificationException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -77,6 +79,7 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
         JButton wakeUp = new JButton("Wake Up");
         JButton clear = new JButton("Clear All");
         JButton food = new JButton("Food");
+        JButton color = new JButton("Change Color");
         JButton info = new JButton("Info");
         JButton exit = new JButton("Exit");
 
@@ -86,6 +89,7 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
         wakeUp.addActionListener(this);
         clear.addActionListener(this);
         food.addActionListener(this);
+        color.addActionListener(this);
         info.addActionListener(this);
         exit.addActionListener(this);
 
@@ -95,6 +99,7 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
         actionPanel.add(wakeUp);
         actionPanel.add(clear);
         actionPanel.add(food);
+        actionPanel.add(color);
         actionPanel.add(info);
         actionPanel.add(exit);
 
@@ -350,11 +355,24 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
                 createFoodDialog();
                 repaint();
             }
-            case "Info" -> {
+            case "Change Color" ->{
+                if(model.getAnimalModelSize() > 0){
+                    new MoveAnimalDialog(model, this);
+                }
+                else {
+                    try {
+                        String message = "Zoo is currently empty!";
+                        throw new PrivateGraphicUtils.ErrorDialogException(this, message);
+                    } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
+                }
+            }
+                case "Info" -> {
                 //creating animals details list
                 if (model.getAnimalModelSize() > 0) {
                     if (!InfoTableDialog.getIsOpen()){
+                        System.out.println("first");
                         infoTable = new InfoTableDialog(model);
+                        System.out.println("ersdfsdfsdf");
                         infoTable.setIsOpen(true);
                     }
                 } else {

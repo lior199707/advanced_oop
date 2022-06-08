@@ -530,11 +530,17 @@ public class AddAnimalDialog extends AnimalDialog {
             if (getModel().getAnimalModelSize() < AnimalModel.getModelMaxSize()) {
                 Animal animal = null;
                 switch (animalType) {
-                    case "Lion" -> animal = new Lion(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
-                    case "Bear" -> animal = new Bear(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
-                    case "Giraffe" -> animal = new Giraffe(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
-                    case "Elephant" -> animal = new Elephant(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
-                    case "Turtle" -> animal = new Turtle(animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
+                    case "Lion" -> animal = new Lion(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
+                    case "Bear" -> animal = new Bear(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
+                    case "Giraffe" -> animal = new Giraffe(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
+                    case "Elephant" -> animal = new Elephant(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
+                    case "Turtle" -> animal = new Turtle(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
+                }
+                System.out.println(animalColor);
+                // using decorator to determine animal color
+                switch (animalColor){
+                    case "Red" -> animal = new AnimalRedDecorator(animal).makeAnimal();
+                    case "Blue" -> animal = new AnimalBlueDecorator(animal).makeAnimal();
                 }
 
                 assert animal != null;

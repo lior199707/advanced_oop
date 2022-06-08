@@ -95,6 +95,20 @@ public class AnimalModel {
     }
 
     /**
+     * Animal names getter
+     * @return String array of the animal names of all the animals in the animal model.
+     */
+    public String[] getAnimalNames() {
+        String[] names = new String[animals.size()];
+
+        for (int i = 0; i < getAnimalModelSize(); i++){
+            names[i] = animals.get(i).toString();
+        }
+
+        return names;
+    }
+
+    /**
      * the wakeUp method, setting all animals in model to resumed state
      * sleep state of the model is set to false.
      */

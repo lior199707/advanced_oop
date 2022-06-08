@@ -77,7 +77,7 @@ public class InfoTableDialog extends JDialog {
             @Override
             // called when closing the dialog holding the table.
             public void windowClosing(WindowEvent e) {
-                //indicating the table is mot open.
+                //indicating the table is not open.
                 setIsOpen(false);
                 dispose();
             }
@@ -100,6 +100,7 @@ public class InfoTableDialog extends JDialog {
      */
     public void setIsOpen(boolean state){
         isOpen = state;
+        System.out.println(isOpen);
         setVisible(state);
     }
 

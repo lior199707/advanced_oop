@@ -11,7 +11,7 @@ public class Lettuce extends Plant {
 	/**
 	 * Lettuce constructor.
 	 */
-	public Lettuce() { }
+	private Lettuce() { }
 
 	public static Lettuce getInstance() {
 		if (instance == null){
