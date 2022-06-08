@@ -1,6 +1,8 @@
 package com.graphics;
 
 import com.animals.*;
+import com.factory.FactoryProducer;
+import com.factory.IAnimalFactory;
 import com.patterns.AnimalBlueDecorator;
 import com.patterns.AnimalRedDecorator;
 import com.privateutil.PrivateGraphicUtils;
@@ -49,7 +51,7 @@ public abstract class AddAnimalDialog extends AnimalDialog {
     /**
      * default animal type when loading the dialog initially.
      */
-    private final static String INIT_ANIMAL_TYPE = "Lion";
+    private static String INIT_ANIMAL_TYPE;
 
     /**
      * default animal color when loading the dialog initially.
@@ -141,23 +143,29 @@ public abstract class AddAnimalDialog extends AnimalDialog {
      */
     private boolean hSpeedStatus;
 
+    private IAnimalFactory animalFactory;
+
     /**
      * AddAnimalDialog constructor.
      * @param model AnimalModel object, the animal container.
      * @param zooPanel ZooPanel object, the zoo panel.
      * @see com.graphics.AnimalDialog
      */
-    public AddAnimalDialog(AnimalModel model, ZooPanel zooPanel) {
+    public AddAnimalDialog(AnimalModel model, ZooPanel zooPanel, String[] animalTypes, String factoryType) {
         super(model, zooPanel, DEFAULT_DIMENSION);
 
-        // configurations
-        String[] animalTypes = {"Lion", "Bear", "Giraffe", "Elephant", "Turtle"};
+        FactoryProducer factoryProducer = new FactoryProducer();
+        animalFactory = factoryProducer.getFactory(factoryType);
+        System.out.println(factoryType);
+
+        // configuration
+        INIT_ANIMAL_TYPE = animalTypes[0];
         animalTypesCmb = new JComboBox<>(animalTypes);
 
         String[] animalColors = {"Natural", "Red", "Blue"};
         animalColorsCmb = new JComboBox<>(animalColors);
-        animalType = INIT_ANIMAL_TYPE;
         animalColor = INIT_ANIMAL_COLOR;
+        animalType = INIT_ANIMAL_TYPE;
 
         this.setTitle("Add Animal");
         this.createDialog();
@@ -530,14 +538,8 @@ public abstract class AddAnimalDialog extends AnimalDialog {
 
             // if the model size is yet to reach the maximum size allowed, instantiate an animal
             if (getModel().getAnimalModelSize() < AnimalModel.getModelMaxSize()) {
-                Animal animal = null;
-                switch (animalType) {
-                    case "Lion" -> animal = new Lion(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
-                    case "Bear" -> animal = new Bear(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
-                    case "Giraffe" -> animal = new Giraffe(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
-                    case "Elephant" -> animal = new Elephant(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
-                    case "Turtle" -> animal = new Turtle(animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
-                }
+                System.out.println(animalType);
+                Animal animal = animalFactory.createAnimal(animalType, animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
                 System.out.println(animalColor);
                 // using decorator to determine animal color
                 switch (animalColor){
