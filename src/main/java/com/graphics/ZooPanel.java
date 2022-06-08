@@ -16,8 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.Normalizer;
-import java.util.ConcurrentModificationException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -38,7 +36,7 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
     /**
      * AnimalModel object representing the animals of the zoo.
      */
-    private final AnimalModel model;
+    private AnimalModel model;
     /**
      * InfoTableDialog object for interaction with the info table.
      */
@@ -142,6 +140,24 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
         // drawing animals.
         for (Animal animal : model.getAnimalModel()) {
             animal.drawObject(g);
+        }
+    }
+
+    private void createDietDialog() {
+        String[] options = {"Herbivore", "Omnivore", "Carnivore"};
+        int result = JOptionPane.showOptionDialog(null,
+                "What food would you like to add?",
+                "Add Food Dialog",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                null);
+
+        switch (result) {
+            case 0 -> new AddHerbivoreDialog(model,this);
+            case 1 -> new AddOmnivoreDialog(model, this);
+            case 2 -> new AddCarnivoreDialog(model, this);
         }
     }
 
@@ -340,12 +356,12 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
         switch (actionCommand) {
-            case "Add Animal" -> new AddAnimalDialog(model, this);
+            case "Add Animal" -> createDietDialog();
             case "Sleep" -> model.sleep();
             case "Wake Up" -> model.wakeUp();
             case "Clear All" -> {
                 model.stopAll();
-                model.removeAllAnimals();
+                model = new AnimalModel();
                 setTotalEatCount(0);
                 infoTable.setIsOpen(false);
                 repaint();

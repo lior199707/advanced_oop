@@ -1,4 +1,4 @@
-package com.graphics;
+package com.patterns;
 
 import com.animals.Animal;
 

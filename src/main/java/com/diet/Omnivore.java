@@ -11,7 +11,7 @@ import com.food.IEdible;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public class Omnivore extends AbstractDietFactory implements IDiet {
+public class Omnivore implements IDiet {
     /**
      * delegator ,handles meat eating processes
      */

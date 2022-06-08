@@ -1,6 +1,8 @@
 package com.graphics;
 
 import com.animals.*;
+import com.patterns.AnimalBlueDecorator;
+import com.patterns.AnimalRedDecorator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.swing.*;
@@ -24,7 +26,7 @@ import static com.privateutil.PrivateGraphicUtils.findAnimalImagePath;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public class AddAnimalDialog extends AnimalDialog {
+public abstract class AddAnimalDialog extends AnimalDialog {
     /**
      * int representation of the default animal direction.
      */

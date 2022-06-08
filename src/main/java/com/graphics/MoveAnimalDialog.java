@@ -1,7 +1,9 @@
 package com.graphics;
 
 import com.animals.Animal;
-import com.mobility.Point;
+import com.patterns.AnimalBlueDecorator;
+import com.patterns.AnimalNaturalDecorator;
+import com.patterns.AnimalRedDecorator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.swing.*;

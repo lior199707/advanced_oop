@@ -10,7 +10,7 @@ import com.food.IEdible;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public class Herbivore extends AbstractDietFactory implements IDiet {
+public class Herbivore implements IDiet {
 
     /**
      * Herbivore constructor.
