@@ -370,9 +370,8 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
                 //creating animals details list
                 if (model.getAnimalModelSize() > 0) {
                     if (!InfoTableDialog.getIsOpen()){
-                        System.out.println("first");
                         infoTable = new InfoTableDialog(model);
-                        System.out.println("ersdfsdfsdf");
+                        System.out.println("koko");
                         infoTable.setIsOpen(true);
                     }
                 } else {
@@ -409,9 +408,18 @@ public class ZooPanel extends JPanel implements ActionListener, IThread {
             if (isChange()) {
                 repaint();
             }
+            // will sleep for 0.1 seconds to avoid stuttering.
+            // #Todo =: use synchronized insted sleep
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             attemptEatAnimal();
-            if (InfoTableDialog.getIsOpen())
+            if (InfoTableDialog.getIsOpen()) {
+                //System.out.println("fsdffgdfgdfgd");
                 infoTable.updateTable();
+            }
         }
     }
 }

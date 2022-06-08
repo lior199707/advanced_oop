@@ -100,7 +100,6 @@ public class InfoTableDialog extends JDialog {
      */
     public void setIsOpen(boolean state){
         isOpen = state;
-        System.out.println(isOpen);
         setVisible(state);
     }
 
