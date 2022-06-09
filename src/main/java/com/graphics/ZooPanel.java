@@ -5,6 +5,9 @@ import com.food.Food;
 import com.food.Meat;
 import com.food.plants.Cabbage;
 import com.food.plants.Lettuce;
+import com.memento.Caretaker;
+import com.memento.Memento;
+import com.memento.Originator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.imageio.ImageIO;
@@ -54,6 +57,10 @@ public class ZooPanel extends JPanel implements ActionListener {
      * Atomic boolean flag which indicates if the thread is alive or not.
      */
     private AtomicBoolean threadAlive = new AtomicBoolean(true);
+    private AtomicBoolean isEating = new AtomicBoolean(false);
+
+    private Originator originator = new Originator();
+    private Caretaker caretaker = new Caretaker();
 
     /**
      * ZooPanel constructor.
@@ -62,6 +69,7 @@ public class ZooPanel extends JPanel implements ActionListener {
         model = new AnimalModel();
         infoTable = new InfoTableDialog(model);
         food = null;
+        originator.setModel(model);
 
         // instantiating action panel
         JPanel actionPanel = new JPanel();
@@ -229,37 +237,43 @@ public class ZooPanel extends JPanel implements ActionListener {
      * predators can eat their prey, prey may eat its predator.
      */
     public void attemptEatAnimal(){
-        for (int i = 0; i < model.getAnimalModelSize(); i++) {
-            Animal predator = model.getAnimalModel().get(i);
-            for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
-                Animal prey = model.getAnimalModel().get(j);
-                if (conditionalEating(predator, prey)){
-                    // terminates the thread.
-                    prey.stop();
-                    // if predator eat prey, deduce the amount of eat count of prey off the total eat count.
-                    setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-                    // remove the prey.
-                    model.getAnimalModel().remove(j);
-                    j--;
-                    // increment the total eat count & the eat count of predator.
-                    updateEatCount(predator);
-                    // the model was changed.
-                    model.setChangesState(true);
-                } else if (conditionalEating(prey, predator)) {
-                    // terminates the thread.
-                    predator.stop();
-                    // if prey eat predator, deduce the amount of eat count of predator off the total eat count.
-                    setTotalEatCount(getTotalEatCount() - predator.getEatCount());
-                    // remove the predator.
-                    model.getAnimalModel().remove(i);
-                    i--;
-                    // increment the total eat count & the eat count of prey.
-                    updateEatCount(prey);
-                    // the model was changed.
-                    model.setChangesState(true);
+        if (!isEating.get())
+            isEating.set(true);
+            for (int i = 0; i < model.getAnimalModelSize(); i++) {
+                Animal predator = model.getAnimalModel().get(i);
+                for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
+                    Animal prey = model.getAnimalModel().get(j);
+                    if (conditionalEating(predator, prey)){
+                        // terminates the thread.
+                        prey.stop();
+                        // if predator eat prey, deduce the amount of eat count of prey off the total eat count.
+                        setTotalEatCount(getTotalEatCount() - prey.getEatCount());
+                        // remove the prey.
+                        model.getAnimalModel().remove(j);
+                        j--;
+                        // increment the total eat count & the eat count of predator.
+                        updateEatCount(predator);
+                        // the model was changed.
+                        model.setChangesState(true);
+                        model.pullFromQueue();
+                    } else if (conditionalEating(prey, predator)) {
+                        // terminates the thread.
+                        predator.stop();
+                        // if prey eat predator, deduce the amount of eat count of predator off the total eat count.
+                        setTotalEatCount(getTotalEatCount() - predator.getEatCount());
+                        // remove the predator.
+                        model.getAnimalModel().remove(i);
+                        if (i > 0)
+                            i--;
+                        // increment the total eat count & the eat count of prey.
+                        updateEatCount(prey);
+                        // the model was changed.
+                        model.setChangesState(true);
+                        model.pullFromQueue();
+                    }
                 }
             }
-        }
+        isEating.set(false);
     }
 
     /**
@@ -408,38 +422,35 @@ public class ZooPanel extends JPanel implements ActionListener {
 //       t.start();
 //    }
 
-    public void nicetry(){
+    public void manageZoo(){
         if (isChange()) {
             repaint();
         }
-        // will sleep for 0.1 seconds to avoid stuttering.
-//        try {
-//            Thread.sleep(50);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-        attemptEatAnimal();
+        if (!isEating.get())
+            attemptEatAnimal();
+
         if (InfoTableDialog.getIsOpen()) {
             infoTable.updateTable();
         }
     }
 
-//    @Override
-//    public void run() {
-//        while (threadAlive.get()) {
-//            if (isChange()) {
-//                repaint();
-//            }
-//            // will sleep for 0.1 seconds to avoid stuttering.
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            attemptEatAnimal();
-//            if (InfoTableDialog.getIsOpen()) {
-//                infoTable.updateTable();
-//            }
-//        }
-//    }
+    public void saveState() {
+//        originator.setModel(model);
+        Memento memento = originator.createMemento();
+        caretaker.addMemento(memento);
+        System.out.println("Saving current state");
+    }
+
+    public void restoreState() {
+        if (!caretaker.isEmpty()) {
+            Memento memento = caretaker.getMemento();
+//            this.model = memento.getModel().clone();
+            this.model = memento.getModel();
+            model.wakeUp();
+            System.out.println("Restoring current state");
+        } else {
+            String message = "No saved states";
+            PrivateGraphicUtils.popInformationDialog(this, message);
+        }
+    }
 }

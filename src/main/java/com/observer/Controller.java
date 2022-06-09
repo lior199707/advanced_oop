@@ -6,7 +6,7 @@ public class Controller implements Observer {
 
     @Override
     public void notify(Observable obi,ZooPanel pan) {
-        pan.nicetry();
+        pan.manageZoo();
     }
 
 }

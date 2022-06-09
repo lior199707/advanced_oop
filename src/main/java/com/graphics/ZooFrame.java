@@ -55,6 +55,7 @@ public class ZooFrame extends JFrame{
 
         JMenu file = new JMenu("File");
         JMenu background = new JMenu("Background");
+        JMenu states = new JMenu("States");
         JMenu help = new JMenu("Help");
 
         // initiating items for file menu.
@@ -64,6 +65,10 @@ public class ZooFrame extends JFrame{
         JMenuItem image = new JMenuItem("Image");
         JMenuItem green = new JMenuItem("Green");
         JMenuItem none = new JMenuItem("None");
+
+        // initiating items for states menu.
+        JMenuItem saveState = new JMenuItem("Save State");
+        JMenuItem restoreState = new JMenuItem("Restore State");
 
         // initiating items for help menu.
         JMenuItem helpMenuItem = new JMenuItem("Help");
@@ -76,12 +81,16 @@ public class ZooFrame extends JFrame{
         background.add(green);
         background.add(none);
 
+        states.add(saveState);
+        states.add(restoreState);
+
         help.add(helpMenuItem);
         help.add(manualMenuItem);
 
         // adding menus to the menu bar.
         menuBar.add(file);
         menuBar.add(background);
+        menuBar.add(states);
         menuBar.add(help);
 
         MenuBarHandler listener = new MenuBarHandler();
@@ -89,6 +98,8 @@ public class ZooFrame extends JFrame{
         image.addActionListener(listener);
         green.addActionListener(listener);
         none.addActionListener(listener);
+        saveState.addActionListener(listener);
+        restoreState.addActionListener(listener);
         helpMenuItem.addActionListener(listener);
         manualMenuItem.addActionListener(listener);
 
@@ -108,6 +119,8 @@ public class ZooFrame extends JFrame{
                 case "Image" -> zooPanel.setImageBackground();
                 case "Green" -> zooPanel.setGreenBackground();
                 case "None" -> zooPanel.setNoBackground();
+                case "Save State" -> zooPanel.saveState();
+                case "Restore State" -> zooPanel.restoreState();
                 case "Help" -> {
                     String message = "Home Work 2\nGUI";
                     PrivateGraphicUtils.popInformationDialog(null,message);

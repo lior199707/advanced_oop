@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior, IThread, Observable {
+public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnimalBehavior, IThread, Observable, Cloneable {
     /**
      * String value of the animal name.
      */
@@ -159,6 +159,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         this.threadSuspended = false;
     }
 
+//    public Animal(Animal animal){
+        //
+//    }
     /**
      * Animal Ctor, creates an animal without providing the color, sets color to Default Color.
      *Used for instantiating animals in main.
@@ -780,4 +783,16 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return "[" + getClass().getSimpleName() + "]: " + this.name;
     }
 
+    @Override
+    public Animal clone() {
+        try {
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            Animal animal = (Animal) super.clone();
+//            animal.setLocation(new Point(getLocation()));
+            animal.setThreadSuspended(true);
+            return animal;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

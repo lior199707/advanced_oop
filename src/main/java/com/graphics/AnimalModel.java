@@ -1,12 +1,14 @@
 package com.graphics;
 
 import com.animals.Animal;
+import com.memento.Caretaker;
 import com.observer.Controller;
 import com.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * AnimalModel represents the model used for the zoo.
@@ -15,7 +17,7 @@ import java.util.concurrent.Executors;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public class AnimalModel {
+public class AnimalModel implements Cloneable {
     /**
      * ArrayList of animals.
      */
@@ -24,6 +26,7 @@ public class AnimalModel {
      * integer value representing the maximum size of the animal array.
      */
     private static final int MAX_SIZE = 10;
+    private static final int MAX_QUEUE_SIZE = 5;
     /**
      * boolean value indicating if the model is changed or not.
      */
@@ -37,15 +40,27 @@ public class AnimalModel {
 
     private Observer controller;
 
+    private LinkedBlockingDeque<Runnable> animalQueue;
+
+    private Caretaker caretaker = new Caretaker();
+
     /**
      * AnimalModel constructor.
      * initiating the array list and default state to false.
      */
-    AnimalModel(){
+    public AnimalModel(){
         pool = Executors.newFixedThreadPool(MAX_SIZE);
+        animalQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
         animals = new ArrayList<>();
         isChanged = false;
         controller = new Controller();
+    }
+
+    public AnimalModel(AnimalModel model){
+        AnimalModel modelCopy = new AnimalModel();
+        for (Animal animal : model.getAnimalModel()){
+            modelCopy.addAnimal(animal.clone());
+        }
     }
 
     /**
@@ -55,14 +70,33 @@ public class AnimalModel {
      */
     public boolean addAnimal(Animal animal){
         boolean isSuccess = false;
+        animal.setObserver(controller);
         if (animals.size() < MAX_SIZE){
             animal.setThreadSuspended(isAsleep());
-            animal.setObserver(controller);
             animals.add(animal);
             pool.execute(animal);
             isSuccess = true;
+        } else {
+            animal.setThreadSuspended(true);
+            animalQueue.add(animal);
         }
         return isSuccess;
+    }
+
+    public void pullFromQueue(){
+        if (animalQueue.size() > 0 && animals.size() < MAX_SIZE){
+            Animal animal = (Animal) animalQueue.pop();
+            animal.setThreadSuspended(isAsleep());
+            animals.add(animal);
+            pool.execute(animal);
+        }
+    }
+    public int getAnimalQueueSize(){
+        return animalQueue.size();
+    }
+
+    public static int getMaxQueueSize() {
+        return MAX_QUEUE_SIZE;
     }
 
     /**
@@ -136,6 +170,12 @@ public class AnimalModel {
         pool.shutdown();
     }
 
+//    public void startAll() {
+//        for (Animal animal : animals){
+//            animal.start();
+//        }
+//    }
+
     /**
      * sleepState getter.
      * @return boolean representation of the sleepState, true if sleep is on false otherwise.
@@ -181,4 +221,12 @@ public class AnimalModel {
         isChanged = state;
     }
 
+    @Override
+    public AnimalModel clone() {
+        AnimalModel modelCopy = new AnimalModel();
+        for (Animal animal : this.getAnimalModel()){
+            modelCopy.addAnimal(animal.clone());
+        }
+        return modelCopy;
+    }
 }

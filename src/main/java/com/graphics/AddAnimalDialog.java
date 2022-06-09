@@ -537,12 +537,13 @@ public abstract class AddAnimalDialog extends AnimalDialog {
             int animalHSpeed = Integer.parseInt(hSpeedTextField.getText());
 
             // if the model size is yet to reach the maximum size allowed, instantiate an animal
-            if (getModel().getAnimalModelSize() < AnimalModel.getModelMaxSize()) {
+            if (getModel().getAnimalQueueSize() < AnimalModel.getMaxQueueSize()) {
+//            if (getModel().getAnimalModelSize() < AnimalModel.getModelMaxSize()) {
                 System.out.println(animalType);
                 Animal animal = animalFactory.createAnimal(animalType, animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
                 System.out.println(animalColor);
                 // using decorator to determine animal color
-                switch (animalColor){
+                switch (animalColor) {
                     case "Red" -> animal = new AnimalRedDecorator(animal).makeAnimal();
                     case "Blue" -> animal = new AnimalBlueDecorator(animal).makeAnimal();
                 }
@@ -568,12 +569,14 @@ public abstract class AddAnimalDialog extends AnimalDialog {
                 // if the info table is open, it will update it dynamically upon adding a new animal.
                 if (InfoTableDialog.getIsOpen())
                     getZooPanel().getInfoTable().updateTable();
+
             } else {
                 try {
-                    String message = "You cannot add more than 10 animals";
+                    String message = "You cannot add more than 15 animals";
                     throw new PrivateGraphicUtils.ErrorDialogException(getContentPane().getParent(), message);
                 } catch (PrivateGraphicUtils.ErrorDialogException ignored) {}
             }
+
         }
     }
 
