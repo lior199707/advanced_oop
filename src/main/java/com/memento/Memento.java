@@ -1,13 +1,15 @@
 package com.memento;
 
-import com.graphics.AnimalModel;
+import com.animals.Animal;
+
+import java.util.ArrayList;
 
 public class Memento {
-    private AnimalModel model;
+    private ArrayList<Animal> model;
 
-    public Memento(AnimalModel model){
+    public Memento(ArrayList<Animal> model){
         this.model = model;
     }
 
-    public AnimalModel getModel() { return model; }
+    public ArrayList<Animal> getModel() { return model; }
 }

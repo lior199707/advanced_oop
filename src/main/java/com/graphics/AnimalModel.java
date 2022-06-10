@@ -1,11 +1,14 @@
 package com.graphics;
 
 import com.animals.Animal;
-import com.memento.Caretaker;
+import com.memento.Memento;
+import com.memento.Originator;
 import com.observer.Controller;
 import com.observer.Observer;
+import com.privateutil.PrivateGraphicUtils;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -44,6 +47,7 @@ public class AnimalModel implements Cloneable {
     private LinkedBlockingDeque<Runnable> animalQueue;
 
     private Caretaker caretaker = new Caretaker();
+    private Originator originator = new Originator();
 
     /**
      * AnimalModel constructor.
@@ -55,6 +59,7 @@ public class AnimalModel implements Cloneable {
         animals = new ArrayList<>();
         isChanged = false;
         controller = new Controller();
+        originator.setModel(animals);
     }
 
     public AnimalModel(AnimalModel model){
@@ -248,5 +253,48 @@ public class AnimalModel implements Cloneable {
             modelCopy.addAnimal(animal.clone());
         }
         return modelCopy;
+    }
+
+    public void saveModelState() {
+        Memento memento = originator.createMemento();
+        caretaker.addMemento(memento);
+        System.out.println("Saving current state");
+    }
+
+    public void restoreModelState() {
+        if (!caretaker.isEmpty()) {
+            // memento with cloned model
+            this.stopAll();
+            Memento memento = caretaker.getMemento();
+            originator.setModel(memento.getModel());
+            animals = new ArrayList<>();
+//            this.model = memento.getModel();
+            pool = Executors.newFixedThreadPool(MAX_SIZE);
+            animalQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
+            for (int i=0; i < memento.getModel().size();i++){
+                System.out.println(memento.getModel().get(i).getName());
+                this.addAnimal(memento.getModel().get(i));
+            }
+//            this.wakeUp();
+            System.out.println("Restoring current state");
+        } else {
+            String message = "No saved states";
+            PrivateGraphicUtils.popInformationDialog(null, message);
+        }
+    }
+
+    private static class Caretaker {
+        private Stack<Memento> stateList = new Stack<>();
+        public void addMemento(Memento m) {
+            stateList.push(m);
+        }
+
+        public Memento getMemento() {
+            return stateList.pop();
+        }
+
+        public boolean isEmpty(){
+            return stateList.empty();
+        }
     }
 }

@@ -5,9 +5,6 @@ import com.food.Food;
 import com.food.Meat;
 import com.food.plants.Cabbage;
 import com.food.plants.Lettuce;
-import com.memento.Caretaker;
-import com.memento.Memento;
-import com.memento.Originator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.imageio.ImageIO;
@@ -59,9 +56,6 @@ public class ZooPanel extends JPanel implements ActionListener {
     private AtomicBoolean threadAlive = new AtomicBoolean(true);
     private AtomicBoolean isEating = new AtomicBoolean(false);
 
-    private final Originator originator = new Originator();
-    private final Caretaker caretaker = new Caretaker();
-
     /**
      * ZooPanel constructor.
      */
@@ -69,7 +63,6 @@ public class ZooPanel extends JPanel implements ActionListener {
         model = new AnimalModel();
         infoTable = new InfoTableDialog(model);
         food = null;
-        originator.setModel(model);
 
         // instantiating action panel
         JPanel actionPanel = new JPanel();
@@ -436,30 +429,33 @@ public class ZooPanel extends JPanel implements ActionListener {
 
     public void saveState() {
 //        originator.setModel(model);
-        Memento memento = originator.createMemento();
-        caretaker.addMemento(memento);
-        System.out.println("Saving current state");
+        model.saveModelState();
+//        Memento memento = originator.createMemento();
+//        caretaker.addMemento(memento);
+//        System.out.println("Saving current state");
     }
 
     //TODO: FIX PROBLEM WHERE SAVED MEMENTO KEEPS MOVING EVEN WHEN CLONED
     public void restoreState() {
-        if (!caretaker.isEmpty()) {
-            // memento with cloned model
-            Memento memento = caretaker.getMemento();
-            if(memento == null)
-                System.out.println("memento is null");
-            originator.setModel(memento.getModel());
-            this.model = originator.getModel();
-            if(model == null)
-                System.out.println("model is null");
-//            this.model = memento.getModel().clone();
-            //this.model = memento.getModel();
-            model.wakeUp();
-            System.out.println("Restoring current state");
-            repaint();
-        } else {
-            String message = "No saved states";
-            PrivateGraphicUtils.popInformationDialog(this, message);
-        }
+        model.restoreModelState();
+        repaint();
+//        if (!caretaker.isEmpty()) {
+//            // memento with cloned model
+//            Memento memento = caretaker.getMemento();
+//            if(memento == null)
+//                System.out.println("memento is null");
+//            assert memento != null;
+//            originator.setModel(memento.getModel());
+//            if(model == null)
+//                System.out.println("model is null");
+//            this.model = (AnimalModel) memento.getModel().clone();
+//            //this.model = memento.getModel();
+//            model.wakeUp();
+//            System.out.println("Restoring current state");
+//            repaint();
+//        } else {
+//            String message = "No saved states";
+//            PrivateGraphicUtils.popInformationDialog(this, message);
+//        }
     }
 }
