@@ -68,6 +68,12 @@ public class Giraffe extends AnimalChew {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    public Giraffe(Giraffe other){
+        super(other);
+        this.neckLength = other.getNeckLength();
+        System.out.println("Giraffe copy constructor");
+    }
+
     /**
      * class Giraffe static method.
      * @return Point object of the default starting location of a Giraffe.
@@ -150,6 +156,12 @@ public class Giraffe extends AnimalChew {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public Animal clone() {
+        System.out.println("Giraffe clone");
+        return new Giraffe(this);
     }
 
     /**

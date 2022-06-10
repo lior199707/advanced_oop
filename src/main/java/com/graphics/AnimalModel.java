@@ -34,7 +34,8 @@ public class AnimalModel implements Cloneable {
     /**
      * boolean value indicating the current model sleep state.
      */
-    private boolean sleepState;
+    private boolean sleepState = false;
+
 
     private ExecutorService pool;
 
@@ -91,6 +92,9 @@ public class AnimalModel implements Cloneable {
             pool.execute(animal);
         }
     }
+
+    public  boolean getModelSleepState(){return sleepState;}
+
     public int getAnimalQueueSize(){
         return animalQueue.size();
     }
@@ -128,10 +132,16 @@ public class AnimalModel implements Cloneable {
      * sleep state of the model is set to true.
      */
     public void sleep(){
+        System.out.println("mosel is sleeping");
+        sleepState = true;
         for (Animal animal : animals){
             animal.setSuspended();
-            sleepState = true;
+            //sleepState = true;
         }
+    }
+
+    public void setSleepState(boolean state){
+        sleepState = state;
     }
 
     /**
@@ -153,9 +163,12 @@ public class AnimalModel implements Cloneable {
      * sleep state of the model is set to false.
      */
     public void wakeUp(){
+        //sleepState = false;
         for (Animal animal : animals){
-            animal.setResumed();
-            sleepState = false;
+           // animal.setResumed();
+            animal.setThreadAlive(true);
+            //animal.run();
+            //sleepState = false;
         }
     }
 
@@ -168,6 +181,11 @@ public class AnimalModel implements Cloneable {
             animal.stop();
         }
         pool.shutdown();
+    }
+
+    public void  runModel(){
+        for(Animal animal: this.getAnimalModel())
+            animal.run();
     }
 
 //    public void startAll() {
@@ -224,6 +242,8 @@ public class AnimalModel implements Cloneable {
     @Override
     public AnimalModel clone() {
         AnimalModel modelCopy = new AnimalModel();
+        modelCopy.setSleepState(isAsleep());
+        modelCopy.setChangesState(getChangesState());
         for (Animal animal : this.getAnimalModel()){
             modelCopy.addAnimal(animal.clone());
         }

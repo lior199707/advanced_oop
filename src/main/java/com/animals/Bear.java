@@ -109,6 +109,12 @@ public class Bear extends AnimalRoar {
         this(name, DEFAULT_SIZE, horSpeed,verSpeed, getDefaultColor());
     }
 
+    public Bear(Bear other){
+        super(other);
+        this.furColor = other.getFurColor();
+        System.out.println("Bear copy constructor");
+    }
+
     /**
      * class Bear static method.
      * @return Point object of the default starting location of a Bear.
@@ -193,6 +199,13 @@ public class Bear extends AnimalRoar {
     public String toString() {
         return super.toString();
     }
+
+    @Override
+    public Animal clone() {
+        System.out.println("Bear clone");
+        return new Bear(this);
+    }
+
 
     /**
      * override abstract class Animal animalShortPathName().

@@ -6,7 +6,7 @@ public class Memento {
     private AnimalModel model;
 
     public Memento(AnimalModel model){
-        this.model = model.clone();
+        this.model = model;
     }
 
     public AnimalModel getModel() { return model; }

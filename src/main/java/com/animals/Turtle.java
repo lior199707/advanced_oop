@@ -55,6 +55,7 @@ public class Turtle extends AnimalChew {
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
         loadImages(animalShortPathName());
+        System.out.println("Turtle copy constructor");
     }
 
     /**
@@ -67,6 +68,11 @@ public class Turtle extends AnimalChew {
      */
     public Turtle(String name, int horSpeed, int verSpeed) {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
+    }
+
+    public Turtle(Turtle other){
+        super(other);
+        this.age = other.getAge();
     }
 
     /**
@@ -151,6 +157,12 @@ public class Turtle extends AnimalChew {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public Animal clone() {
+        System.out.println("Turtle clone");
+        return new Turtle(this);
     }
 
     /**

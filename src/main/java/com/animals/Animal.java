@@ -4,12 +4,10 @@ import com.diet.IDiet;
 import com.food.EFoodType;
 import com.food.Food;
 import com.food.IEdible;
-import com.graphics.IAnimalBehavior;
-import com.graphics.IDrawable;
-import com.graphics.IThread;
-import com.graphics.ZooPanel;
+import com.graphics.*;
 import com.mobility.Mobile;
 import com.mobility.Point;
+import com.observer.Controller;
 import com.observer.Observable;
 import com.observer.Observer;
 import com.privateutil.PrivateGraphicUtils;
@@ -178,6 +176,27 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         this(name,location,size, horSpeed,verSpeed,DEFAULT_COLOR);
     }
 
+    public Animal(Animal other){
+        super(other);
+        this.name = other.getName();
+        this.weight = other.getWeight();
+        this.coordChanged = other.getChanges();
+        this.size = other.getSize();
+        this.horSpeed = other.getHorSpeed();
+        this.verSpeed = other.getVerSpeed();
+        this.col = other.getColor();
+        this.x_dir = other.getXDirection();
+        this.y_dir = other.getYDirection();
+        this.eatCount = other.eatCount;
+        this.pan = other.getPan();
+        this.img1 = PrivateGraphicUtils.deepCopy(other.getImg1());
+        this.img2 = PrivateGraphicUtils.deepCopy(other.getImg2());
+        this.threadSuspended = other.isSuspended();
+        this.controller = other.getController();
+        this.threadAlive = new AtomicBoolean(other.getIsAlive());
+        System.out.println("Animal copy constructor clone");
+    }
+
     /**
      * name getter.
      * @return String value representing animal name.
@@ -256,6 +275,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return pan;
     }
 
+    public Observer getController(){
+        return this.controller;
+    }
 
     /**
      * Default color getter.
@@ -273,6 +295,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return threadSuspended;
     }
 
+    public boolean getIsAlive(){
+        return this.threadAlive.get();
+    }
     /**
      * threadSuspended setter.
      * @param state the new state of the thread.
@@ -594,6 +619,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      *
      * @return Boolean value indicates if the animal has moved
      */
+
+    public void setThreadAlive(boolean state){
+        this.threadAlive = new AtomicBoolean(state);
+    }
     // override interface IAnimalBehavior
     @Override
     public boolean getChanges (){
@@ -784,15 +813,24 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
     }
 
     @Override
-    public Animal clone() {
-        try {
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            Animal animal = (Animal) super.clone();
+    public abstract Animal clone();
+//    public Animal clone() {
+//        try {
+//            // TODO: copy mutable state here, so the clone can't change the internals of the original
+//            Animal animal = (Animal) super.clone();
 //            animal.setLocation(new Point(getLocation()));
-            animal.setThreadSuspended(true);
-            return animal;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+//            animal.setThreadSuspended(isSuspended());
+//            System.out.println("thread alive is false");
+//            animal.setThreadAlive(false);
+//            animal.setObserver(controller);
+//            animal.setZooPanel(pan);
+//            return animal;
+//        } catch (CloneNotSupportedException e) {
+//            throw new AssertionError();
+//        }
+//    }
+
+    private void setZooPanel(ZooPanel pan) {
+        this.pan = pan;
     }
 }

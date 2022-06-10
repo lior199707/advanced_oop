@@ -59,8 +59,8 @@ public class ZooPanel extends JPanel implements ActionListener {
     private AtomicBoolean threadAlive = new AtomicBoolean(true);
     private AtomicBoolean isEating = new AtomicBoolean(false);
 
-    private Originator originator = new Originator();
-    private Caretaker caretaker = new Caretaker();
+    private final Originator originator = new Originator();
+    private final Caretaker caretaker = new Caretaker();
 
     /**
      * ZooPanel constructor.
@@ -441,13 +441,22 @@ public class ZooPanel extends JPanel implements ActionListener {
         System.out.println("Saving current state");
     }
 
+    //TODO: FIX PROBLEM WHERE SAVED MEMENTO KEEPS MOVING EVEN WHEN CLONED
     public void restoreState() {
         if (!caretaker.isEmpty()) {
+            // memento with cloned model
             Memento memento = caretaker.getMemento();
+            if(memento == null)
+                System.out.println("memento is null");
+            originator.setModel(memento.getModel());
+            this.model = originator.getModel();
+            if(model == null)
+                System.out.println("model is null");
 //            this.model = memento.getModel().clone();
-            this.model = memento.getModel();
+            //this.model = memento.getModel();
             model.wakeUp();
             System.out.println("Restoring current state");
+            repaint();
         } else {
             String message = "No saved states";
             PrivateGraphicUtils.popInformationDialog(this, message);

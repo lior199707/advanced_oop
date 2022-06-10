@@ -69,6 +69,12 @@ public class Elephant extends AnimalChew {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    public Elephant(Elephant other){
+        super(other);
+        this.trunkLength = other.getTrunkLength();
+        System.out.println("Elephant copy constructor");
+    }
+
     /**
      * class Elephant static method.
      * @return Point object of the default starting location of an Elephant.
@@ -151,6 +157,12 @@ public class Elephant extends AnimalChew {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public Animal clone() {
+        System.out.println("Elephant clone");
+        return new Elephant(this);
     }
 
     /**

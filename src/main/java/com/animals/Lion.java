@@ -72,6 +72,12 @@ public class Lion extends AnimalRoar {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    public Lion(Lion other){
+        super(other);
+        this.scarCount = other.scarCount;
+        System.out.println("Lion copy constructor");
+    }
+
     /**
      * class Lion static method.
      * @return Point object of the default starting location of a Lion.
@@ -135,6 +141,12 @@ public class Lion extends AnimalRoar {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public Animal clone() {
+        System.out.println("Lion clone");
+        return new Lion(this);
     }
 
     @Override
