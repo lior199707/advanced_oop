@@ -1,13 +1,13 @@
-package com.memento;
+package com.memento.animal;
 
 import com.animals.Animal;
 
 import java.util.ArrayList;
 
-public class Memento {
+public class AnimalMemento {
     private ArrayList<Animal> model;
 
-    public Memento(ArrayList<Animal> model){
+    public AnimalMemento(ArrayList<Animal> model){
         this.model = model;
     }
 

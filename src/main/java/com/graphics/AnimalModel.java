@@ -1,14 +1,14 @@
 package com.graphics;
 
 import com.animals.Animal;
-import com.memento.Memento;
-import com.memento.Originator;
+import com.memento.animal.AnimalCaretaker;
+import com.memento.animal.AnimalMemento;
+import com.memento.animal.AnimalOriginator;
 import com.observer.Controller;
 import com.observer.Observer;
 import com.privateutil.PrivateGraphicUtils;
 
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -46,8 +46,8 @@ public class AnimalModel implements Cloneable {
 
     private LinkedBlockingDeque<Runnable> animalQueue;
 
-    private Caretaker caretaker = new Caretaker();
-    private Originator originator = new Originator();
+    private AnimalCaretaker caretaker = new AnimalCaretaker();
+    private AnimalOriginator animalOriginator = new AnimalOriginator();
 
     /**
      * AnimalModel constructor.
@@ -59,7 +59,7 @@ public class AnimalModel implements Cloneable {
         animals = new ArrayList<>();
         isChanged = false;
         controller = new Controller();
-        originator.setModel(animals);
+        animalOriginator.setModel(animals);
     }
 
     public AnimalModel(AnimalModel model){
@@ -137,12 +137,12 @@ public class AnimalModel implements Cloneable {
      * sleep state of the model is set to true.
      */
     public void sleep(){
-        System.out.println("mosel is sleeping");
-        sleepState = true;
+//        sleepState = true;
         for (Animal animal : animals){
             animal.setSuspended();
-            //sleepState = true;
+            sleepState = true;
         }
+
     }
 
     public void setSleepState(boolean state){
@@ -170,11 +170,11 @@ public class AnimalModel implements Cloneable {
     public void wakeUp(){
         //sleepState = false;
         for (Animal animal : animals){
-           // animal.setResumed();
+            animal.setResumed();
             animal.setThreadAlive(true);
-            //animal.run();
-            //sleepState = false;
+//            animal.run();
         }
+        sleepState = false;
     }
 
     /**
@@ -256,26 +256,29 @@ public class AnimalModel implements Cloneable {
     }
 
     public void saveModelState() {
-        Memento memento = originator.createMemento();
-        caretaker.addMemento(memento);
-        System.out.println("Saving current state");
+        if (!caretaker.isFull()) {
+            animalOriginator.setModel(animals);
+            AnimalMemento animalMemento = animalOriginator.createMemento();
+            caretaker.addMemento(animalMemento);
+            System.out.println("Saving current state");
+        } else {
+            String message = "State list is full (3 states)";
+            PrivateGraphicUtils.popInformationDialog(null, message);
+        }
     }
 
     public void restoreModelState() {
         if (!caretaker.isEmpty()) {
-            // memento with cloned model
+            // animalMemento with cloned model
             this.stopAll();
-            Memento memento = caretaker.getMemento();
-            originator.setModel(memento.getModel());
+            AnimalMemento animalMemento = caretaker.getMemento();
+            animalOriginator.setModel(animalMemento.getModel());
             animals = new ArrayList<>();
-//            this.model = memento.getModel();
             pool = Executors.newFixedThreadPool(MAX_SIZE);
             animalQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
-            for (int i=0; i < memento.getModel().size();i++){
-                System.out.println(memento.getModel().get(i).getName());
-                this.addAnimal(memento.getModel().get(i));
+            for (int i = 0; i < animalMemento.getModel().size(); i++){
+                this.addAnimal(animalMemento.getModel().get(i));
             }
-//            this.wakeUp();
             System.out.println("Restoring current state");
         } else {
             String message = "No saved states";
@@ -283,18 +286,19 @@ public class AnimalModel implements Cloneable {
         }
     }
 
-    private static class Caretaker {
-        private Stack<Memento> stateList = new Stack<>();
-        public void addMemento(Memento m) {
-            stateList.push(m);
-        }
+    public AnimalCaretaker getCaretaker() {
+        return caretaker;
+    }
 
-        public Memento getMemento() {
-            return stateList.pop();
-        }
+    public AnimalOriginator getOriginator() {
+        return animalOriginator;
+    }
 
-        public boolean isEmpty(){
-            return stateList.empty();
-        }
+    public void setCaretaker(AnimalCaretaker caretaker) {
+        this.caretaker = caretaker;
+    }
+
+    public void setOriginator(AnimalOriginator animalOriginator) {
+        this.animalOriginator = animalOriginator;
     }
 }

@@ -5,6 +5,8 @@ import com.food.Food;
 import com.food.Meat;
 import com.food.plants.Cabbage;
 import com.food.plants.Lettuce;
+import com.memento.animal.AnimalCaretaker;
+import com.memento.animal.AnimalOriginator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.imageio.ImageIO;
@@ -108,6 +110,7 @@ public class ZooPanel extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         this.add(actionPanel, BorderLayout.SOUTH);
     }
+
 
     public static ZooPanel getInstance() {
         if (instance == null)
@@ -360,7 +363,11 @@ public class ZooPanel extends JPanel implements ActionListener {
             case "Wake Up" -> model.wakeUp();
             case "Clear All" -> {
                 model.stopAll();
+                AnimalCaretaker caretaker = model.getCaretaker();
+                AnimalOriginator animalOriginator = model.getOriginator();
                 model = new AnimalModel();
+                model.setCaretaker(caretaker);
+                model.setOriginator(animalOriginator);
                 setTotalEatCount(0);
                 infoTable.setIsOpen(false);
                 repaint();
@@ -429,8 +436,8 @@ public class ZooPanel extends JPanel implements ActionListener {
 
     public void saveState() {
 //        originator.setModel(model);
-        model.saveModelState();
-//        Memento memento = originator.createMemento();
+            model.saveModelState();
+//        AnimalMemento memento = originator.createMemento();
 //        caretaker.addMemento(memento);
 //        System.out.println("Saving current state");
     }
@@ -438,24 +445,13 @@ public class ZooPanel extends JPanel implements ActionListener {
     //TODO: FIX PROBLEM WHERE SAVED MEMENTO KEEPS MOVING EVEN WHEN CLONED
     public void restoreState() {
         model.restoreModelState();
+        if (InfoTableDialog.getIsOpen()) {
+            System.out.println("kakakakakiiiii");
+            infoTable.setVisible(false);
+            infoTable = new InfoTableDialog(model);
+            infoTable.updateTable();
+            infoTable.setVisible(true);
+        }
         repaint();
-//        if (!caretaker.isEmpty()) {
-//            // memento with cloned model
-//            Memento memento = caretaker.getMemento();
-//            if(memento == null)
-//                System.out.println("memento is null");
-//            assert memento != null;
-//            originator.setModel(memento.getModel());
-//            if(model == null)
-//                System.out.println("model is null");
-//            this.model = (AnimalModel) memento.getModel().clone();
-//            //this.model = memento.getModel();
-//            model.wakeUp();
-//            System.out.println("Restoring current state");
-//            repaint();
-//        } else {
-//            String message = "No saved states";
-//            PrivateGraphicUtils.popInformationDialog(this, message);
-//        }
     }
 }

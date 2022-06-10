@@ -553,6 +553,7 @@ public abstract class AddAnimalDialog extends AnimalDialog {
                 animal.setPan(getZooPanel());
 
                 getModel().addAnimal(animal);
+                getZooPanel().repaint();
 
                 // reset fields to default placeholders.
                 nameTextField.setText("");
