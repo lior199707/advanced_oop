@@ -10,7 +10,7 @@ import com.observer.Observer;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * AnimalModel represents the model used for the zoo.
@@ -28,6 +28,9 @@ public class AnimalModel implements Cloneable {
      * integer value representing the maximum size of the animal array.
      */
     private static final int MAX_SIZE = 10;
+    /**
+     * integer value representing the maximum size of the queue.
+     */
     private static final int MAX_QUEUE_SIZE = 5;
     /**
      * boolean value indicating if the model is changed or not.
@@ -38,14 +41,28 @@ public class AnimalModel implements Cloneable {
      */
     private boolean sleepState = false;
 
-
+    /**
+     * ExecutorService is the ThreadPool service provider.
+     */
     private ExecutorService pool;
 
+    /**
+     * Observer object used as a controller, will be applied to all animals..
+     */
     private Observer controller;
 
-    private LinkedBlockingDeque<Runnable> animalQueue;
+    /**
+     * LinkedBlockingDeque
+     */
+    private LinkedBlockingQueue<Runnable> animalQueue;
 
+    /**
+     * AnimalCaretaker reference.
+     */
     private AnimalCaretaker caretaker = new AnimalCaretaker();
+    /**
+     * AnimalOriginator reference.
+     */
     private AnimalOriginator animalOriginator = new AnimalOriginator();
 
     /**
@@ -54,18 +71,22 @@ public class AnimalModel implements Cloneable {
      */
     public AnimalModel(){
         pool = Executors.newFixedThreadPool(MAX_SIZE);
-        animalQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
+        animalQueue = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
         animals = new ArrayList<>();
         isChanged = false;
         controller = new Controller();
         animalOriginator.setModel(animals);
     }
 
+    /**
+     * AnimalModel copy constructor.
+     * @param other the AnimalModel object to copy.
+     */
     public AnimalModel(AnimalModel other){
         this.setSleepState(other.isAsleep());
         this.setChangesState(other.getChangesState());
         this.pool = Executors.newFixedThreadPool(MAX_SIZE);
-        this.animalQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
+        this.animalQueue = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
         this.controller = other.controller;
         ArrayList<Animal> animals = new ArrayList<>();
         for (Animal animal : other.getAnimalModel()){
@@ -76,27 +97,14 @@ public class AnimalModel implements Cloneable {
         this.setOriginator(other.getOriginator().clone());
     }
 
+    /**
+     * AnimalModel clone method.
+     * @return deep copy of AnimalModel.
+     */
     @Override
     public AnimalModel clone() {
         return new AnimalModel(this);
-//        try {
-//            AnimalModel clone = (AnimalModel) super.clone();
-//            ArrayList<Animal> animals = new ArrayList<>();
-//            for (Animal animal : this.getAnimalModel()){
-//                animals.add(animal.clone());
-//            }
-//            clone.animals = animals;
-//            clone.setCaretaker(this.getCaretaker().clone());
-//            clone.setOriginator(this.getOriginator().clone());
-//            // TODO: copy mutable state here, so the clone can't change the internals of the original
-//            return clone;
-//        } catch (CloneNotSupportedException e) {
-//            throw new AssertionError();
-//        }
     }
-
-
-
 
     /**
      * addAnimal will add an animal if the current only if the current size does not exceed the maximum.
@@ -118,31 +126,34 @@ public class AnimalModel implements Cloneable {
         return isSuccess;
     }
 
+    /**
+     * pullFromQueue activates animals after waiting in waiting queue.
+     * if there are animals in the queue and the model array size is lower than max size
+     * an animal object is removed from the queue, added to the model and executed.
+     */
     public void pullFromQueue(){
         if (animalQueue.size() > 0 && animals.size() < MAX_SIZE){
-            Animal animal = (Animal) animalQueue.pop();
+            Animal animal = (Animal) animalQueue.remove();
             animal.setThreadSuspended(isAsleep());
             animals.add(animal);
             pool.execute(animal);
         }
     }
 
-    public  boolean getModelSleepState(){return sleepState;}
-
+    /**
+     * Animal queue size getter.
+     * @return integer value representation of the animalQueue size.
+     */
     public int getAnimalQueueSize(){
         return animalQueue.size();
     }
 
+    /**
+     * Animal max queue size getter.
+     * @return integer value representation of the animalQueue max size.
+     */
     public static int getMaxQueueSize() {
         return MAX_QUEUE_SIZE;
-    }
-
-    /**
-     * removeAllAnimals assigns an empty array list.
-     * the removal of the previous array list is handled via the garbage collector.
-     */
-    public void removeAllAnimals(){
-        animals = new ArrayList<>();
     }
 
     /**
@@ -166,14 +177,16 @@ public class AnimalModel implements Cloneable {
      * sleep state of the model is set to true.
      */
     public void sleep(){
-//        sleepState = true;
         for (Animal animal : animals){
             animal.setSuspended();
             sleepState = true;
         }
-
     }
 
+    /**
+     * sleepState setter.
+     * @param state boolean value representing the sleepState.
+     */
     public void setSleepState(boolean state){
         sleepState = state;
     }
@@ -197,11 +210,9 @@ public class AnimalModel implements Cloneable {
      * sleep state of the model is set to false.
      */
     public void wakeUp(){
-        //sleepState = false;
         for (Animal animal : animals){
             animal.setResumed();
-            animal.setThreadAlive(true);
-//            animal.run();
+            animal.start();
         }
         sleepState = false;
     }
@@ -216,17 +227,6 @@ public class AnimalModel implements Cloneable {
         }
         pool.shutdown();
     }
-
-    public void  runModel(){
-        for(Animal animal: this.getAnimalModel())
-            animal.run();
-    }
-
-//    public void startAll() {
-//        for (Animal animal : animals){
-//            animal.start();
-//        }
-//    }
 
     /**
      * sleepState getter.
@@ -274,73 +274,62 @@ public class AnimalModel implements Cloneable {
     }
 
 
-
+    /**
+     * save the current model state by creating a memento and adding it to the caretaker memento stack.
+     */
     public void saveModelState() {
         animalOriginator.setModel(animals);
-        for(Animal animal: animals){
-            System.out.println("*******************************in Saving current state: " + animal.getName());
-        }
         AnimalMemento animalMemento = animalOriginator.createMemento();
         caretaker.addMemento(animalMemento);
         System.out.println("Saving current state");
-//        if (!caretaker.isFull()) {
-//            animalOriginator.setModel(animals);
-//            AnimalMemento animalMemento = animalOriginator.createMemento();
-//            caretaker.addMemento(animalMemento);
-//            System.out.println("Saving current state");
-//        }
-//        else {
-//            String message = "State list is full (3 states)";
-//            PrivateGraphicUtils.popInformationDialog(null, message);
-//        }
     }
 
+    /**
+     * restore last state from the caretaker memento stack.
+     */
     public void restoreModelState() {
-        // animalMemento with cloned model
-        this.stopAll();
+        this.stopAll(); // stopping all working threads in the model.
         AnimalMemento animalMemento = caretaker.getMemento();
         animalOriginator.setModel(animalMemento.getModel());
         animals = new ArrayList<>();
         pool = Executors.newFixedThreadPool(MAX_SIZE);
-        animalQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
+        animalQueue = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
         for (int i = 0; i < animalMemento.getModel().size(); i++){
             this.addAnimal(animalMemento.getModel().get(i));
         }
         System.out.println("Restoring current state");
-//        if (!caretaker.isEmpty()) {
-//            // animalMemento with cloned model
-//            this.stopAll();
-//            AnimalMemento animalMemento = caretaker.getMemento();
-//            animalOriginator.setModel(animalMemento.getModel());
-//            animals = new ArrayList<>();
-//            pool = Executors.newFixedThreadPool(MAX_SIZE);
-//            animalQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
-//            for (int i = 0; i < animalMemento.getModel().size(); i++){
-//                this.addAnimal(animalMemento.getModel().get(i));
-//            }
-//            System.out.println("Restoring current state");
-//        }
-//        else {
-//            String message = "No saved states";
-//            PrivateGraphicUtils.popInformationDialog(null, message);
-//        }
     }
 
+    /**
+     * Caretaker getter.
+     * @return AnimalCaretaker object of this model.
+     */
     public AnimalCaretaker getCaretaker() {
         return caretaker;
     }
 
+    /**
+     * Originator getter.
+     * @return AnimalOriginator object of this model.
+     */
     public AnimalOriginator getOriginator() {
         return animalOriginator;
     }
 
+    /**
+     * Caretaker setter.
+     * @param caretaker AnimalCaretaker object to set for this model.
+     */
     public void setCaretaker(AnimalCaretaker caretaker) {
         this.caretaker = caretaker;
     }
 
+    /**
+     * Originator setter.
+     * @param animalOriginator AnimalOriginator object to set for this model.
+     */
     public void setOriginator(AnimalOriginator animalOriginator) {
         this.animalOriginator = animalOriginator;
     }
-
 
 }

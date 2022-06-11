@@ -30,9 +30,12 @@ public abstract class AnimalChew extends Animal {
         super(name,location,size,horSpeed,verSpeed,col);
     }
 
+    /**
+     * AnimalChew copy constructor.
+     * @param other AnimalChew object to copy.
+     */
     public AnimalChew(AnimalChew other){
         super(other);
-        System.out.println("Animal Chew copy constructor");
     }
 
     /**

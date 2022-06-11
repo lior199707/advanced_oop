@@ -65,6 +65,7 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
     private ModelCaretaker modelCaretaker = new ModelCaretaker();
     private ModelOriginator modelOriginator = new ModelOriginator();
     private Stack<Food> foodRestorer = new Stack<>();
+    private Stack<Integer> totalEatCountState = new Stack();
 
     /**
      * ZooPanel constructor.
@@ -158,6 +159,11 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         }
     }
 
+    /**
+     * utility method presenting an animal diet dialog.
+     * user may select from a variety of diet types and instantiate an animal object using the different
+     * factory classes provided.
+     */
     private void createDietDialog() {
         String[] options = {"Herbivore", "Omnivore", "Carnivore"};
         int result = JOptionPane.showOptionDialog(null,
@@ -430,17 +436,6 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         }
     }
 
-//    @Override
-//    public void stop(){
-//        threadAlive.set(false);
-//    }
-//
-//    @Override
-//    public void start() {
-//       Thread t = new Thread(this);
-//       t.start();
-//    }
-
     public void manageZoo(){
         if (isChange()) {
             repaint();
@@ -453,13 +448,13 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         }
     }
 
+    /**
+     * saving the current state of the zoo panel by storing the model, food and total eat count.
+     */
     public void saveState() {
-//        originator.setModel(model);
         if (!modelCaretaker.isFull()) {
-//            IMPORTANT
-//            model.saveModelState();
-//
-            foodRestorer.add(this.getFood());
+            foodRestorer.add(getFood());
+            totalEatCountState.add(getTotalEatCount());
             modelOriginator.setModel(model);
             ModelMemento modelMemento = modelOriginator.createMemento();
             modelCaretaker.addMemento(modelMemento);
@@ -469,21 +464,21 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
             String message = "State list is full (3 states)";
             PrivateGraphicUtils.popInformationDialog(null, message);
         }
-//        ModelMemento memento = originator.createMemento();
-//        caretaker.addMemento(memento);
-//        System.out.println("Saving current state");
     }
 
-    //TODO: FIX PROBLEM WHERE SAVED MEMENTO KEEPS MOVING EVEN WHEN CLONED
+    /**
+     * restoring the previous state of the zoo panel by restoring the model state, food state and total eat count.
+     * stopping the current model threads.
+     */
     public void restoreState() {
         if (!modelCaretaker.isEmpty()){
             model.stopAll();
-            this.food = foodRestorer.pop();
+            food = foodRestorer.pop();
+            totalEatCount = totalEatCountState.pop();
             ModelMemento modelMemento = modelCaretaker.getMemento();
             modelOriginator.setModel(modelMemento.getModel());
-            this.model = modelMemento.getModel();
+            model = modelMemento.getModel();
             if (InfoTableDialog.getIsOpen()) {
-                System.out.println("whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
                 infoTable.setVisible(false);
                 infoTable = new InfoTableDialog(model);
                 infoTable.updateTable();

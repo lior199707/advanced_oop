@@ -69,10 +69,13 @@ public class Elephant extends AnimalChew {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    /**
+     * Elephant copy constructor
+     * @param other Elephant object to copy.
+     */
     public Elephant(Elephant other){
         super(other);
         this.trunkLength = other.getTrunkLength();
-        System.out.println("Elephant copy constructor");
     }
 
     /**

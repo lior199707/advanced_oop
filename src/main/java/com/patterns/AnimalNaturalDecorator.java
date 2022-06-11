@@ -2,14 +2,25 @@ package com.patterns;
 
 import com.animals.Animal;
 
+/**
+ * AnimalNaturalDecorator decorates the Animals with the natural color.
+ */
 public class AnimalNaturalDecorator extends AnimalColorDecorator {
 
-    public AnimalNaturalDecorator(Animal a) {
-        super(a);
+    /**
+     * AnimalNaturalDecorator constructor.
+     * @param animal the animal to decorate.
+     */
+    public AnimalNaturalDecorator(Animal animal) {
+        super(animal);
     }
 
+    /**
+     * decorate the animal with the natural color.
+     * @return the Animal decorated object with the natural color.
+     */
     @Override
-    public Animal makeAnimal() {
+    public Animal decorateAnimal() {
         setColor("NATURAL");
         return getAnimal();
     }

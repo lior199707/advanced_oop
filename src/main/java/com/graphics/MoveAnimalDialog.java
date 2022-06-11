@@ -9,7 +9,11 @@ import com.privateutil.PrivateGraphicUtils;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 public class MoveAnimalDialog extends AnimalDialog{
     /**
@@ -113,57 +117,34 @@ public class MoveAnimalDialog extends AnimalDialog{
 
 
         // adding to listeners
-        redButton.addActionListener(redButtonHandler -> {
-            try {
-                if (getModel().getChangesState()) {
-                    String message = "An animal was eaten\nPlease select animal again";
-                    throw new PrivateGraphicUtils.ErrorDialogException(getContentPane(), message);
-
-                }
-                int indexSelected = animalNamesCmb.getSelectedIndex();
-                AnimalModel model = getModel();
-                model.getAnimalModel().set(indexSelected, new AnimalRedDecorator(model.getAnimalModel().get(indexSelected)).makeAnimal());
-                imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex())));
-                imageLabel.repaint();
-            }catch (PrivateGraphicUtils.ErrorDialogException ignored){}
-        });
-        blueButton.addActionListener(blueButtonHandler -> {
-            try {
-                if (getModel().getChangesState()) {
-                    String message = "An animal was eaten\nPlease select animal again";
-                    throw new PrivateGraphicUtils.ErrorDialogException(getContentPane(), message);
-
-                }
-                int indexSelected = animalNamesCmb.getSelectedIndex();
-                AnimalModel model = getModel();
-                model.getAnimalModel().set(indexSelected, new AnimalBlueDecorator(model.getAnimalModel().get(indexSelected)).makeAnimal());
-                imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex())));
-                imageLabel.repaint();
-            }catch (PrivateGraphicUtils.ErrorDialogException ignored){}
-        });
-        naturalButton.addActionListener(naturalButtonHandler -> {
-            try {
-                if (getModel().getChangesState()) {
-                    String message = "An animal was eaten\nPlease select animal again";
-                    throw new PrivateGraphicUtils.ErrorDialogException(getContentPane(), message);
-
-                }
-                int indexSelected = animalNamesCmb.getSelectedIndex();
-                AnimalModel model = getModel();
-                model.getAnimalModel().set(indexSelected, new AnimalNaturalDecorator(model.getAnimalModel().get(indexSelected)).makeAnimal());
-                imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex())));
-                imageLabel.repaint();
-            }catch (PrivateGraphicUtils.ErrorDialogException ignored){}
-        });
-
+        AnimalColorDecoratorHandler handler = new AnimalColorDecoratorHandler();
+        naturalButton.addActionListener(handler);
+        redButton.addActionListener(handler);
+        blueButton.addActionListener(handler);
 
 
         // adding components to the north panel. note it's using FlowLayout by default.
+        panel.add(naturalButton);
         panel.add(redButton);
         panel.add(blueButton);
-        panel.add(naturalButton);
         panel.setBorder(PrivateGraphicUtils.createTitledBorder("Please choose color", TitledBorder.TOP, TitledBorder.CENTER));
         return panel;
+    }
+
+
+    /**
+     * refreshes the combobox, image and current location labels upon changes.
+     * generally used if the moving animal was eaten.
+     */
+    public void refreshUI(){
+        System.out.println("refreshing UI");
+        // updating the combobox with the current names in the model.
+        animalNamesCmb.setModel(new DefaultComboBoxModel<>(getModel().getAnimalNames()));
+        animalNamesCmb.setSelectedIndex(0);
+        // if the moved animal was eaten, set the current selected index animal image
+        Animal current = getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex());
+        imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(current));
+        imageLabel.repaint();
     }
 
     /**
@@ -208,17 +189,39 @@ public class MoveAnimalDialog extends AnimalDialog{
     }
 
     /**
-     * refreshes the combobox, image and current location labels upon changes.
-     * generally used if the moving animal was eaten.
+     * AnimalColorDecoratorHandler is a utility class implementing ActionListener.
+     * it is used to decorate an animal's color at runtime.
      */
-    public void refreshUI(){
-        System.out.println("refreshing UI");
-        // updating the combobox with the current names in the model.
-        animalNamesCmb.setModel(new DefaultComboBoxModel<>(getModel().getAnimalNames()));
-        animalNamesCmb.setSelectedIndex(0);
-        // if the moved animal was eaten, set the current selected index animal image
-        Animal current = getModel().getAnimalModel().get(animalNamesCmb.getSelectedIndex());
-        imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(current));
-        imageLabel.repaint();
+    private class AnimalColorDecoratorHandler implements  ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String action = e.getActionCommand();
+            try {
+                if (getModel().getChangesState()) {
+                    String message = "An animal was eaten\nPlease select animal again";
+                    throw new PrivateGraphicUtils.ErrorDialogException(getContentPane(), message);
+                }
+                int selected = animalNamesCmb.getSelectedIndex();
+                ArrayList<Animal> model = getModel().getAnimalModel();
+
+                switch (action) {
+                    case "Red" ->{
+                        Animal redDecorated = new AnimalRedDecorator(model.get(selected)).decorateAnimal();
+                        model.set(selected, redDecorated);
+                    }
+                    case "Blue" -> {
+                        Animal blueDecorated = new AnimalBlueDecorator(model.get(selected)).decorateAnimal();
+                        model.set(selected, blueDecorated);
+                    }
+                    case "Natural" -> {
+                        Animal naturalDecorated = new AnimalNaturalDecorator(model.get(selected)).decorateAnimal();
+                        model.set(selected, naturalDecorated);
+                    }
+                }
+
+                imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(model.get(selected)));
+                imageLabel.repaint();
+            } catch (PrivateGraphicUtils.ErrorDialogException ignored){}
+        }
     }
 }

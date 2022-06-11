@@ -4,22 +4,43 @@ import com.animals.Animal;
 
 import java.util.ArrayList;
 
+/**
+ * AnimalOriginator has the ability to create AnimalMemento objects.
+ */
 public class AnimalOriginator implements Cloneable {
+    /**
+     * ArrayList of animal objects representing the model.
+     */
     private ArrayList<Animal> model;
 
-    // the originator stores the model that is changing dynamically.
+    /**
+     * Model setter.
+     * @param model the ArrayList of animal objects to set.
+     */
     public void setModel(ArrayList<Animal> model) { this.model = model; }
+
+    /**
+     * Model getter.
+     * @return the ArrayList of animals object to get.
+     */
     public ArrayList<Animal> getModel() { return model; }
-    // returns a memento with the cloned model(should not change dynamically)
+
+    /**
+     * createMemento creates a new ArrayList of animals and clones the animals from the originator's model.
+     * @return AnimalMemento object with the cloned animal array.
+     */
     public AnimalMemento createMemento() {
         ArrayList<Animal> animals = new ArrayList<>();
         for (Animal animal : model){
             animals.add(animal.clone());
         }
-
         return new AnimalMemento(animals);
     }
 
+    /**
+     * AnimalOriginator clone method.
+     * @return AnimalOriginator cloned object.
+     */
     @Override
     public AnimalOriginator clone() {
         AnimalOriginator clone = new AnimalOriginator();
@@ -30,8 +51,4 @@ public class AnimalOriginator implements Cloneable {
         clone.setModel(animals);
         return clone;
     }
-
-//    public void setMemento(ModelMemento memento) {
-//        model = memento.getModel();
-//    }
 }

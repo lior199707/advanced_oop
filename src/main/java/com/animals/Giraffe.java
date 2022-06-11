@@ -71,7 +71,6 @@ public class Giraffe extends AnimalChew {
     public Giraffe(Giraffe other){
         super(other);
         this.neckLength = other.getNeckLength();
-        System.out.println("Giraffe copy constructor");
     }
 
     /**

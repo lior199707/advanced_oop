@@ -30,9 +30,12 @@ public abstract class AnimalRoar extends Animal {
         super(name,location,size,horSpeed,verSpeed,col);
     }
 
+    /**
+     * AnimalRoar copy constructor
+     * @param other AnimalRoar object to copy.
+     */
     public AnimalRoar(AnimalRoar other){
         super(other);
-        System.out.println("Animal Roar copy constructor");
     }
 
     /**

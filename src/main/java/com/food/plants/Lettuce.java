@@ -7,12 +7,19 @@ package com.food.plants;
  * @author Lior Shilon 316126143
  */
 public class Lettuce extends Plant {
+	/**
+	 * Singleton lettuce instance.
+	 */
 	private static Lettuce instance = null;
 	/**
 	 * Lettuce constructor.
 	 */
 	private Lettuce() { }
 
+	/**
+	 * getInstance method
+	 * @return if an object exists, it returns the object, otherwise creates a new Lettuce object.
+	 */
 	public static Lettuce getInstance() {
 		if (instance == null){
 			instance = new Lettuce();

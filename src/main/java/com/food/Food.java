@@ -57,6 +57,10 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         loadImages(foodShortPathName());
     }
 
+    /**
+     * Food copy constructor.
+     * @param other Food object to copy.
+     */
     public Food(Food other){
         this.location = other.getLocation();
         this.height = other.getHeight();

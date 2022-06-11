@@ -109,10 +109,13 @@ public class Bear extends AnimalRoar {
         this(name, DEFAULT_SIZE, horSpeed,verSpeed, getDefaultColor());
     }
 
+    /**
+     * Bear copy constructor
+     * @param other Bear object to copy.
+     */
     public Bear(Bear other){
         super(other);
         this.furColor = other.getFurColor();
-        System.out.println("Bear copy constructor");
     }
 
     /**

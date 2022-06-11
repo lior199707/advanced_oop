@@ -143,20 +143,25 @@ public abstract class AddAnimalDialog extends AnimalDialog {
      */
     private boolean hSpeedStatus;
 
+    /**
+     * IAnimalFactory instance indicating which factory will be used.
+     */
     private IAnimalFactory animalFactory;
 
     /**
      * AddAnimalDialog constructor.
      * @param model AnimalModel object, the animal container.
      * @param zooPanel ZooPanel object, the zoo panel.
+     * @param animalTypes String array of animals of the same type, i.e {carnivores},{omnivores},{herbivores}
+     * @param factoryType String representation of the AnimalDialog factory type.
      * @see com.graphics.AnimalDialog
      */
     public AddAnimalDialog(AnimalModel model, ZooPanel zooPanel, String[] animalTypes, String factoryType) {
         super(model, zooPanel, DEFAULT_DIMENSION);
 
+        // initializing factory.
         FactoryProducer factoryProducer = new FactoryProducer();
         animalFactory = factoryProducer.getFactory(factoryType);
-        System.out.println(factoryType);
 
         // configuration
         INIT_ANIMAL_TYPE = animalTypes[0];
@@ -538,14 +543,12 @@ public abstract class AddAnimalDialog extends AnimalDialog {
 
             // if the model size is yet to reach the maximum size allowed, instantiate an animal
             if (getModel().getAnimalQueueSize() < AnimalModel.getMaxQueueSize()) {
-//            if (getModel().getAnimalModelSize() < AnimalModel.getModelMaxSize()) {
-                System.out.println(animalType);
                 Animal animal = animalFactory.createAnimal(animalType, animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
                 System.out.println(animalColor);
                 // using decorator to determine animal color
                 switch (animalColor) {
-                    case "Red" -> animal = new AnimalRedDecorator(animal).makeAnimal();
-                    case "Blue" -> animal = new AnimalBlueDecorator(animal).makeAnimal();
+                    case "Red" -> animal = new AnimalRedDecorator(animal).decorateAnimal();
+                    case "Blue" -> animal = new AnimalBlueDecorator(animal).decorateAnimal();
                 }
 
                 assert animal != null;

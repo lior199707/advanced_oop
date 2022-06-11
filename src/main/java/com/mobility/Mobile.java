@@ -26,10 +26,13 @@ public abstract class Mobile implements Ilocatable {
         totalDistance = 0;
     }
 
+    /**
+     * Mobile copy constructor.
+     * @param other Mobile object to copy.
+     */
     public Mobile(Mobile other){
         this.location = new Point(other.getLocation()) ;
         this.totalDistance = other.getTotalDistance();
-        System.out.println("Mobile copy constructor");
     }
 
     /**

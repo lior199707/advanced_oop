@@ -1,10 +1,17 @@
 package com.factory;
 
+/**
+ * Factory Producer is used to fetch a factory.
+ */
 public class FactoryProducer {
+    /**
+     * getFactory
+     * @param factoryType String representation of the factory type.
+     * @return instance of a Factory.
+     */
     public IAnimalFactory getFactory(String factoryType) {
         switch (factoryType){
             case "Herbivore" -> {
-                System.out.println("creating herbivore factory");
                 return new HerbivoreFactory();
             }
             case "Omnivore" -> {

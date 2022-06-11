@@ -13,6 +13,10 @@ public class Cabbage extends Plant {
      */
     private Cabbage() { }
 
+    /**
+     * getInstance
+     * @return Cabbage object if there is no cabbage instance.
+     */
     public static Cabbage getInstance() {
         if (instance == null)
             instance = new Cabbage();

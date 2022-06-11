@@ -72,10 +72,13 @@ public class Lion extends AnimalRoar {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    /**
+     * Lion copy constructor
+     * @param other Lion object to copy.
+     */
     public Lion(Lion other){
         super(other);
         this.scarCount = other.scarCount;
-        System.out.println("Lion copy constructor");
     }
 
     /**

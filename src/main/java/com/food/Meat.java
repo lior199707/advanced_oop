@@ -7,12 +7,19 @@ package com.food;
  * @author Lior Shilon 316126143
  */
 public class Meat extends Food{
+    /**
+     * Singleton Meat instance.
+     */
     private static Meat instance = null;
     /**
      * Meat constructor.
      */
     private Meat() { }
 
+    /**
+     * getInstance method
+     * @return if an object exists, it returns the object, otherwise creates a new Meat object.
+     */
     public static Meat getInstance() {
         if (instance == null){
             instance = new Meat();

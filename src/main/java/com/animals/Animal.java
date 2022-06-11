@@ -126,6 +126,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      */
     private volatile boolean threadSuspended;
 
+    /**
+     * an Observer object used to notify events.
+     */
     private Observer controller;
 
     /**
@@ -164,7 +167,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
 //    }
     /**
      * Animal Ctor, creates an animal without providing the color, sets color to Default Color.
-     *Used for instantiating animals in main.
+     * used for instantiating animals in main.
      *
      * @param name String value of the animal's name, should contain only letters.
      * @param location Point (x,y) indicating the location of the animal.
@@ -178,6 +181,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         this(name,location,size, horSpeed,verSpeed,DEFAULT_COLOR);
     }
 
+    /**
+     * Animal copy constructor.
+     * @param other Animal object to copy.
+     */
     public Animal(Animal other){
         super(other);
         this.name = other.getName();
@@ -197,7 +204,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         this.threadSuspended = other.isSuspended();
         this.controller = other.getController();
         this.threadAlive = new AtomicBoolean(other.getIsAlive());
-        System.out.println("Animal copy constructor clone");
     }
 
     /**
@@ -278,6 +284,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return pan;
     }
 
+    /**
+     * Controller getter.
+     * @return Observer object indicating the animal's controller.
+     */
     public Observer getController(){
         return this.controller;
     }
@@ -298,6 +308,10 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return threadSuspended;
     }
 
+    /**
+     * threadAlive getter.
+     * @return boolean value indicating if the object's thread is alive or not.
+     */
     public boolean getIsAlive(){
         return this.threadAlive.get();
     }
@@ -336,7 +350,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         }
         return isSuccess;
     }
-
 
     /**
      * size setter.
@@ -622,11 +635,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
      *
      * @return Boolean value indicates if the animal has moved
      */
-
-    public void setThreadAlive(boolean state){
-        this.threadAlive = new AtomicBoolean(state);
-    }
-    // override interface IAnimalBehavior
     @Override
     public boolean getChanges (){
         return this.coordChanged;
@@ -819,25 +827,11 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         return "[" + getClass().getSimpleName() + "]: " + this.name;
     }
 
+    /**
+     * abstract method of clone.
+     * descendants will be able to implement the clone method.
+     * @return the cloned Animal object.
+     */
     @Override
     public abstract Animal clone();
-//    public Animal clone() {
-//        try {
-//            // TODO: copy mutable state here, so the clone can't change the internals of the original
-//            Animal animal = (Animal) super.clone();
-//            animal.setLocation(new Point(getLocation()));
-//            animal.setThreadSuspended(isSuspended());
-//            System.out.println("thread alive is false");
-//            animal.setThreadAlive(false);
-//            animal.setObserver(controller);
-//            animal.setZooPanel(pan);
-//            return animal;
-//        } catch (CloneNotSupportedException e) {
-//            throw new AssertionError();
-//        }
-//    }
-
-    private void setZooPanel(ZooPanel pan) {
-        this.pan = pan;
-    }
 }
