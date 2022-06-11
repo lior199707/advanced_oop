@@ -15,7 +15,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-public class MoveAnimalDialog extends AnimalDialog{
+public class AnimalColorDialog extends AnimalDialog{
     /**
      * default Dimension object with width and height.
      */
@@ -35,20 +35,11 @@ public class MoveAnimalDialog extends AnimalDialog{
      * @param zooPanel ZooPanel object, the zoo panel.
      * @see com.graphics.AnimalDialog
      */
-    public MoveAnimalDialog(AnimalModel model, ZooPanel zooPanel) {
+    public AnimalColorDialog(AnimalModel model, ZooPanel zooPanel) {
         super(model,zooPanel, DEFAULT_DIMENSION);
         // configurations
         this.setTitle("Change Animal Color");
         this.createDialog();
-//        this.addWindowListener(new WindowAdapter() {
-//            @Override
-//            // called when closing the dialog holding the table.
-//            public void windowClosing(WindowEvent e) {
-//                //indicating the table is not open.
-//                System.out.println("closing");
-//                dispose();
-//            }
-//        });
         this.setVisible(true);
         this.pack();
     }

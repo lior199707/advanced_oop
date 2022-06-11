@@ -180,6 +180,9 @@ public class PrivateGraphicUtils {
         JOptionPane.showMessageDialog(container, message,"Information",JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * gets a Buffered image and creates and returns a deep of clone of it.
+     */
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();

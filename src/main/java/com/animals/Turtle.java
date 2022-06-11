@@ -70,6 +70,10 @@ public class Turtle extends AnimalChew {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    /**
+     * Turtle copy constructor
+     * @param other Turtle object to copy.
+     */
     public Turtle(Turtle other){
         super(other);
         this.age = other.getAge();

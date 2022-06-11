@@ -68,6 +68,10 @@ public class Giraffe extends AnimalChew {
         this(name, DEFAULT_SIZE, horSpeed, verSpeed, getDefaultColor());
     }
 
+    /**
+     * Giraffe copy constructor
+     * @param other Giraffe object to copy.
+     */
     public Giraffe(Giraffe other){
         super(other);
         this.neckLength = other.getNeckLength();

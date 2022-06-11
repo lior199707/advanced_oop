@@ -16,7 +16,7 @@ public class CarnivoreFactory implements IAnimalFactory {
      * @param horSpeed Int value indicates animal's horizontal speed.
      * @param verSpeed Int value indicates animal's vertical speed.
      * @param col String representing animal's color, "BLUE", "RED", "NATURAL".
-     * @return Carnivore animal objects.
+     * @return Carnivore animal objects of the wanted animalType.
      */
     @Override
     public Animal createAnimal(String animalType, String name, int size, int horSpeed, int verSpeed, String col) {

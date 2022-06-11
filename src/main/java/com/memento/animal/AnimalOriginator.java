@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * AnimalOriginator has the ability to create AnimalMemento objects.
+ * responsible for creating new mementos in order to store them and storing the current state of the model.
  */
 public class AnimalOriginator implements Cloneable {
     /**

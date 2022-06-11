@@ -7,7 +7,7 @@ public class FactoryProducer {
     /**
      * getFactory
      * @param factoryType String representation of the factory type.
-     * @return instance of a Factory.
+     * @return instance of a Factory matching to the factoryType.
      */
     public IAnimalFactory getFactory(String factoryType) {
         switch (factoryType){

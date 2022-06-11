@@ -162,9 +162,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         this.threadSuspended = false;
     }
 
-//    public Animal(Animal animal){
-        //
-//    }
     /**
      * Animal Ctor, creates an animal without providing the color, sets color to Default Color.
      * used for instantiating animals in main.

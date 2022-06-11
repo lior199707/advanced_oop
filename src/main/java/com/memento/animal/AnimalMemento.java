@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * AnimalMemento used as a state of ArrayList of animal objects.
+ * responsible for storing states of the model.
  */
 public class AnimalMemento {
     /**

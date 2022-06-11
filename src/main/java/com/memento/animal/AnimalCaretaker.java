@@ -10,6 +10,7 @@ import java.util.Stack;
 public class AnimalCaretaker implements Cloneable {
     /**
      * Stack of AnimalMemento's indicating the amount of saved states.
+     * responsible for restoring the model state.
      */
     private Stack<AnimalMemento> stateList = new Stack<>();
     /**
@@ -35,12 +36,16 @@ public class AnimalCaretaker implements Cloneable {
 
     /**
      * isEmpty
-     * @return boolean value indicating if the stack is empty or not.
+     * @return boolean value indicating if the stack is empty or not, means there are no stores states.
      */
     public boolean isEmpty(){
         return stateList.empty();
     }
 
+    /**
+     * isFull
+     * @return boolean value indicating if the stack is full or not, means the stack can't store more states.
+     */
     public boolean isFull(){
         return  stateList.size() == MAX_SIZE;
     }
@@ -53,6 +58,7 @@ public class AnimalCaretaker implements Cloneable {
     public AnimalCaretaker clone() {
         AnimalCaretaker clone = new AnimalCaretaker();
         Stack<AnimalMemento> tempStack = new Stack<>();
+        // initializes a new stack with the same mementos this model has.
         for(AnimalMemento m : this.stateList){
             tempStack.push(m);
         }

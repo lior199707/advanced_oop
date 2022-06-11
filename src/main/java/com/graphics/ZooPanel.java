@@ -60,12 +60,40 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
      * Atomic boolean flag which indicates if the thread is alive or not.
      */
     private AtomicBoolean threadAlive = new AtomicBoolean(true);
+
+    /**
+     * Atomic boolean flag which indicates if the model is already in try to eat all
+     * (all the animals in the model try to eat all other animals in the model).
+     */
     private AtomicBoolean isEating = new AtomicBoolean(false);
 
+    /**
+     * the CareTaker of the AnimalModel
+     */
     private ModelCaretaker modelCaretaker = new ModelCaretaker();
+
+    /**
+     * the Originator of the AnimalModel
+     */
     private ModelOriginator modelOriginator = new ModelOriginator();
+    /**
+     * Stack of Food objects, used to store and restore food state of the ZooPanel.
+     */
     private Stack<Food> foodRestorer = new Stack<>();
+    /**
+     * Stack of Integer objects, used to store and restore the total eat count of all the animals in the model.
+     */
     private Stack<Integer> totalEatCountState = new Stack();
+
+    /**
+     * Stack of BufferedImage objects, used to store and restore the background picture of the model.
+     */
+    private Stack<BufferedImage> backgroundImageRestorer = new Stack<>();
+
+    /**
+     * Stack of Color objects, used to store and restore the background color of the model.
+     */
+    private Stack<Color> backgroundColorRestorer = new Stack<>();
 
     /**
      * ZooPanel constructor.
@@ -124,8 +152,11 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         return model;
     }
 
+    /**
+     * Copy Constructor of the ZooPanel
+     * @param other ZooPanel object
+     */
     public ZooPanel(ZooPanel other){
-//        this.model = new AnimalModel(other.getModel());
         this.model = other.getModel().clone();
         this.backgroundImage = other.backgroundImage;
         this.food = other.food;
@@ -338,6 +369,14 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
     }
 
     /**
+     * background image getter.
+     * @return BufferedImage representing the background image of the ZooPanel.
+     */
+    private BufferedImage getBackgroundImage(){
+        return this.backgroundImage;
+    }
+
+    /**
      * setImageBackground sets the background image to a predetermined Savanna image and repaints the panel.
      */
     public void setImageBackground(){
@@ -382,11 +421,13 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
+        // identify the button pressed
         switch (actionCommand) {
             case "Add Animal" -> createDietDialog();
             case "Sleep" -> model.sleep();
             case "Wake Up" -> model.wakeUp();
             case "Clear All" -> {
+                // deletes all the animals in the model and shuts down their threads
                 model.stopAll();
                 AnimalCaretaker caretaker = model.getCaretaker();
                 AnimalOriginator animalOriginator = model.getOriginator();
@@ -404,7 +445,7 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
             }
             case "Change Color" ->{
                 if(model.getAnimalModelSize() > 0){
-                    new MoveAnimalDialog(model, this);
+                    new AnimalColorDialog(model, this);
                 }
                 else {
                     try {
@@ -436,10 +477,14 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         }
     }
 
+    /**
+     * checks if there are changes in the model and manages the zoo acoording to the changes
+     */
     public void manageZoo(){
         if (isChange()) {
             repaint();
         }
+        // if the mode is not in attempt eating mode already
         if (!isEating.get())
             attemptEatAnimal();
 
@@ -453,12 +498,18 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
      */
     public void saveState() {
         if (!modelCaretaker.isFull()) {
+            // store the food state
             foodRestorer.add(getFood());
+            // store the background image state
+            backgroundImageRestorer.add(getBackgroundImage());
+            // store the background color state
+            backgroundColorRestorer.add(this.getBackground());
+            // store the total eat count
             totalEatCountState.add(getTotalEatCount());
+            // create a memento of the model and save it
             modelOriginator.setModel(model);
             ModelMemento modelMemento = modelOriginator.createMemento();
             modelCaretaker.addMemento(modelMemento);
-            System.out.println("Saving current state");
         }
         else {
             String message = "State list is full (3 states)";
@@ -472,13 +523,24 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
      */
     public void restoreState() {
         if (!modelCaretaker.isEmpty()){
+            // stop the current threads
             model.stopAll();
+            // restore the food
             food = foodRestorer.pop();
+            // restore the background image
+            backgroundImage = backgroundImageRestorer.pop();
+            // restore the background color
+            this.setBackground(backgroundColorRestorer.pop());
+            // restore the total eat count
             totalEatCount = totalEatCountState.pop();
+            // get the last saved memento of the Animal Model and start its threads
             ModelMemento modelMemento = modelCaretaker.getMemento();
             modelOriginator.setModel(modelMemento.getModel());
+            // restore the model
             model = modelMemento.getModel();
+            // if the table is open
             if (InfoTableDialog.getIsOpen()) {
+                // update it
                 infoTable.setVisible(false);
                 infoTable = new InfoTableDialog(model);
                 infoTable.updateTable();
