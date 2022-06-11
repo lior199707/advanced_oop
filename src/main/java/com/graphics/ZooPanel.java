@@ -478,8 +478,6 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
     public void restoreState() {
         if (!modelCaretaker.isEmpty()){
             model.stopAll();
-           // model.restoreModelState();
-           // model.stopAll();
             this.food = foodRestorer.pop();
             ModelMemento modelMemento = modelCaretaker.getMemento();
             modelOriginator.setModel(modelMemento.getModel());
@@ -491,8 +489,7 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
                 infoTable.updateTable();
                 infoTable.setVisible(true);
             }
-        }
-        else {
+        } else {
             String message = "No saved states";
             PrivateGraphicUtils.popInformationDialog(null, message);
         }
