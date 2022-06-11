@@ -189,7 +189,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
         this.col = other.getColor();
         this.x_dir = other.getXDirection();
         this.y_dir = other.getYDirection();
-        this.eatCount = other.eatCount;
+        this.eatCount = other.getEatCount();
         this.pan = other.getPan();
         this.diet = other.getDiet();
         this.img1 = PrivateGraphicUtils.deepCopy(other.getImg1());

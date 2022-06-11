@@ -57,6 +57,14 @@ public abstract class Food implements IEdible, Ilocatable, IDrawable {
         loadImages(foodShortPathName());
     }
 
+    public Food(Food other){
+        this.location = other.getLocation();
+        this.height = other.getHeight();
+        this.weight = other.getWeight();
+        this.pan = other.pan;
+        this.img = PrivateGraphicUtils.deepCopy(other.img);
+    }
+
     /**
      * @return double value representing plant weight.
      */

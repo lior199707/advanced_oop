@@ -7,6 +7,9 @@ import com.food.plants.Cabbage;
 import com.food.plants.Lettuce;
 import com.memento.animal.AnimalCaretaker;
 import com.memento.animal.AnimalOriginator;
+import com.memento.model.ModelCaretaker;
+import com.memento.model.ModelMemento;
+import com.memento.model.ModelOriginator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.imageio.ImageIO;
@@ -18,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -29,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public class ZooPanel extends JPanel implements ActionListener {
+public class ZooPanel extends JPanel implements ActionListener,Cloneable {
     private static ZooPanel instance = null;
     /**
      * static integer representing the total amount of eaten objects (animals or food).
@@ -57,6 +61,10 @@ public class ZooPanel extends JPanel implements ActionListener {
      */
     private AtomicBoolean threadAlive = new AtomicBoolean(true);
     private AtomicBoolean isEating = new AtomicBoolean(false);
+
+    private ModelCaretaker modelCaretaker = new ModelCaretaker();
+    private ModelOriginator modelOriginator = new ModelOriginator();
+    private Stack<Food> foodRestorer = new Stack<>();
 
     /**
      * ZooPanel constructor.
@@ -111,6 +119,17 @@ public class ZooPanel extends JPanel implements ActionListener {
         this.add(actionPanel, BorderLayout.SOUTH);
     }
 
+    public AnimalModel getModel() {
+        return model;
+    }
+
+    public ZooPanel(ZooPanel other){
+//        this.model = new AnimalModel(other.getModel());
+        this.model = other.getModel().clone();
+        this.backgroundImage = other.backgroundImage;
+        this.food = other.food;
+        this.threadAlive = other.threadAlive;
+    }
 
     public static ZooPanel getInstance() {
         if (instance == null)
@@ -436,21 +455,46 @@ public class ZooPanel extends JPanel implements ActionListener {
 
     public void saveState() {
 //        originator.setModel(model);
-            model.saveModelState();
-//        AnimalMemento memento = originator.createMemento();
+        if (!modelCaretaker.isFull()) {
+//            IMPORTANT
+//            model.saveModelState();
+//
+            foodRestorer.add(this.getFood());
+            modelOriginator.setModel(model);
+            ModelMemento modelMemento = modelOriginator.createMemento();
+            modelCaretaker.addMemento(modelMemento);
+            System.out.println("Saving current state");
+        }
+        else {
+            String message = "State list is full (3 states)";
+            PrivateGraphicUtils.popInformationDialog(null, message);
+        }
+//        ModelMemento memento = originator.createMemento();
 //        caretaker.addMemento(memento);
 //        System.out.println("Saving current state");
     }
 
     //TODO: FIX PROBLEM WHERE SAVED MEMENTO KEEPS MOVING EVEN WHEN CLONED
     public void restoreState() {
-        model.restoreModelState();
-        if (InfoTableDialog.getIsOpen()) {
-            System.out.println("kakakakakiiiii");
-            infoTable.setVisible(false);
-            infoTable = new InfoTableDialog(model);
-            infoTable.updateTable();
-            infoTable.setVisible(true);
+        if (!modelCaretaker.isEmpty()){
+            model.stopAll();
+           // model.restoreModelState();
+           // model.stopAll();
+            this.food = foodRestorer.pop();
+            ModelMemento modelMemento = modelCaretaker.getMemento();
+            modelOriginator.setModel(modelMemento.getModel());
+            this.model = modelMemento.getModel();
+            if (InfoTableDialog.getIsOpen()) {
+                System.out.println("whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                infoTable.setVisible(false);
+                infoTable = new InfoTableDialog(model);
+                infoTable.updateTable();
+                infoTable.setVisible(true);
+            }
+        }
+        else {
+            String message = "No saved states";
+            PrivateGraphicUtils.popInformationDialog(null, message);
         }
         repaint();
     }

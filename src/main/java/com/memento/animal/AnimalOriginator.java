@@ -4,7 +4,7 @@ import com.animals.Animal;
 
 import java.util.ArrayList;
 
-public class AnimalOriginator {
+public class AnimalOriginator implements Cloneable {
     private ArrayList<Animal> model;
 
     // the originator stores the model that is changing dynamically.
@@ -14,14 +14,24 @@ public class AnimalOriginator {
     public AnimalMemento createMemento() {
         ArrayList<Animal> animals = new ArrayList<>();
         for (Animal animal : model){
-            System.out.println("create AnimalMemento : cloning " + animal.getName());
             animals.add(animal.clone());
         }
 
         return new AnimalMemento(animals);
     }
 
-//    public void setMemento(AnimalMemento memento) {
+    @Override
+    public AnimalOriginator clone() {
+        AnimalOriginator clone = new AnimalOriginator();
+        ArrayList<Animal> animals = new ArrayList<>();
+        for (Animal animal : model){
+            animals.add(animal.clone());
+        }
+        clone.setModel(animals);
+        return clone;
+    }
+
+//    public void setMemento(ModelMemento memento) {
 //        model = memento.getModel();
 //    }
 }

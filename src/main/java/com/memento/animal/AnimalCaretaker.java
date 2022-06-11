@@ -2,7 +2,7 @@ package com.memento.animal;
 
 import java.util.Stack;
 
-public class AnimalCaretaker {
+public class AnimalCaretaker implements Cloneable {
     private Stack<AnimalMemento> stateList = new Stack<>();
     private static final int MAX_SIZE = 3;
 
@@ -21,4 +21,16 @@ public class AnimalCaretaker {
     public boolean isFull(){
         return  stateList.size() == MAX_SIZE;
     }
+
+    @Override
+    public AnimalCaretaker clone() {
+        AnimalCaretaker clone = new AnimalCaretaker();
+        Stack<AnimalMemento> tempStack = new Stack<>();
+        for(AnimalMemento m : this.stateList){
+            tempStack.push(m);
+        }
+        clone.stateList = tempStack;
+        return clone;
+    }
+
 }
