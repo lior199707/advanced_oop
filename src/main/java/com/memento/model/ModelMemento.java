@@ -6,6 +6,9 @@ import com.graphics.AnimalModel;
  * ModelMemento used as a state of AnimalModel objects, stores a state of the animal model
  * (the animal and the model sleep state).
  * responsible for storing states of the model.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class ModelMemento {
     /**

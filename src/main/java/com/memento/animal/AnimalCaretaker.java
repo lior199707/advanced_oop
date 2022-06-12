@@ -6,6 +6,9 @@ import java.util.Stack;
  * AnimalCaretaker contains a stack of AnimalMemento's.
  * it can push or pop AnimalMemento's into the stack.
  * used to save animal states during the software's lifecycle.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class AnimalCaretaker implements Cloneable {
     /**

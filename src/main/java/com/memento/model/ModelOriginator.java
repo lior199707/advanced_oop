@@ -6,6 +6,9 @@ import com.graphics.AnimalModel;
 /**
  * ModelOriginator has the ability to create AnimalMemento objects.
  * responsible for creating new mementos in order to store them and storing the current state of the model.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class ModelOriginator implements Cloneable {
     /**

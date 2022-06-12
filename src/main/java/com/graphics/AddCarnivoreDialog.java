@@ -3,6 +3,9 @@ package com.graphics;
 /**
  * AddCarnivoreDialog is an extension of AddAnimalDialog
  * opens a dialog with Carnivores only.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class AddCarnivoreDialog extends AddAnimalDialog {
     /**

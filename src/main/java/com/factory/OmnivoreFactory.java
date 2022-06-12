@@ -5,6 +5,9 @@ import com.animals.Bear;
 
 /**
  * class OmnivoreFactory, factory responsible for creating animals objects of type Omnivore.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class OmnivoreFactory implements IAnimalFactory {
     /**

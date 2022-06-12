@@ -4,6 +4,9 @@ import com.graphics.ZooPanel;
 
 /**
  * Controller is an Observer which controls the zoo panel.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public class Controller implements Observer {
     /**

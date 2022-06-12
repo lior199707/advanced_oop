@@ -4,6 +4,9 @@ import com.animals.Animal;
 
 /**
  * IAnimalFactory is implemented by Factory classes who want to create an Animal object.
+ *
+ * @author Sagie Baram 205591829
+ * @author Lior Shilon 316126143
  */
 public interface IAnimalFactory {
 
