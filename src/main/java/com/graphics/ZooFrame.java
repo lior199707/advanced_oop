@@ -122,7 +122,7 @@ public class ZooFrame extends JFrame{
                 case "Save State" -> zooPanel.saveState();
                 case "Restore State" -> zooPanel.restoreState();
                 case "Help" -> {
-                    String message = "Home Work 2\nGUI";
+                    String message = "Home Work 4\nDP Implementation";
                     PrivateGraphicUtils.popInformationDialog(null,message);
                 }
                 case "Manual" -> {

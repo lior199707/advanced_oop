@@ -8,12 +8,10 @@ import com.graphics.ZooPanel;
 public class Controller implements Observer {
     /**
      * notify method.
-     * @param obi Observable object.
      * @param pan ZooPanel object.
      */
     @Override
-    public void notify(Observable obi,ZooPanel pan) {
+    public void notify(ZooPanel pan) {
         pan.manageZoo();
     }
-
 }

@@ -8,8 +8,7 @@ import com.graphics.ZooPanel;
 public interface Observer {
     /**
      * notify method.
-     * @param obi Observable object.
      * @param pan ZooPanel object.
      */
-    public void notify(Observable obi, ZooPanel pan);
+    public void notify(ZooPanel pan);
 }

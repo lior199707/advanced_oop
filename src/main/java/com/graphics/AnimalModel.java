@@ -44,7 +44,7 @@ public class AnimalModel implements Cloneable {
 
 
     /**
-     * Observer object used as a controller, will be applied to all animals..
+     * Observer object used as a controller, will be applied to all animals.
      */
     private Observer controller;
 

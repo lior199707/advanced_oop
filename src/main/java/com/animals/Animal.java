@@ -792,7 +792,7 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
                 move(nextLocation);
             }
             setChanges(true);
-            controller.notify(this, pan);
+            controller.notify(pan);
         }
     }
 
