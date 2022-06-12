@@ -21,6 +21,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,6 +36,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Lior Shilon 316126143
  */
 public class ZooPanel extends JPanel implements ActionListener,Cloneable {
+    /**
+     * Singleton ZooPanel instance.
+     */
     private static ZooPanel instance = null;
     /**
      * static integer representing the total amount of eaten objects (animals or food).
@@ -94,7 +99,6 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
      * Stack of Color objects, used to store and restore the background color of the model.
      */
     private Stack<Color> backgroundColorRestorer = new Stack<>();
-    private int kakishellior = 0;
 
     /**
      * ZooPanel constructor.
@@ -149,6 +153,10 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         this.add(actionPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * AnimalModel getter.
+     * @return AnimalModel object of the ZooPanel.
+     */
     public AnimalModel getModel() {
         return model;
     }
@@ -164,6 +172,10 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         this.threadAlive = other.threadAlive;
     }
 
+    /**
+     * getInstance method
+     * @return new ZooPanel object or the current one if already exists
+     */
     public static ZooPanel getInstance() {
         if (instance == null)
             instance = new ZooPanel();
@@ -186,9 +198,13 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
             food.drawObject(g);
 
         // drawing animals.
-        for (Animal animal : model.getAnimalModel()) {
-            animal.drawObject(g);
-        }
+        Iterator<Animal> iter = model.getAnimalModel().iterator();
+        try {
+            while (iter.hasNext()) {
+                Animal animal = iter.next();
+                animal.drawObject(g);
+            }
+        } catch (ConcurrentModificationException ignore) {}
     }
 
     /**
@@ -285,63 +301,11 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         return false;
     }
 
-//    /**
-//     * attemptEatAnimal is a utility method used to attempt eating animals when manageZoo is called.
-//     * predators can eat their prey, prey may eat its predator.
-//     */
-//    public  synchronized void attemptEatAnimal() {
-//        kakishellior++;
-//        if (!isEating.get()){
-//            isEating.set(true);
-//            for (int i = 0; i < model.getAnimalModelSize(); i++) {
-//                Animal predator = model.getAnimalModel().get(i);
-//                for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
-//                    Animal prey = model.getAnimalModel().get(j);
-//                    if (conditionalEating(predator, prey)) {
-//                        // terminates the thread.
-//                        // remove the prey.
-//                        if (j < model.getAnimalModelSize() || j > 0) {
-//                            prey.stop();
-//                            // if predator eat prey, deduce the amount of eat count of prey off the total eat count.
-//                            setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-//                            model.getAnimalModel().remove(j);
-//                            j--;
-//                            // increment the total eat count & the eat count of predator.
-//                            updateEatCount(predator);
-//                            // the model was changed.
-//                            model.setChangesState(true);
-//                            model.pullFromQueue();
-//                        }
-//                    } else if (conditionalEating(prey, predator)) {
-//
-//                        if (i < model.getAnimalModelSize() || i > 0) {
-//                            // terminates the thread.
-//                            predator.stop();
-//                            // if prey eat predator, deduce the amount of eat count of predator off the total eat count.
-//                            setTotalEatCount(getTotalEatCount() - predator.getEatCount());
-//                            // remove the predator.
-//                            model.getAnimalModel().remove(i);
-//                            i--;
-//                            // increment the total eat count & the eat count of prey.
-//                            updateEatCount(prey);
-//                            // the model was changed.
-//                            model.setChangesState(true);
-//                            model.pullFromQueue();
-//                        }
-//                    }
-//                }
-//            }
-//            kakishellior--;
-//            isEating.set(false);
-//        }
-//    }
-
     /**
      * attemptEatAnimal is a utility method used to attempt eating animals when manageZoo is called.
      * predators can eat their prey, prey may eat its predator.
      */
-    public  synchronized void attemptEatAnimal() {
-        kakishellior++;
+    public synchronized void attemptEatAnimal() {
         for (int i = 0; i < model.getAnimalModelSize(); i++) {
             Animal predator = model.getAnimalModel().get(i);
             for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
@@ -366,17 +330,16 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
                     setTotalEatCount(getTotalEatCount() - predator.getEatCount());
                     // remove the predator.
                     model.getAnimalModel().remove(i);
-                    if(i > 0)
+                    if (i > 0)
                         i--;
                     // increment the total eat count & the eat count of prey.
                     updateEatCount(prey);
                     // the model was changed.
                     model.setChangesState(true);
                     model.pullFromQueue();
-                    }
                 }
             }
-            kakishellior--;
+        }
     }
 
 
@@ -530,17 +493,13 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
     }
 
     /**
-     * checks if there are changes in the model and manages the zoo acoording to the changes
+     * checks if there are changes in the model and manages the zoo according to the changes
      */
     public void manageZoo(){
+        attemptEatAnimal();
         if (isChange()) {
             repaint();
         }
-        // if the mode is not in attempt eating mode already
-//        if (!isEating.get())
-//            attemptEatAnimal();
-        attemptEatAnimal();
-        System.out.println(kakishellior);
 
         if (InfoTableDialog.getIsOpen()) {
             infoTable.updateTable();

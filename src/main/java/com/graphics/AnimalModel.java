@@ -87,17 +87,16 @@ public class AnimalModel implements Cloneable {
         this.setChangesState(other.getChangesState());
         this.pool = Executors.newFixedThreadPool(MAX_SIZE);
         this.animalQueue = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
-        LinkedBlockingQueue<Runnable> animalQueue2 = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
+        LinkedBlockingQueue<Runnable> tempQueue = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
         this.controller = other.controller;
         ArrayList<Animal> animals = new ArrayList<>();
         for (Animal animal : other.getAnimalModel()){
             animals.add(animal.clone());
         }
         for (Runnable animal : other.animalQueue) {
-            animalQueue2.add(((Animal) animal).clone());
-            System.out.println(animal);
+            tempQueue.add(((Animal) animal).clone());
         }
-        this.animalQueue = animalQueue2;
+        this.animalQueue = tempQueue;
         this.animals = animals;
         this.setCaretaker(other.getCaretaker().clone());
         this.setOriginator(other.getOriginator().clone());

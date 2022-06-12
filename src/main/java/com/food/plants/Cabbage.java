@@ -7,6 +7,9 @@ package com.food.plants;
  * @author Lior Shilon 316126143
  */
 public class Cabbage extends Plant {
+    /**
+     * Singleton Cabbage instance.
+     */
     private static Cabbage instance = null;
     /**
      * Cabbage constructor.

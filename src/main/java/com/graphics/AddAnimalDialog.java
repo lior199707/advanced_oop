@@ -3,8 +3,6 @@ package com.graphics;
 import com.animals.*;
 import com.factory.FactoryProducer;
 import com.factory.IAnimalFactory;
-import com.patterns.AnimalBlueDecorator;
-import com.patterns.AnimalRedDecorator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.swing.*;
@@ -543,13 +541,7 @@ public abstract class AddAnimalDialog extends AnimalDialog {
 
             // if the model size is yet to reach the maximum size allowed, instantiate an animal
             if (getModel().getAnimalQueueSize() < AnimalModel.getMaxQueueSize()) {
-                Animal animal = animalFactory.createAnimal(animalType, animalName, animalSize, animalHSpeed, animalVSpeed, "NATURAL");
-                System.out.println(animalColor);
-                // using decorator to determine animal color
-                switch (animalColor) {
-                    case "Red" -> animal = new AnimalRedDecorator(animal).decorateAnimal();
-                    case "Blue" -> animal = new AnimalBlueDecorator(animal).decorateAnimal();
-                }
+                Animal animal = animalFactory.createAnimal(animalType, animalName, animalSize, animalHSpeed, animalVSpeed, animalColor);
 
                 assert animal != null;
                 animal.setChanges(true);

@@ -1,7 +1,5 @@
 package com.memento.model;
 
-import com.animals.Animal;
-
 import java.util.Stack;
 
 /**
@@ -55,7 +53,6 @@ public class ModelCaretaker implements Cloneable {
      * responsible for restoring the model state.
      */
     public boolean isFull(){
-        System.out.println("size of state list" + stateList.size());
         return  stateList.size() == MAX_SIZE;
     }
 

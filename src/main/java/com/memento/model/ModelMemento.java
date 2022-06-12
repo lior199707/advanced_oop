@@ -8,6 +8,9 @@ import com.graphics.AnimalModel;
  * responsible for storing states of the model.
  */
 public class ModelMemento {
+    /**
+     * AnimalModel object of the memento.
+     */
     private AnimalModel model;
 
     /**

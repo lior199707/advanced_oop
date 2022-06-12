@@ -164,7 +164,6 @@ public class Elephant extends AnimalChew {
 
     @Override
     public Animal clone() {
-        System.out.println("Elephant clone");
         return new Elephant(this);
     }
 

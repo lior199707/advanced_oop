@@ -108,7 +108,7 @@ public class InfoTableDialog extends JDialog {
      * updates the table after changes in the animals model.
      * i.e. animal was eaten thus removed from the model.
      */
-    public void updateTable(){
+    public synchronized void updateTable(){
         tableModel.fireTableDataChanged();
         totalModel.fireTableDataChanged();
         animalTable.setPreferredScrollableViewportSize(animalTable.getPreferredSize());

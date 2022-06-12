@@ -15,6 +15,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+/**
+ * AnimalColorDialog is a dialog allowing users to change existing animal at runtime implementing
+ * the Decorator design pattern.
+ */
 public class AnimalColorDialog extends AnimalDialog{
     /**
      * default Dimension object with width and height.

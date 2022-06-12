@@ -182,6 +182,8 @@ public class PrivateGraphicUtils {
 
     /**
      * gets a Buffered image and creates and returns a deep of clone of it.
+     * @param bi BufferedImage object to copy.
+     * @return copied BufferedImage object.
      */
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
