@@ -163,7 +163,6 @@ public class Giraffe extends AnimalChew {
 
     @Override
     public Animal clone() {
-        System.out.println("Giraffe clone");
         return new Giraffe(this);
     }
 

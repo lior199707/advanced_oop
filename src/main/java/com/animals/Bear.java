@@ -205,7 +205,6 @@ public class Bear extends AnimalRoar {
 
     @Override
     public Animal clone() {
-        System.out.println("Bear clone");
         return new Bear(this);
     }
 

@@ -55,7 +55,6 @@ public class Turtle extends AnimalChew {
         setAge(DEFAULT_AGE);
         setDiet(new Herbivore());
         loadImages(animalShortPathName());
-        System.out.println("Turtle copy constructor");
     }
 
     /**
@@ -165,7 +164,6 @@ public class Turtle extends AnimalChew {
 
     @Override
     public Animal clone() {
-        System.out.println("Turtle clone");
         return new Turtle(this);
     }
 

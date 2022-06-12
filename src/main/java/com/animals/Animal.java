@@ -778,7 +778,6 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
                 synchronized (this.getClass()) {
                     conditionalFoodEating(pan.getFood());
                 }
-                System.out.println("This animal is : " + this.getName());
             }
             // moving and changing animal direction based on the current location and the speed values.
             else {
@@ -791,10 +790,9 @@ public abstract class Animal extends Mobile implements IEdible, IDrawable, IAnim
                 int nextY = getLocation().getY() + verSpeed * getYDirection();
                 Point nextLocation  = new Point(nextX,nextY);
                 move(nextLocation);
-                System.out.println("This animal is : " + this.getName());
             }
             setChanges(true);
-            controller.notify(this,pan);
+            controller.notify(this, pan);
         }
     }
 

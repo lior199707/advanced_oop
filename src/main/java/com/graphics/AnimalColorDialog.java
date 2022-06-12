@@ -128,7 +128,6 @@ public class AnimalColorDialog extends AnimalDialog{
      * generally used if the moving animal was eaten.
      */
     public void refreshUI(){
-        System.out.println("refreshing UI");
         // updating the combobox with the current names in the model.
         animalNamesCmb.setModel(new DefaultComboBoxModel<>(getModel().getAnimalNames()));
         animalNamesCmb.setSelectedIndex(0);
@@ -212,6 +211,7 @@ public class AnimalColorDialog extends AnimalDialog{
 
                 imageLabel.setIcon(PrivateGraphicUtils.setAnimalImageIcon(model.get(selected)));
                 imageLabel.repaint();
+                getZooPanel().repaint();
             } catch (PrivateGraphicUtils.ErrorDialogException ignored){}
         }
     }

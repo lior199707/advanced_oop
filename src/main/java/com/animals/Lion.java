@@ -148,7 +148,6 @@ public class Lion extends AnimalRoar {
 
     @Override
     public Animal clone() {
-        System.out.println("Lion clone");
         return new Lion(this);
     }
 
