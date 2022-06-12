@@ -285,55 +285,98 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
         return false;
     }
 
+//    /**
+//     * attemptEatAnimal is a utility method used to attempt eating animals when manageZoo is called.
+//     * predators can eat their prey, prey may eat its predator.
+//     */
+//    public  synchronized void attemptEatAnimal() {
+//        kakishellior++;
+//        if (!isEating.get()){
+//            isEating.set(true);
+//            for (int i = 0; i < model.getAnimalModelSize(); i++) {
+//                Animal predator = model.getAnimalModel().get(i);
+//                for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
+//                    Animal prey = model.getAnimalModel().get(j);
+//                    if (conditionalEating(predator, prey)) {
+//                        // terminates the thread.
+//                        // remove the prey.
+//                        if (j < model.getAnimalModelSize() || j > 0) {
+//                            prey.stop();
+//                            // if predator eat prey, deduce the amount of eat count of prey off the total eat count.
+//                            setTotalEatCount(getTotalEatCount() - prey.getEatCount());
+//                            model.getAnimalModel().remove(j);
+//                            j--;
+//                            // increment the total eat count & the eat count of predator.
+//                            updateEatCount(predator);
+//                            // the model was changed.
+//                            model.setChangesState(true);
+//                            model.pullFromQueue();
+//                        }
+//                    } else if (conditionalEating(prey, predator)) {
+//
+//                        if (i < model.getAnimalModelSize() || i > 0) {
+//                            // terminates the thread.
+//                            predator.stop();
+//                            // if prey eat predator, deduce the amount of eat count of predator off the total eat count.
+//                            setTotalEatCount(getTotalEatCount() - predator.getEatCount());
+//                            // remove the predator.
+//                            model.getAnimalModel().remove(i);
+//                            i--;
+//                            // increment the total eat count & the eat count of prey.
+//                            updateEatCount(prey);
+//                            // the model was changed.
+//                            model.setChangesState(true);
+//                            model.pullFromQueue();
+//                        }
+//                    }
+//                }
+//            }
+//            kakishellior--;
+//            isEating.set(false);
+//        }
+//    }
+
     /**
      * attemptEatAnimal is a utility method used to attempt eating animals when manageZoo is called.
      * predators can eat their prey, prey may eat its predator.
      */
     public  synchronized void attemptEatAnimal() {
         kakishellior++;
-        if (!isEating.get()){
-            isEating.set(true);
-            for (int i = 0; i < model.getAnimalModelSize(); i++) {
-                Animal predator = model.getAnimalModel().get(i);
-                for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
-                    Animal prey = model.getAnimalModel().get(j);
-                    if (conditionalEating(predator, prey)) {
-                        // terminates the thread.
-                        // remove the prey.
-                        if (j < model.getAnimalModelSize() || j > 0) {
-                            prey.stop();
-                            // if predator eat prey, deduce the amount of eat count of prey off the total eat count.
-                            setTotalEatCount(getTotalEatCount() - prey.getEatCount());
-                            model.getAnimalModel().remove(j);
-                            j--;
-                            // increment the total eat count & the eat count of predator.
-                            updateEatCount(predator);
-                            // the model was changed.
-                            model.setChangesState(true);
-                            model.pullFromQueue();
-                        }
-                    } else if (conditionalEating(prey, predator)) {
-
-                        if (i < model.getAnimalModelSize() || i > 0) {
-                            // terminates the thread.
-                            predator.stop();
-                            // if prey eat predator, deduce the amount of eat count of predator off the total eat count.
-                            setTotalEatCount(getTotalEatCount() - predator.getEatCount());
-                            // remove the predator.
-                            model.getAnimalModel().remove(i);
-                            i--;
-                            // increment the total eat count & the eat count of prey.
-                            updateEatCount(prey);
-                            // the model was changed.
-                            model.setChangesState(true);
-                            model.pullFromQueue();
-                        }
+        for (int i = 0; i < model.getAnimalModelSize(); i++) {
+            Animal predator = model.getAnimalModel().get(i);
+            for (int j = i + 1; j < model.getAnimalModelSize(); j++) {
+                Animal prey = model.getAnimalModel().get(j);
+                if (conditionalEating(predator, prey)) {
+                    // terminates the thread.
+                    // remove the prey.
+                    prey.stop();
+                    // if predator eat prey, deduce the amount of eat count of prey off the total eat count.
+                    setTotalEatCount(getTotalEatCount() - prey.getEatCount());
+                    model.getAnimalModel().remove(j);
+                    j--;
+                    // increment the total eat count & the eat count of predator.
+                    updateEatCount(predator);
+                    // the model was changed.
+                    model.setChangesState(true);
+                    model.pullFromQueue();
+                } else if (conditionalEating(prey, predator)) {
+                    // terminates the thread.
+                    predator.stop();
+                    // if prey eat predator, deduce the amount of eat count of predator off the total eat count.
+                    setTotalEatCount(getTotalEatCount() - predator.getEatCount());
+                    // remove the predator.
+                    model.getAnimalModel().remove(i);
+                    if(i > 0)
+                        i--;
+                    // increment the total eat count & the eat count of prey.
+                    updateEatCount(prey);
+                    // the model was changed.
+                    model.setChangesState(true);
+                    model.pullFromQueue();
                     }
                 }
             }
             kakishellior--;
-            isEating.set(false);
-        }
     }
 
 
@@ -494,8 +537,9 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
             repaint();
         }
         // if the mode is not in attempt eating mode already
-        if (!isEating.get())
-            attemptEatAnimal();
+//        if (!isEating.get())
+//            attemptEatAnimal();
+        attemptEatAnimal();
         System.out.println(kakishellior);
 
         if (InfoTableDialog.getIsOpen()) {
