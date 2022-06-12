@@ -1,4 +1,4 @@
-package com.patterns;
+package com.decorator;
 
 /**
  * IColorDecorator interface allows implementors to decorate an object

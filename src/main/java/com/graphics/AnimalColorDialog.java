@@ -1,9 +1,9 @@
 package com.graphics;
 
 import com.animals.Animal;
-import com.patterns.AnimalBlueDecorator;
-import com.patterns.AnimalNaturalDecorator;
-import com.patterns.AnimalRedDecorator;
+import com.decorator.AnimalBlueDecorator;
+import com.decorator.AnimalNaturalDecorator;
+import com.decorator.AnimalRedDecorator;
 import com.privateutil.PrivateGraphicUtils;
 
 import javax.swing.*;

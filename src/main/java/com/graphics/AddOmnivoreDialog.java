@@ -9,6 +9,7 @@ public class AddOmnivoreDialog extends AddAnimalDialog {
      * String array of omnivore animal types.
      */
     private static final String[] types = {"Bear"};
+    private static final String factoryType = "Omnivore";
 
     /**
      * AddOmnivoreDialog constructor.
@@ -18,6 +19,6 @@ public class AddOmnivoreDialog extends AddAnimalDialog {
      * @param zooPanel ZooPanel object, the zoo panel.
      */
     public AddOmnivoreDialog(AnimalModel model, ZooPanel zooPanel) {
-        super(model, zooPanel, types, "Omnivore");
+        super(model, zooPanel, types, factoryType);
     }
 }

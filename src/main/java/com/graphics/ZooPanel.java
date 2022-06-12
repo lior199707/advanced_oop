@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Sagie Baram 205591829
  * @author Lior Shilon 316126143
  */
-public class ZooPanel extends JPanel implements ActionListener,Cloneable {
+public class ZooPanel extends JPanel implements ActionListener {
     /**
      * Singleton ZooPanel instance.
      */
@@ -103,7 +103,7 @@ public class ZooPanel extends JPanel implements ActionListener,Cloneable {
     /**
      * ZooPanel constructor.
      */
-    public ZooPanel() {
+    private ZooPanel() {
         model = new AnimalModel();
         infoTable = new InfoTableDialog(model);
         food = null;

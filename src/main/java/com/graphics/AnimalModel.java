@@ -41,10 +41,7 @@ public class AnimalModel implements Cloneable {
      */
     private boolean sleepState = false;
 
-    /**
-     * ExecutorService is the ThreadPool service provider.
-     */
-    private ExecutorService pool;
+
 
     /**
      * Observer object used as a controller, will be applied to all animals..
@@ -55,6 +52,10 @@ public class AnimalModel implements Cloneable {
      * LinkedBlockingDeque
      */
     private LinkedBlockingQueue<Runnable> animalQueue;
+    /**
+     * ExecutorService is the ThreadPool service provider.
+     */
+    private ExecutorService pool;
 
     /**
      * AnimalCaretaker reference.
@@ -298,7 +299,6 @@ public class AnimalModel implements Cloneable {
         animalOriginator.setModel(animalMemento.getModel());
         animals = new ArrayList<>();
         pool = Executors.newFixedThreadPool(MAX_SIZE);
-//        animalQueue = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
         for (int i = 0; i < animalMemento.getModel().size(); i++){
             this.addAnimal(animalMemento.getModel().get(i));
         }

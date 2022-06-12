@@ -8,7 +8,8 @@ public class AddHerbivoreDialog extends AddAnimalDialog {
     /**
      * String array of herbivore animal types.
      */
-    private static String[] types = {"Giraffe", "Turtle", "Elephant"};
+    private static final String[] types = {"Giraffe", "Turtle", "Elephant"};
+    private static final String factoryType = "Herbivore";
 
     /**
      * AddHerbivoreDialog constructor.
@@ -19,6 +20,6 @@ public class AddHerbivoreDialog extends AddAnimalDialog {
      * @see AddAnimalDialog
      */
     public AddHerbivoreDialog(AnimalModel model, ZooPanel zooPanel) {
-        super(model, zooPanel, types, "Herbivore");
+        super(model, zooPanel, types, factoryType);
     }
 }
